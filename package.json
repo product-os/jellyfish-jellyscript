@@ -1,0 +1,42 @@
+{
+  "name": "@balena/jellyfish-jellyscript",
+  "version": "0.0.1",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/product-os/jellyfish-jellyscript.git"
+  },
+  "description": "Jellyscript library for Jellyfish",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "lint": "eslint lib",
+    "unit": "ava -v",
+    "test": "npm run doc && catch-uncommitted --skip-node-versionbot-changes && npm run lint && npm run unit",
+    "doc": "jsdoc2md --template doc/README.hbs lib/index.js > README.md"
+  },
+  "author": "Balena.io. <hello@balena.io>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@balena/jellyfish-assert": "0.0.2",
+    "esprima": "^4.0.1",
+    "formulajs": "^1.0.8",
+    "lodash": "^4.17.15",
+    "object-hash": "^2.0.3",
+    "static-eval": "^2.1.0"
+  },
+  "devDependencies": {
+    "ava": "^3.9.0",
+    "catch-uncommitted": "^1.6.2",
+    "eslint": "^7.3.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsdoc": "^28.6.0",
+    "eslint-plugin-lodash": "^7.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "jsdoc-to-markdown": "^6.0.1"
+  }
+}
