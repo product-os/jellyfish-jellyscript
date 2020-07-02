@@ -1,6 +1,6 @@
 # Jellyscript
 
-This is the Jellyscript library for Jellyfish.
+Jellyscript is a tiny embeddable language to define computed properties in Jellyfish card types.
 
 # Usage
 
