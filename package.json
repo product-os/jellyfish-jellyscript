@@ -1,9 +1,9 @@
 {
   "name": "@balena/jellyfish-jellyscript",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/product-os/jellyfish-jellyscript.git"
+    "type": "git",
+    "url": "https://github.com/product-os/jellyfish-jellyscript.git"
   },
   "description": "Jellyscript library for Jellyfish",
   "main": "lib/index.js",
