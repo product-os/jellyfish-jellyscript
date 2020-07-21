@@ -19,7 +19,7 @@
   "author": "Balena.io. <hello@balena.io>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@balena/jellyfish-assert": "0.0.17",
+    "@balena/jellyfish-assert": "0.0.18",
     "esprima": "^4.0.1",
     "formulajs": "^1.0.8",
     "lodash": "^4.17.19",
