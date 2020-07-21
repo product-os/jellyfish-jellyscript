@@ -19,7 +19,7 @@
   "author": "Balena.io. <hello@balena.io>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@balena/jellyfish-assert": "0.0.2",
+    "@balena/jellyfish-assert": "0.0.17",
     "esprima": "^4.0.1",
     "formulajs": "^1.0.8",
     "lodash": "^4.17.19",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "ava": "^3.10.1",
     "catch-uncommitted": "^1.6.2",
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsdoc": "^29.2.0",
