@@ -33,7 +33,7 @@ endif
 # -----------------------------------------------
 
 lint:
-	./node_modules/.bin/eslint --ext .js$(ESLINT_OPTION_FIX) lib
+	./node_modules/.bin/eslint --ext .js $(ESLINT_OPTION_FIX) lib
 	./scripts/check-filenames.sh
 	./scripts/check-licenses.sh
 	./scripts/check-deployable-lib.sh
