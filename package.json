@@ -35,7 +35,7 @@
   "devDependencies": {
     "ava": "^3.11.1",
     "catch-uncommitted": "^1.6.2",
-    "depcheck": "^1.0.0",
+    "depcheck": "^1.2.0",
     "deplint": "^1.1.2",
     "eslint": "^7.6.0",
     "eslint-config-standard": "^14.1.1",
