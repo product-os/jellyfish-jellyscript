@@ -25,7 +25,7 @@
   "author": "Balena.io. <hello@balena.io>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@balena/jellyfish-assert": "^0.0.25",
+    "@balena/jellyfish-assert": "^0.0.26",
     "@formulajs/formulajs": "^2.4.3",
     "esprima": "^4.0.1",
     "lodash": "^4.17.20",
@@ -40,7 +40,7 @@
     "eslint": "^7.7.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsdoc": "^30.2.3",
+    "eslint-plugin-jsdoc": "^30.2.4",
     "eslint-plugin-lodash": "^7.1.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
