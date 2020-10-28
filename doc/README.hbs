@@ -1,6 +1,6 @@
 # Jellyscript
 
-Jellyscript is a tiny embeddable language to define computed properties in Jellyfish card types.
+Jellyscript is a small embeddable language to define computed properties in Jellyfish card types.
 
 # Usage
 
