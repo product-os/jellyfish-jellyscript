@@ -33,7 +33,7 @@
     "@formulajs/formulajs": "^2.6.1",
     "esprima": "^4.0.1",
     "lodash": "^4.17.20",
-    "object-hash": "^2.0.3",
+    "object-hash": "^2.1.1",
     "static-eval": "^2.1.0"
   },
   "devDependencies": {
