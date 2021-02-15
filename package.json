@@ -29,7 +29,7 @@
   "author": "Balena.io. <hello@balena.io>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@balena/jellyfish-assert": "^1.0.57",
+    "@balena/jellyfish-assert": "^1.0.58",
     "@formulajs/formulajs": "^2.6.3",
     "esprima": "^4.0.1",
     "lodash": "^4.17.20",
