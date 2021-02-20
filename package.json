@@ -32,7 +32,7 @@
     "@balena/jellyfish-assert": "^1.0.59",
     "@formulajs/formulajs": "^2.6.3",
     "esprima": "^4.0.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "object-hash": "^2.1.1",
     "static-eval": "^2.1.0"
   },
