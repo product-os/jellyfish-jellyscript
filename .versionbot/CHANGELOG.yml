@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency eslint-plugin-jsdoc to ^32.1.0'
+      hash: 018aac8553564953f475b7705479039737658c44
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 2.1.42
+  date: 2021-02-21T05:02:41.035Z
+- commits:
     - subject: 'patch: Update dependency lodash to ^4.17.21'
       hash: a37df19fc3ccfb3ecf578d8469fbc79839d168c5
       body: ''
