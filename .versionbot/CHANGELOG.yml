@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency eslint-plugin-jsdoc to ^32.1.1'
+      hash: c3454cbb79db4ba943ef273c377b331d881f2434
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 2.1.45
+  date: 2021-02-23T02:03:46.666Z
+- commits:
     - subject: 'patch: Update dependency husky to ^5.1.1'
       hash: 3c7a1f1093aea77527a39d2351c8c37406da5770
       body: ''
