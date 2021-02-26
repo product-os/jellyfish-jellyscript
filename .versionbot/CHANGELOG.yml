@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-assert to ^1.0.60'
+      hash: 2791de2d250bed50ccc0a27c02b092f91a5f0628
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 2.1.47
+  date: 2021-02-26T10:41:51.827Z
+- commits:
     - subject: 'patch: Update dependency eslint-plugin-jsdoc to ^32.2.0'
       hash: c959a2903cbf0926244dc5170effbc045c2a4617
       body: ''
