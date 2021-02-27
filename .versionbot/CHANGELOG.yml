@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @formulajs/formulajs to ^2.6.5'
+      hash: 8a69afc848bffbc2e452005452a0b8001a20ae6b
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 2.1.49
+  date: 2021-02-27T13:34:55.997Z
+- commits:
     - subject: 'patch: Update dependency @formulajs/formulajs to ^2.6.4'
       hash: d29c8ed9b64d822704d2e82b27a256ff6426cdc8
       body: ''
