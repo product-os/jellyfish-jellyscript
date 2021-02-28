@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency jsdoc-to-markdown to v7'
+      hash: ce94c82c856e7977bfa9afe3aeec3cdc2d842a00
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 2.1.51
+  date: 2021-02-27T23:08:20.371Z
+- commits:
     - subject: 'patch: Update dependency eslint to ^7.21.0'
       hash: 06790dd49fae9c5fa06d8487a843bf35b961e59b
       body: ''
