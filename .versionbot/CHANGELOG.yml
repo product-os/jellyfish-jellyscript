@@ -1,4 +1,17 @@
 - commits:
+    - subject: Don't evaluate AGGREGATE formulas for create and update contracts
+      hash: 2df85570f3b83c922e72895693767735bbb37a98
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 2.1.54
+  date: 2021-03-04T13:14:54.491Z
+- commits:
     - subject: 'patch: Update non-major'
       hash: 4a7c0b761feff961ffa51e590ede0808fe6af9b8
       body: ''
