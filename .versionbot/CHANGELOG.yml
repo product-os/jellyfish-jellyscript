@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency eslint-plugin-lodash to ^7.2.0'
+      hash: e7033502376651482eb662b75ffbda83d6bd075b
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 2.1.55
+  date: 2021-03-10T09:09:20.559Z
+- commits:
     - subject: Don't evaluate AGGREGATE formulas for create and update contracts
       hash: 2df85570f3b83c922e72895693767735bbb37a98
       body: ''
