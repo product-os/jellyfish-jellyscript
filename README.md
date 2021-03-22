@@ -14,5 +14,5 @@ const triggers = await jellyscript.getTypeTriggers(insertedCard)
 
 # Documentation
 
-Jellyscript module.
+Visit the website for complete documentation: https://product-os.github.io/jellyfish-jellyscript
 
