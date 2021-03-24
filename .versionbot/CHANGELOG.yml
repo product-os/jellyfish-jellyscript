@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @formulajs/formulajs to ^2.6.6'
+      hash: 5d719947239d4960a0c603ea53456a9ea487b87d
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 3.0.1
+  date: 2021-03-24T21:25:43.951Z
+- commits:
     - subject: Update docs
       hash: b1455b7d382fecbf70a793c6a445381d5d78ded0
       body: ''
