@@ -4,7 +4,7 @@
  * Proprietary and confidential.
  */
 
-const objectHash = require('object-hash')
+import objectHash from 'object-hash';
 
 /**
  * @summary Hash a JavaScript object
@@ -18,12 +18,12 @@ const objectHash = require('object-hash')
  * const string = utils.hashObject({ foo: 'bar' })
  * console.log(string)
  */
-exports.hashObject = (object) => {
+export const hashObject = (object: any): string => {
 	return objectHash(object, {
 		algorithm: 'sha1',
 		ignoreUnknown: true,
 
 		// This in particular is a HUGE improvement
-		respectType: false
-	})
-}
+		respectType: false,
+	});
+};
