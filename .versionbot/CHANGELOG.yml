@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-assert to ^1.0.68'
+      hash: d4372cb8187acff4dc7510602bc9810e19f009a4
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 3.0.2
+  date: 2021-03-25T02:18:50.606Z
+- commits:
     - subject: 'patch: Update dependency @formulajs/formulajs to ^2.6.6'
       hash: 5d719947239d4960a0c603ea53456a9ea487b87d
       body: ''
