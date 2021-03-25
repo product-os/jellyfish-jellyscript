@@ -1,4 +1,17 @@
 - commits:
+    - subject: Publish Typedoc docs using a GitHub action
+      hash: 25077d629903c576b3e7627b57a1be1c20bea860
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+  version: 3.0.3
+  date: 2021-03-25T04:33:40.138Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-assert to ^1.0.68'
       hash: d4372cb8187acff4dc7510602bc9810e19f009a4
       body: ''
