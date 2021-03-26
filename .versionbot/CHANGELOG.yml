@@ -1,4 +1,17 @@
 - commits:
+    - subject: Replace husky with simple-git-hooks
+      hash: 14a703aed59058a22a525741b25d78779b1f4636
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+  version: 3.0.10
+  date: 2021-03-26T05:54:54.987Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-types to ^0.2.2'
       hash: f1bbca702ca712f8ceb9bb78f3bcb233c1866eea
       body: ''
