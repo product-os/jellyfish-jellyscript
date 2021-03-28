@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @formulajs/formulajs to ^2.6.7'
+      hash: 24f8e151c24913c1b94bee603af70bf39899c296
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 3.0.12
+  date: 2021-03-28T15:01:20.611Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-types to ^0.4.0'
       hash: 0d7701b251e718934cd91fc2f7034e6d2af1e9da
       body: ''
