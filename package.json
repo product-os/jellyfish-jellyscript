@@ -45,7 +45,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@balena/jellyfish-assert": "^1.1.1",
-    "@formulajs/formulajs": "^2.6.7",
+    "@formulajs/formulajs": "^2.6.8",
     "esprima": "^4.0.1",
     "fast-json-patch": "^3.0.0-1",
     "lodash": "^4.17.21",
