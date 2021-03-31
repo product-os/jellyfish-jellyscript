@@ -44,7 +44,7 @@
   "author": "Balena.io. <hello@balena.io>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@balena/jellyfish-assert": "^1.1.1",
+    "@balena/jellyfish-assert": "^1.1.2",
     "@formulajs/formulajs": "^2.6.8",
     "esprima": "^4.0.1",
     "fast-json-patch": "^3.0.0-1",
