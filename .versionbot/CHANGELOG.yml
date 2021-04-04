@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update non-major'
+      hash: edda9f25d43e617fcce5d7ee19b6ec881f26a140
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 3.0.27
+  date: 2021-04-04T01:18:56.442Z
+- commits:
     - subject: 'patch: Update dependency @types/object-hash to v2'
       hash: a84978f4b9c04a3465653fda64f1855269df413f
       body: ''
