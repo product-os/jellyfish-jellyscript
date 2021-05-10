@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-types to ^0.5.115'
+      hash: 9d891a38a793373736ca16e8f9fb06f49f642cb9
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 3.0.187
+  date: 2021-05-10T08:02:03.106Z
+- commits:
     - subject: 'build(deps): bump hosted-git-info from 2.8.8 to 2.8.9'
       hash: fab0f9c1106d3e7ea24f9e523586689ce03db699
       body: >
