@@ -31,7 +31,7 @@ import type { JSONSchema } from './types';
 interface WithParse {
 	parse: (expression: string) => esprima.Program;
 }
-const parse = ((esprima as unknown) as WithParse).parse;
+const parse = (esprima as unknown as WithParse).parse;
 
 formula.PARTIAL = partial;
 formula.FLIP = flip;
@@ -146,7 +146,7 @@ export const evaluatePatch = (
 
 			if (!isNull(res.value)) {
 				Reflect.deleteProperty(operation, 'from');
-				const replaceOperation = (operation as unknown) as ReplaceOperation<any>;
+				const replaceOperation = operation as unknown as ReplaceOperation<any>;
 				replaceOperation.op = 'replace';
 				replaceOperation.value = res.value;
 			}

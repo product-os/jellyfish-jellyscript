@@ -27,14 +27,15 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "balena-lint --typescript --fix"
+      "npm run lint-fix",
+      "git add ."
     ]
   },
   "scripts": {
     "clean": "rimraf build",
     "build": "npm run clean && tsc",
-    "lint": "balena-lint --typescript lib && npm run check && deplint && depcheck --ignore-bin-package --ignores=estree,json-schema,@types/jest",
-    "lint-fix": "balena-lint --typescript --fix lib",
+    "lint": "balena-lint lib && npm run check && deplint && depcheck --ignore-bin-package --ignores=estree,json-schema,@types/jest",
+    "lint-fix": "balena-lint --fix lib",
     "unit": "jest",
     "test": "catch-uncommitted --skip-node-versionbot-changes && npm run lint && npm run unit",
     "doc": "typedoc lib/ && touch docs/.nojekyll",
@@ -55,7 +56,7 @@
   "devDependencies": {
     "@balena/jellycheck": "^0.1.1",
     "@balena/jellyfish-types": "^0.5.120",
-    "@balena/lint": "^5.4.2",
+    "@balena/lint": "^6.0.0",
     "@types/jest": "^26.0.23",
     "@types/json-schema": "^7.0.7",
     "@types/object-hash": "^2.1.0",
