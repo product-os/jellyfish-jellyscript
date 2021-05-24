@@ -1,4 +1,17 @@
 - commits:
+    - subject: Use jellyfish-config
+      hash: 13585f764e67354370daa9f5336c6070693d7e2a
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 3.0.200
+  date: 2021-05-24T07:03:03.099Z
+- commits:
     - subject: Fix lint errors
       hash: 660870f89a5a3b3e42910ce01c05f1b58c04b177
       body: ''
