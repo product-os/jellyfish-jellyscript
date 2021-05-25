@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update internal-patch'
+      hash: 598df03e9bcbbca30bad74163da1204b4bdce741
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 3.0.203
+  date: 2021-05-25T00:57:10.680Z
+- commits:
     - subject: 'patch: Update dependency @balena/lint to ^6.1.1'
       hash: 6f7f3e061954e77c6c40701e768947e131be5dbb
       body: |
