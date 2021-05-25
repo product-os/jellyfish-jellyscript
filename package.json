@@ -51,6 +51,7 @@
     "fast-json-patch": "^3.0.0-1",
     "lodash": "^4.17.21",
     "object-hash": "^2.2.0",
+    "object-deep-search": "0.0.7",
     "static-eval": "^2.1.0"
   },
   "devDependencies": {

@@ -15,15 +15,17 @@ import partial from 'lodash/partial';
 import set from 'lodash/set';
 import uniq from 'lodash/uniq';
 import * as ESTree from 'estree';
-import type { ContractDefinition } from '@balena/jellyfish-types/build/core';
+import { core } from '@balena/jellyfish-types';
 import { JSONSchema7Object } from 'json-schema';
 import formula from '@formulajs/formulajs';
 import staticEval from 'static-eval';
 import * as esprima from 'esprima';
 import * as assert from '@balena/jellyfish-assert';
-import { Operation, ReplaceOperation } from 'fast-json-patch';
+import * as jsonpatch from 'fast-json-patch';
 import * as card from './card';
 import type { JSONSchema } from './types';
+import _ from 'lodash';
+import * as objectDeepSearch from 'object-deep-search';
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
 // so we've manually defined it here.
@@ -112,70 +114,38 @@ const getDefaultValueForType = (type: string): null | [] => {
 	}
 };
 
-interface Paths {
-	[key: string]: card.FormulaPath;
-}
+export const getFormulasPaths = card.getFormulasPaths;
 
 export const evaluatePatch = (
 	schema: JSONSchema,
 	object: JSONSchema7Object,
-	patch: Operation[],
+	patches: jsonpatch.Operation[],
 ) => {
-	const paths = card
-		.getFormulasPaths(schema)
-		.reduce<Paths>((accumulator, path) => {
-			accumulator[`/${path.output.join('/')}`] = path;
-			return accumulator;
-		}, {});
-
-	for (const operation of patch) {
-		if (
-			operation.op === 'test' ||
-			operation.op === 'remove' ||
-			!paths[operation.path]
-		) {
-			continue;
-		}
-
-		if (operation.op === 'copy' || operation.op === 'move') {
-			const source = get(object, operation.from.split('/').slice(1));
-			const res = evaluate(paths[operation.path].formula, {
-				input: source,
-				context: object,
-			});
-
-			if (!isNull(res.value)) {
-				Reflect.deleteProperty(operation, 'from');
-				const replaceOperation = operation as unknown as ReplaceOperation<any>;
-				replaceOperation.op = 'replace';
-				replaceOperation.value = res.value;
-			}
-
-			continue;
-		}
-
-		const result = evaluate(paths[operation.path].formula, {
-			input: operation.value,
-			context: object,
-		});
-
-		if (!isNull(result.value)) {
-			operation.value = result.value;
+	// The patch may affect other evaluated fields on the card.
+	// Generate a patched object and evaluate it. Then compare it to the original
+	// object to get a final list of patches to apply.
+	const patchedObject = _.cloneDeep(object);
+	const failedPatches: jsonpatch.Operation[] = [];
+	for (const patch of patches) {
+		try {
+			jsonpatch.applyPatch(patchedObject, [patch], false, true);
+		} catch (err) {
+			failedPatches.push(patch);
 		}
 	}
-
-	return patch;
+	const evaluatedPatchedObject = evaluateObject(schema, patchedObject);
+	const evaluatedPatches = jsonpatch.compare(object, evaluatedPatchedObject);
+	return evaluatedPatches.concat(failedPatches);
 };
 
-export const evaluateObject = (
+export const evaluateObject = <T extends JSONSchema7Object>(
 	schema: JSONSchema,
-	object: JSONSchema7Object,
-) => {
+	object: T,
+): T => {
+	if (isEmpty(object)) {
+		return object;
+	}
 	for (const path of card.getFormulasPaths(schema)) {
-		if (isEmpty(object)) {
-			continue;
-		}
-
 		const input = get(object, path.output, getDefaultValueForType(path.type));
 
 		const result = evaluate(path.formula, {
@@ -251,10 +221,48 @@ const LINKS_UNIQUE_FLATMAP_BASE_AST = {
 	],
 };
 
+const LINKS_REFERENCE_AST = {
+	type: 'MemberExpression',
+	object: {
+		type: 'MemberExpression',
+		object: {
+			type: 'ThisExpression',
+		},
+		property: {
+			type: 'Identifier',
+			name: 'links',
+		},
+	},
+	property: {
+		type: 'Literal',
+	},
+};
+
+type LinkRef = typeof LINKS_REFERENCE_AST & {
+	property: { value: string };
+};
+
+export const getReferencedLinkVerbs = <
+	T extends Pick<core.TypeContract, 'data'>,
+>(
+	typeCard: T,
+): string[] => {
+	const formulas = getFormulasPaths(typeCard.data.schema).map((f) => f.formula);
+	const formulaAst = formulas.map((f) => parse(f));
+	const linkExpressions = formulaAst.flatMap((ast) =>
+		objectDeepSearch.find<LinkRef>(ast, LINKS_REFERENCE_AST),
+	);
+	const linkVerbs = linkExpressions.reduce(
+		(linkSet, l) => linkSet.add(l.property.value),
+		new Set<string>(),
+	);
+	return [...linkVerbs];
+};
+
 // TS-TODO: use TypeContract interface instead of Contract
-export const getTypeTriggers = (typeCard: ContractDefinition) => {
+export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
 	// TS-TODO: use TriggeredActionDefinition interface instead of ContractDefinition
-	const triggers: ContractDefinition[] = [];
+	const triggers: core.ContractDefinition[] = [];
 
 	// TS-TODO: remove optional chaining once we use TypeContract
 	for (const path of card.getFormulasPaths(

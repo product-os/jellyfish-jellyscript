@@ -5,6 +5,7 @@
  */
 
 import * as jellyscript from './index';
+import { getReferencedLinkVerbs } from './index';
 
 test('.evaluate(): should return null if no input', () => {
 	const result = jellyscript.evaluate('POW(input, 2)', {
@@ -491,4 +492,60 @@ test('.getTypeTriggers() should report back watchers when aggregating events wit
 			},
 		},
 	]);
+});
+
+test('getReferencedLinkVerbs() should find all verbs exactly once', async () => {
+	const links = getReferencedLinkVerbs({
+		id: 'fake',
+		slug: 'thread',
+		type: 'type@1.0.0',
+		version: '1.0.0',
+		data: {
+			schema: {
+				type: 'object',
+				properties: {
+					data: {
+						type: 'object',
+						properties: {
+							mentions: {
+								type: 'array',
+								$$formula: 'this.links["some link"]',
+							},
+							mentions2: {
+								type: 'array',
+								$$formula: '[]+this.links["some link"]',
+							},
+							count: {
+								type: 'array',
+								$$formula:
+									'5 + this.links["other link"].reduce((o,sum)=>sum+1,0)',
+							},
+						},
+					},
+				},
+			},
+		},
+	});
+	expect(links).toContain('some link');
+	expect(links).toContain('other link');
+});
+
+test('getReferencedLinkVerbs() should not fail if no formulas are given', async () => {
+	const links = getReferencedLinkVerbs({
+		id: 'fake',
+		slug: 'thread',
+		type: 'type@1.0.0',
+		version: '1.0.0',
+		data: {
+			schema: {
+				type: 'object',
+				properties: {
+					data: {
+						type: 'object',
+					},
+				},
+			},
+		},
+	});
+	expect(links.length).toEqual(0);
 });
