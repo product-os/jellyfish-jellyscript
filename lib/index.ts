@@ -26,6 +26,7 @@ import * as card from './card';
 import type { JSONSchema } from './types';
 import _ from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
+import { reverseLink } from './utils';
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
 // so we've manually defined it here.
@@ -264,95 +265,172 @@ export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
 	// TS-TODO: use TriggeredActionDefinition interface instead of ContractDefinition
 	const triggers: core.ContractDefinition[] = [];
 
+	// We create empty updates to cards that reference other cards in links
+	// whenever those linked cards change.
+	// This forces a reevaluation of formulas in the referencing card.
+	const linkVerbs = getReferencedLinkVerbs(typeCard as core.TypeContract);
+	triggers.push(
+		...linkVerbs.map((lv) =>
+			createLinkTrigger(reverseLink(lv, typeCard.slug), typeCard),
+		),
+	);
+
+	// This is to support $events and can be removed after changing all
+	// call sites to `this.links["xyz"]` AND re-adding a efficient way
+	// to do aggregations. see https://github.com/product-os/jellyfish-jellyscript/blob/evaluating-links/lib/index.js#L217
+
 	// TS-TODO: remove optional chaining once we use TypeContract
-	for (const path of card.getFormulasPaths(
-		typeCard?.data?.schema as JSONSchema,
-	)) {
-		// TS-TODO: remove cast to any once esprima TypeScript types are completed
-		const ast = (parse(path.formula).body[0] as ESTree.ExpressionStatement)
-			.expression as any;
+	const eventMatches = card
+		.getFormulasPaths(typeCard?.data?.schema as JSONSchema)
+		.map((p) => ({
+			path: p,
+			ast: (parse(p.formula).body[0] as ESTree.ExpressionStatement)
+				.expression as any,
+		}))
+		.filter(
+			(p) =>
+				isMatch(p.ast, LINKS_AGGREGATE_BASE_AST) ||
+				isMatch(p.ast, LINKS_UNIQUE_FLATMAP_BASE_AST),
+		);
 
-		// Aggregating over links is a special case
-		if (
-			isMatch(ast, LINKS_AGGREGATE_BASE_AST) ||
-			isMatch(ast, LINKS_UNIQUE_FLATMAP_BASE_AST)
-		) {
-			const literal =
-				ast.callee.name === 'AGGREGATE'
-					? ast.arguments[1]
-					: ast.arguments[0].arguments[1];
-			const arg = runAST(literal, {
-				context: {},
-				input: {},
-			});
+	for (const { path, ast } of eventMatches) {
+		const literal =
+			ast.callee.name === 'AGGREGATE'
+				? ast.arguments[1]
+				: ast.arguments[0].arguments[1];
 
-			const valueProperty = `source.${arg}`;
+		const arg = runAST(literal, { context: {}, input: {} });
+		const valueProperty = `source.${arg}`;
 
-			triggers.push({
-				slug: slugify(
-					`triggered-action-${typeCard.slug}-${path.output.join('-')}`,
-				),
-				type: 'triggered-action@1.0.0',
-				version: '1.0.0',
-				active: true,
-				requires: [],
-				capabilities: [],
-				markers: [],
-				tags: [],
-				data: {
-					schedule: 'async',
-					action: 'action-set-add@1.0.0',
-					type: `${typeCard.slug}@${typeCard.version}`,
-					target: {
-						$eval: "source.links['is attached to'][0].id",
+		triggers.push(createEventsTrigger(typeCard, path, valueProperty));
+	}
+
+	return triggers;
+};
+
+const createEventsTrigger = (
+	typeCard: core.ContractDefinition<core.ContractData>,
+	path: card.FormulaPath,
+	valueProperty: string,
+): core.ContractDefinition<core.ContractData> => {
+	return {
+		slug: slugify(`triggered-action-${typeCard.slug}-${path.output.join('-')}`),
+		type: 'triggered-action@1.0.0',
+		version: '1.0.0',
+		active: true,
+		requires: [],
+		capabilities: [],
+		markers: [],
+		tags: [],
+		data: {
+			schedule: 'async',
+			action: 'action-set-add@1.0.0',
+			type: `${typeCard.slug}@${typeCard.version}`,
+			target: {
+				$eval: "source.links['is attached to'][0].id",
+			},
+			arguments: {
+				property: path.output.join('.'),
+				value: {
+					$if: valueProperty,
+					then: {
+						$eval: valueProperty,
 					},
-					arguments: {
-						property: path.output.join('.'),
-						value: {
-							$if: valueProperty,
-							then: {
-								$eval: valueProperty,
-							},
-							else: [],
-						},
-					},
-					filter: {
+					else: [],
+				},
+			},
+			filter: {
+				type: 'object',
+				required: ['type', 'data'],
+				$$links: {
+					'is attached to': {
 						type: 'object',
-						required: ['type', 'data'],
-						$$links: {
-							'is attached to': {
-								type: 'object',
-								required: ['type'],
-								properties: {
-									type: {
-										type: 'string',
-										const: `${typeCard.slug}@${typeCard.version}`,
-									},
-								},
-							},
-						},
+						required: ['type'],
 						properties: {
 							type: {
 								type: 'string',
-								not: {
-									enum: ['create@1.0.0', 'update@1.0.0'],
-								},
-							},
-							data: {
-								type: 'object',
-								required: ['payload'],
-								properties: {
-									payload: {
-										type: 'object',
-									},
-								},
+								const: `${typeCard.slug}@${typeCard.version}`,
 							},
 						},
 					},
 				},
-			});
-		}
-	}
+				properties: {
+					type: {
+						type: 'string',
+						not: {
+							enum: ['create@1.0.0', 'update@1.0.0'],
+						},
+					},
+					data: {
+						type: 'object',
+						required: ['payload'],
+						properties: {
+							payload: {
+								type: 'object',
+							},
+						},
+					},
+				},
+			},
+		},
+	};
+};
 
-	return triggers;
+const createLinkTrigger = (
+	linkVerb: string,
+	typeCard: core.ContractDefinition<core.ContractData>,
+): core.ContractDefinition<any> => {
+	return {
+		slug: slugify(
+			`triggered-action-formula-update-${typeCard.slug}-${linkVerb}`,
+		),
+		type: 'triggered-action@1.0.0',
+		version: '1.0.0',
+		active: true,
+		requires: [],
+		capabilities: [],
+		markers: [],
+		tags: [],
+		data: {
+			schedule: 'async',
+			action: 'action-update-card@1.0.0',
+			type: `${typeCard.slug}@${typeCard.version}`,
+			target: {
+				$map: {
+					$eval: `source.links['${linkVerb}']`, // there was a [0:] at the end... :-/
+				},
+				'each(card)': {
+					$eval: 'card.id',
+				},
+			},
+			arguments: {
+				reason: 'formula re-evaluation',
+				patch: [],
+			},
+			filter: {
+				type: 'object',
+				required: ['type', 'data'],
+				$$links: {
+					[linkVerb]: {
+						type: 'object',
+						required: ['type'],
+						properties: {
+							type: {
+								type: 'string',
+								const: `${typeCard.slug}@${typeCard.version}`,
+							},
+						},
+					},
+				},
+				properties: {
+					type: {
+						type: 'string',
+						not: {
+							enum: ['create@1.0.0', 'update@1.0.0'],
+						},
+					},
+				},
+			},
+		},
+	};
 };

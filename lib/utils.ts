@@ -5,6 +5,7 @@
  */
 
 import objectHash from 'object-hash';
+import * as sdk from '@balena/jellyfish-client-sdk';
 
 /**
  * @summary Hash a JavaScript object
@@ -26,4 +27,37 @@ export const hashObject = (object: any): string => {
 		// This in particular is a HUGE improvement
 		respectType: false,
 	});
+};
+
+const linkConstraints = sdk.linkConstraints.reduce(
+	(all, lc) => all.set(lc.slug, lc),
+	new Map<string, typeof sdk.linkConstraints[0]>(),
+);
+const reverseLinks = sdk.linkConstraints.reduce((reverse, lc) => {
+	reverse.set(
+		`${lc.name}__${lc.data.to}`,
+		linkConstraints.get(lc.data.inverse)?.name,
+	);
+	return reverse;
+}, new Map<string, string | undefined>());
+
+/**
+ * reverses link verbs as they are defined in the SDK.
+ * If the link is not defined in the SDK, we assume it to be named
+ * symmetrically.
+ *
+ * @param linkVerb the link ver to reverse
+ * @param targetTypeSlug the type the link is pointing to
+ * @returns the reverse link verb, pointing away from the type
+ */
+export const reverseLink = (
+	linkVerb: string,
+	targetTypeSlug: string,
+): string => {
+	const [toType] = targetTypeSlug.split('@');
+	return (
+		reverseLinks.get(`${linkVerb}__${toType}`) ||
+		reverseLinks.get(`${linkVerb}__*`) ||
+		linkVerb
+	);
 };
