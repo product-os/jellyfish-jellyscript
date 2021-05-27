@@ -6,7 +6,7 @@
 
 import isString from 'lodash/isString';
 import cloneDeep from 'lodash/cloneDeep';
-import { hashObject, reverseLink } from './utils';
+import { getSourceTypes, hashObject, reverseLink } from './utils';
 
 describe('hashObject', () => {
 	test('should return a string', () => {
@@ -83,5 +83,15 @@ describe('reverseLink', () => {
 
 	test('should default to original link', async () => {
 		expect(reverseLink('i made this up', 'thread')).toEqual('i made this up');
+	});
+});
+
+describe('getSourceTypes', () => {
+	test('should find source types', async () => {
+		expect(getSourceTypes('generated')).toContain('transformer');
+	});
+
+	test('should return the any type', async () => {
+		expect(getSourceTypes('was built into')).toContain('*');
 	});
 });

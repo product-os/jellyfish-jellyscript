@@ -26,7 +26,7 @@ import * as card from './card';
 import type { JSONSchema } from './types';
 import _ from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
-import { reverseLink } from './utils';
+import { getSourceTypes, reverseLink } from './utils';
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
 // so we've manually defined it here.
@@ -376,10 +376,32 @@ const createEventsTrigger = (
 	};
 };
 
+/**
+ * Creates a triggered action that fires when a card gets changed that is linked
+ * with the given link verb to a card of the given type
+ *
+ * @param linkVerb the verb that should trigger
+ * @param typeCard the type containing the formula that needs the trigger
+ * @returns the triggered action
+ */
 const createLinkTrigger = (
 	linkVerb: string,
 	typeCard: core.ContractDefinition<core.ContractData>,
 ): core.ContractDefinition<any> => {
+	// We try to optimize query speed by limiting to valid types or,
+	// if all are allowed, by excluding some high frequency internal cards
+	const sourceTypes = getSourceTypes(linkVerb);
+	const typeFilter =
+		sourceTypes.indexOf('*') < 0
+			? {
+					enum: sourceTypes.map((t) => `${t}@1.0.0`),
+			  }
+			: {
+					not: {
+						enum: ['create@1.0.0', 'update@1.0.0'],
+					},
+			  };
+
 	return {
 		slug: slugify(
 			`triggered-action-formula-update-${typeCard.slug}-${linkVerb}`,
@@ -425,9 +447,7 @@ const createLinkTrigger = (
 				properties: {
 					type: {
 						type: 'string',
-						not: {
-							enum: ['create@1.0.0', 'update@1.0.0'],
-						},
+						...typeFilter,
 					},
 				},
 			},

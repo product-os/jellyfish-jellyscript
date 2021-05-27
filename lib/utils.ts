@@ -6,6 +6,7 @@
 
 import objectHash from 'object-hash';
 import * as sdk from '@balena/jellyfish-client-sdk';
+import _ from 'lodash';
 
 /**
  * @summary Hash a JavaScript object
@@ -29,17 +30,17 @@ export const hashObject = (object: any): string => {
 	});
 };
 
-const linkConstraints = sdk.linkConstraints.reduce(
-	(all, lc) => all.set(lc.slug, lc),
-	new Map<string, typeof sdk.linkConstraints[0]>(),
+const linkConstraintsBySlug = _.keyBy(sdk.linkConstraints, (lc) => lc.slug);
+const linkConstraintsByVerb = _.groupBy(sdk.linkConstraints, (lc) => lc.name);
+// "verb__type" => "inverse"
+const inverseLinksPerType = sdk.linkConstraints.reduce(
+	(map, lc) =>
+		map.set(
+			`${lc.name}__${lc.data.to}`,
+			linkConstraintsBySlug[lc.data.inverse].name,
+		),
+	new Map<string, string>(),
 );
-const reverseLinks = sdk.linkConstraints.reduce((reverse, lc) => {
-	reverse.set(
-		`${lc.name}__${lc.data.to}`,
-		linkConstraints.get(lc.data.inverse)?.name,
-	);
-	return reverse;
-}, new Map<string, string | undefined>());
 
 /**
  * reverses link verbs as they are defined in the SDK.
@@ -56,8 +57,12 @@ export const reverseLink = (
 ): string => {
 	const [toType] = targetTypeSlug.split('@');
 	return (
-		reverseLinks.get(`${linkVerb}__${toType}`) ||
-		reverseLinks.get(`${linkVerb}__*`) ||
+		inverseLinksPerType.get(`${linkVerb}__${toType}`) ||
+		inverseLinksPerType.get(`${linkVerb}__*`) ||
 		linkVerb
 	);
+};
+
+export const getSourceTypes = (linkVerb: string) => {
+	return _.uniq(linkConstraintsByVerb[linkVerb]?.map((lc) => lc.data.from));
 };
