@@ -46,11 +46,13 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@balena/jellyfish-assert": "^1.1.38",
+    "@balena/jellyfish-client-sdk": "^4.4.11",
     "@formulajs/formulajs": "^2.6.9",
     "esprima": "^4.0.1",
     "fast-json-patch": "^3.0.0-1",
     "lodash": "^4.17.21",
     "object-hash": "^2.2.0",
+    "object-deep-search": "0.0.7",
     "static-eval": "^2.1.0"
   },
   "devDependencies": {
