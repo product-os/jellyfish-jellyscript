@@ -1,4 +1,38 @@
 - commits:
+    - subject: 'improve trigger query performancy by constraining on type, if possible'
+      hash: 8b29e74edab503bec9108426569dd55c3e72c2dc
+      body: |
+        add major change type after learning about subtle breaking change
+      footer:
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+        Change-type: major
+        change-type: major
+      author: Martin Rauscher
+      nested: []
+    - subject: 'add triggered actions for uses of this.links[...] in formulas'
+      hash: 6269d2304349b7e6401382c9f56e6c041a1c3732
+      body: ''
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+      author: Martin Rauscher
+      nested: []
+    - subject: 'add support for this.links[...]'
+      hash: a69c5ac64129ed15c15f25be08f54a400739ed79
+      body: ''
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+      author: Martin Rauscher
+      nested: []
+  version: 4.0.0
+  date: 2021-05-31T18:18:11.018Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-types to ^0.5.137'
       hash: 1bddc56af3f854630d8c0addcf0cf738b4569c05
       body: ''
