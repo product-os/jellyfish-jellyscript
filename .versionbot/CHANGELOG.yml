@@ -1,4 +1,17 @@
 - commits:
+    - subject: Remove unnecessary catch-uncommitted
+      hash: 53b5dcebf908f52e348f0c4ce3766b8f0f94f418
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.0.2
+  date: 2021-06-02T07:18:31.422Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^4.4.17'
       hash: e906e5e0c9850b0c654e0a3e062c1fed2a1cff6c
       body: ''
