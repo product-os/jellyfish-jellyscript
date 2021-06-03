@@ -1,4 +1,17 @@
 - commits:
+    - subject: Improve lint-staged config
+      hash: dd110d9354b5f756cb985b45d2262e65b8011b47
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.0.3
+  date: 2021-06-03T23:11:48.274Z
+- commits:
     - subject: Remove unnecessary catch-uncommitted
       hash: 53b5dcebf908f52e348f0c4ce3766b8f0f94f418
       body: ''
