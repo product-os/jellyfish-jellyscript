@@ -57,7 +57,7 @@
   "devDependencies": {
     "@balena/jellycheck": "^0.1.1",
     "@balena/jellyfish-config": "^1.2.7",
-    "@balena/jellyfish-types": "^0.5.137",
+    "@balena/jellyfish-types": "^0.6.1",
     "@balena/lint": "^6.1.1",
     "@types/jest": "^26.0.23",
     "@types/json-schema": "^7.0.7",
