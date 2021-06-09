@@ -31,6 +31,19 @@ test('.evaluate(): should resolve a number formula', () => {
 	});
 });
 
+test('.evaluate(): should resolve a number formula', () => {
+	const result = jellyscript.evaluate('!input', {
+		context: {
+			number: true,
+		},
+		input: true,
+	});
+
+	expect(result).toEqual({
+		value: false,
+	});
+});
+
 test('.evaluate(): should resolve composite formulas', () => {
 	const result = jellyscript.evaluate('MAX(POW(input, 2), POW(input, 3))', {
 		context: {
@@ -167,6 +180,31 @@ test('.evaluateObject() should evaluate a number formula', async () => {
 
 	expect(result).toEqual({
 		foo: 9,
+	});
+});
+
+test('.evaluateObject() should evaluate a boolean formula', async () => {
+	const result = jellyscript.evaluateObject(
+		{
+			type: 'object',
+			properties: {
+				foo: {
+					type: 'boolean',
+					$$formula: '!this.bar',
+				},
+				bar: {
+					type: 'boolean',
+				},
+			},
+		},
+		{
+			bar: true,
+		},
+	);
+
+	expect(result).toEqual({
+		bar: true,
+		foo: false,
 	});
 });
 
