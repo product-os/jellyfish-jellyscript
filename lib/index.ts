@@ -100,9 +100,14 @@ export const evaluate = (
 			value: null,
 		};
 	}
+	if (result === undefined) {
+		return {
+			value: null,
+		};
+	}
 
 	return {
-		value: result || null,
+		value: result,
 	};
 };
 
