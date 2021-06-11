@@ -31,6 +31,7 @@ formula.FLIP = _.flip;
 formula.PROPERTY = _.get;
 formula.FLATMAP = _.flatMap;
 formula.UNIQUE = _.uniq;
+formula.EVERY = _.every;
 
 formula.REGEX_MATCH = (
 	regex: string | RegExp,
