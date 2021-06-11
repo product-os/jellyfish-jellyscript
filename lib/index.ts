@@ -4,16 +4,6 @@
  * Proprietary and confidential.
  */
 
-import flatMap from 'lodash/flatMap';
-import flip from 'lodash/flip';
-import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
-import isError from 'lodash/isError';
-import isNull from 'lodash/isNull';
-import isMatch from 'lodash/isMatch';
-import partial from 'lodash/partial';
-import set from 'lodash/set';
-import uniq from 'lodash/uniq';
 import * as ESTree from 'estree';
 import { core } from '@balena/jellyfish-types';
 import { JSONSchema7Object } from 'json-schema';
@@ -26,7 +16,7 @@ import * as card from './card';
 import type { JSONSchema } from './types';
 import _ from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
-import { getSourceTypes, reverseLink } from './utils';
+import { getSourceTypes, reverseLink } from './link-traversal';
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
 // so we've manually defined it here.
@@ -36,11 +26,12 @@ interface WithParse {
 }
 const parse = (esprima as unknown as WithParse).parse;
 
-formula.PARTIAL = partial;
-formula.FLIP = flip;
-formula.PROPERTY = get;
-formula.FLATMAP = flatMap;
-formula.UNIQUE = uniq;
+formula.PARTIAL = _.partial;
+formula.FLIP = _.flip;
+formula.PROPERTY = _.get;
+formula.FLATMAP = _.flatMap;
+formula.UNIQUE = _.uniq;
+formula.EVERY = _.every;
 
 formula.REGEX_MATCH = (
 	regex: string | RegExp,
@@ -95,7 +86,7 @@ export const evaluate = (
 		input: options.input,
 	});
 
-	if (isError(result)) {
+	if (_.isError(result)) {
 		return {
 			value: null,
 		};
@@ -148,20 +139,20 @@ export const evaluateObject = <T extends JSONSchema7Object>(
 	schema: JSONSchema,
 	object: T,
 ): T => {
-	if (isEmpty(object)) {
+	if (_.isEmpty(object)) {
 		return object;
 	}
 	for (const path of card.getFormulasPaths(schema)) {
-		const input = get(object, path.output, getDefaultValueForType(path.type));
+		const input = _.get(object, path.output, getDefaultValueForType(path.type));
 
 		const result = evaluate(path.formula, {
 			context: object,
 			input,
 		});
 
-		if (!isNull(result.value)) {
+		if (!_.isNull(result.value)) {
 			// Mutates input object
-			set(object, path.output, result.value);
+			_.set(object, path.output, result.value);
 		}
 	}
 
@@ -294,8 +285,8 @@ export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
 		}))
 		.filter(
 			(p) =>
-				isMatch(p.ast, LINKS_AGGREGATE_BASE_AST) ||
-				isMatch(p.ast, LINKS_UNIQUE_FLATMAP_BASE_AST),
+				_.isMatch(p.ast, LINKS_AGGREGATE_BASE_AST) ||
+				_.isMatch(p.ast, LINKS_UNIQUE_FLATMAP_BASE_AST),
 		);
 
 	for (const { path, ast } of eventMatches) {

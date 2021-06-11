@@ -4,31 +4,8 @@
  * Proprietary and confidential.
  */
 
-import objectHash from 'object-hash';
 import * as sdk from '@balena/jellyfish-client-sdk';
 import _ from 'lodash';
-
-/**
- * @summary Hash a JavaScript object
- * @function
- * @public
- *
- * @param {Object} object - object
- * @returns {String} object hash
- *
- * @example
- * const string = utils.hashObject({ foo: 'bar' })
- * console.log(string)
- */
-export const hashObject = (object: any): string => {
-	return objectHash(object, {
-		algorithm: 'sha1',
-		ignoreUnknown: true,
-
-		// This in particular is a HUGE improvement
-		respectType: false,
-	});
-};
 
 const linkConstraintsBySlug = _.keyBy(sdk.linkConstraints, (lc) => lc.slug);
 const linkConstraintsByVerb = _.groupBy(sdk.linkConstraints, (lc) => lc.name);
