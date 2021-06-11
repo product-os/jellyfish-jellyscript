@@ -1,4 +1,27 @@
 - commits:
+    - subject: add support for EVERY in formulas
+      hash: 8a3e36e66741285e7aed19b36f1612b7f30c532b
+      body: ''
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+      author: Martin Rauscher
+      nested: []
+    - subject: cleanup and get rid of utils.ts
+      hash: 82781827fac156e019de4c50b81736d4b6f9eada
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+      author: Martin Rauscher
+      nested: []
+  version: 4.2.0
+  date: 2021-06-11T10:20:19.484Z
+- commits:
     - subject: 'patch: Update internal-patch'
       hash: da6e58596a9c4721ef57f4fd3b592ba585f51f99
       body: ''
