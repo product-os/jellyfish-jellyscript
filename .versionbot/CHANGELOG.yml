@@ -1,4 +1,16 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to v5'
+      hash: 427b7c474f3a2c9b97e0b3018ed7cd270f8f3646
+      body: |
+        Update @balena/jellyfish-client-sdk from 4.7.1 to 5.0.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.2.1
+  date: 2021-06-12T02:46:20.210Z
+- commits:
     - subject: add support for EVERY in formulas
       hash: 8a3e36e66741285e7aed19b36f1612b7f30c532b
       body: ''
