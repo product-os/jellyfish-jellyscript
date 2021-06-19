@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump external non-major deps
+      hash: 4dc1b6907a49f46c4509757d7bd11776e8c26586
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.2.10
+  date: 2021-06-19T09:41:33.755Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.0.4'
       hash: 2453bdb1eedadf5f1cb6cd1f667d480ea011905d
       body: ''
