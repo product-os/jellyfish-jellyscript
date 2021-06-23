@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump jest to v27.0.5
+      hash: 80584f7b7ab3cc261a75668a50279d665129009c
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.2.16
+  date: 2021-06-23T23:20:41.305Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.0.7'
       hash: 594bf0fcf3f8c9699821e4af29f5cc29fb6b668e
       body: ''
