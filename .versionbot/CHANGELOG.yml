@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump depcheck to v1.4.2
+      hash: 761b9f60283e9b16f19ef38af81fbb276df1afa9
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.2.21
+  date: 2021-06-25T22:35:57.374Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.1.0'
       hash: ebfc87a37519f4a60ef2dae956ac47872ea80714
       body: |
