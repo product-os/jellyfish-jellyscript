@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update internal-patch'
+      hash: 97cfa4a2175e649f5ab22f9bbe8484ee09025957
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.3.1
+  date: 2021-07-02T23:39:51.519Z
+- commits:
     - subject: Add SOME method to formulas
       hash: 184623354fecc7e17079575a187d816ef97874f6
       body: |
