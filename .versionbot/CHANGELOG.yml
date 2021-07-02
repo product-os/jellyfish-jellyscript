@@ -1,4 +1,20 @@
 - commits:
+    - subject: Add SOME method to formulas
+      hash: 184623354fecc7e17079575a187d816ef97874f6
+      body: |
+        SOME is a simple wrapper around the lodash method `_.some` which will
+        evaluate to true if any elements in a collection match the predicate
+        function.
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 4.3.0
+  date: 2021-07-02T14:58:21.861Z
+- commits:
     - subject: 'patch: Update internal-patch'
       hash: c31127c611927617299d6b710133821134ab3c86
       body: ''
