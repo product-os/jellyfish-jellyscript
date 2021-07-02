@@ -32,6 +32,7 @@ formula.PROPERTY = _.get;
 formula.FLATMAP = _.flatMap;
 formula.UNIQUE = _.uniq;
 formula.EVERY = _.every;
+formula.SOME = _.some;
 
 formula.REGEX_MATCH = (
 	regex: string | RegExp,

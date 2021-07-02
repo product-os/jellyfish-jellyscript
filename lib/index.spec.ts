@@ -216,6 +216,39 @@ test('.evaluateObject() should evaluate a EVERY formula', async () => {
 	});
 });
 
+test('.evaluateObject() should evaluate a SOME formula', async () => {
+	const result = jellyscript.evaluateObject(
+		{
+			type: 'object',
+			properties: {
+				truthy: {
+					type: 'boolean',
+					$$formula: 'SOME(input, "data.a")',
+				},
+				falsy: {
+					type: 'boolean',
+					$$formula: 'SOME(input, "data.a")',
+				},
+				empty: {
+					type: 'boolean',
+					$$formula: 'SOME(input, "data.a")',
+				},
+			},
+		},
+		{
+			truthy: [{ data: { a: 1 } }, { data: { b: 2 } }],
+			falsy: [{ data: { b: 1 } }, { data: {} }],
+			empty: [],
+		},
+	);
+
+	expect(result).toEqual({
+		truthy: true,
+		falsy: false,
+		empty: false,
+	});
+});
+
 test('.evaluateObject() should evaluate a boolean formula', async () => {
 	const result = jellyscript.evaluateObject(
 		{
