@@ -19,6 +19,10 @@ declare module '@formulajs/formulajs' {
 		collection: List<T> | null | undefined,
 		predicate?: ListIterateeCustom<T, boolean>,
 	): boolean;
+	function SOME<T>(
+		collection: List<T> | null | undefined,
+		predicate?: ListIterateeCustom<T, boolean>,
+	): boolean;
 	function UNIQUE<T>(array: T[]): T[];
 	function REGEX_MATCH(
 		regex: string | RegExp,
