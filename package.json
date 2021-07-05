@@ -44,7 +44,7 @@
   "author": "Balena.io. <hello@balena.io>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@balena/jellyfish-assert": "^1.1.59",
+    "@balena/jellyfish-assert": "^1.1.60",
     "@balena/jellyfish-client-sdk": "^5.2.9",
     "@formulajs/formulajs": "^2.6.10",
     "esprima": "^4.0.1",
@@ -56,8 +56,8 @@
   },
   "devDependencies": {
     "@balena/jellycheck": "^0.1.1",
-    "@balena/jellyfish-config": "^1.4.2",
-    "@balena/jellyfish-types": "^0.8.4",
+    "@balena/jellyfish-config": "^1.4.3",
+    "@balena/jellyfish-types": "^0.8.5",
     "@balena/lint": "^6.1.1",
     "@types/jest": "^26.0.23",
     "@types/json-schema": "^7.0.7",
