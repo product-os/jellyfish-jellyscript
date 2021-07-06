@@ -1,4 +1,17 @@
 - commits:
+    - subject: fix link triggers in case SDK has no known links
+      hash: 89ca2c2ea52a1a1f4142029f2475f65958596c2a
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+      author: Martin Rauscher
+      nested: []
+  version: 4.3.10
+  date: 2021-07-06T10:39:44.832Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.2.10'
       hash: 6eba52d0986a11e09d68bae5ddb0dc29129b4721
       body: ''
