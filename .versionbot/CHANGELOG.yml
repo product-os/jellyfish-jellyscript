@@ -1,4 +1,18 @@
 - commits:
+    - subject: Add VALUES formula
+      hash: 34d68384e843b8304db5f024335968e9198d2fac
+      body: |
+        Added support for `Object` data type method `values`.
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Stathis Moraitidis <stathis@balena.io>
+        signed-off-by: Stathis Moraitidis <stathis@balena.io>
+      author: Stathis
+      nested: []
+  version: 4.4.0
+  date: 2021-07-06T10:54:21.408Z
+- commits:
     - subject: fix link triggers in case SDK has no known links
       hash: 89ca2c2ea52a1a1f4142029f2475f65958596c2a
       body: ''
