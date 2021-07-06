@@ -249,6 +249,32 @@ test('.evaluateObject() should evaluate a SOME formula', async () => {
 	});
 });
 
+test('.evaluateObject() should evaluate a VALUES formula', async () => {
+	const result = jellyscript.evaluateObject(
+		{
+			type: 'object',
+			properties: {
+				obj: {
+					type: 'object',
+				},
+				values: {
+					type: 'array',
+					$$formula: 'VALUES(this.obj)',
+				},
+			},
+		},
+		{
+			obj: { a: 1, b: 2 },
+			values: [],
+		},
+	);
+
+	expect(result).toEqual({
+		obj: { a: 1, b: 2 },
+		values: [1, 2],
+	});
+});
+
 test('.evaluateObject() should evaluate a boolean formula', async () => {
 	const result = jellyscript.evaluateObject(
 		{
