@@ -389,7 +389,7 @@ const createLinkTrigger = (
 	// if all are allowed, by excluding some high frequency internal cards
 	const sourceTypes = getSourceTypes(linkVerb);
 	const typeFilter =
-		sourceTypes.indexOf('*') < 0
+		sourceTypes.length > 0 && sourceTypes.indexOf('*') < 0
 			? {
 					enum: sourceTypes.map((t) => `${t}@1.0.0`),
 			  }
