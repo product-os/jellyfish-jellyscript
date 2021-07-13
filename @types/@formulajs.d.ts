@@ -15,6 +15,10 @@ declare module '@formulajs/formulajs' {
 		defaultValue?: any,
 	): any;
 	function FLATMAP<T>(collection: T[] | object, iteratee?: (item: T) => T): any;
+	function FILTER<T>(
+		collection: List<T> | null | undefined,
+		predicate?: ListIterateeCustom<T, boolean>,
+	): List<T>;
 	function EVERY<T>(
 		collection: List<T> | null | undefined,
 		predicate?: ListIterateeCustom<T, boolean>,

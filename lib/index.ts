@@ -34,6 +34,7 @@ formula.UNIQUE = _.uniq;
 formula.EVERY = _.every;
 formula.SOME = _.some;
 formula.VALUES = _.values;
+formula.FILTER = _.filter;
 
 formula.REGEX_MATCH = (
 	regex: string | RegExp,
