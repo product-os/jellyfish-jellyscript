@@ -71,6 +71,43 @@ test('.evaluate(): should access other properties from the card', () => {
 	});
 });
 
+test('.evaluate() should handle combinations of functions', () => {
+	const result = jellyscript.evaluate(
+		'EVERY(FILTER(this.links["has attached"], { type: "improvement@1.0.0" }), { data: { status: "completed" } })',
+		{
+			context: {
+				links: {
+					'has attached': [
+						{
+							type: 'improvement@1.0.0',
+							data: {
+								status: 'completed',
+							},
+						},
+						{
+							type: 'improvement@1.0.0',
+							data: {
+								status: 'completed',
+							},
+						},
+						{
+							type: 'pull-request@1.0.0',
+							data: {
+								status: 'open',
+							},
+						},
+					],
+				},
+			},
+			input: 4,
+		},
+	);
+
+	expect(result).toEqual({
+		value: true,
+	});
+});
+
 test('UNIQUE(FLATMAP()): should aggregate a set of object properties', () => {
 	const result = jellyscript.evaluate('UNIQUE(FLATMAP(input, "mentions"))', {
 		context: {},
