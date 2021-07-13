@@ -1,4 +1,28 @@
 - commits:
+    - subject: Add unit test for combination of formulajs functions
+      hash: 4d2b5c42d94cd8c3f8a08267912e271db2414874
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+    - subject: Add support for a FILTER formulajs method
+      hash: 9b03edc4905098972f34512cf54f8dfb4c19045c
+      body: |
+        This will be useful for filtering links.
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+  version: 4.5.0
+  date: 2021-07-13T09:00:41.152Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-types to ^0.8.8'
       hash: 866d9844d0211024e0a22169163dd768a1553adf
       body: ''
