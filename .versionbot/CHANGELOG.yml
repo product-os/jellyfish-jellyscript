@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update internal-patch'
+      hash: 8245d385bc68a4aacab9986609e5192716c6164c
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.6.1
+  date: 2021-07-14T05:08:00.043Z
+- commits:
     - subject: Exclude test folder from jest roots
       hash: bed7884cf9eb44f1c215f422b6f1e626df8f4487
       body: ''
