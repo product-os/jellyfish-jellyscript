@@ -35,6 +35,7 @@ formula.EVERY = _.every;
 formula.SOME = _.some;
 formula.VALUES = _.values;
 formula.FILTER = _.filter;
+formula.REJECT = _.reject;
 
 formula.REGEX_MATCH = (
 	regex: string | RegExp,
