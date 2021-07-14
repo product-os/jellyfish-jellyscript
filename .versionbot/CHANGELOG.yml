@@ -1,4 +1,29 @@
 - commits:
+    - subject: Exclude test folder from jest roots
+      hash: bed7884cf9eb44f1c215f422b6f1e626df8f4487
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+    - subject: Add support for a REJECT formulajs method
+      hash: 1b52bc0caca02b9adcb0545e629f819a2daa9619
+      body: >
+        This will also be useful for filtering links (excluding contracts based
+        on status, for example).
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+  version: 4.6.0
+  date: 2021-07-14T04:57:54.406Z
+- commits:
     - subject: Add unit test for combination of formulajs functions
       hash: 4d2b5c42d94cd8c3f8a08267912e271db2414874
       body: ''
