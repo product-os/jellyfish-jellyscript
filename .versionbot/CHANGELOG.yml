@@ -1,4 +1,17 @@
 - commits:
+    - subject: Fix jest config
+      hash: f134f1964533f8f76eee9032a4cdab8953f8912a
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+  version: 4.6.2
+  date: 2021-07-14T06:54:51.556Z
+- commits:
     - subject: 'patch: Update internal-patch'
       hash: 8245d385bc68a4aacab9986609e5192716c6164c
       body: ''
