@@ -1,4 +1,17 @@
 - commits:
+    - subject: Remove whitesource config
+      hash: e8e75e2516cc3b5d522dc9587ff5ebc17068094f
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        SIgned-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.6.6
+  date: 2021-07-16T23:09:37.040Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.3.3'
       hash: 18d438327743a6282d02e207b6c3a0ffa849213a
       body: ''
