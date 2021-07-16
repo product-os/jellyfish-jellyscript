@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.3.4'
+      hash: fc6e61dc4f49e8b9794aec8efa606d80f7790b13
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.6.7
+  date: 2021-07-16T23:19:22.086Z
+- commits:
     - subject: Remove whitesource config
       hash: e8e75e2516cc3b5d522dc9587ff5ebc17068094f
       body: ''
