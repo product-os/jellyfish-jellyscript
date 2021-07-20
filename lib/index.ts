@@ -14,9 +14,10 @@ import * as assert from '@balena/jellyfish-assert';
 import * as jsonpatch from 'fast-json-patch';
 import * as card from './card';
 import type { JSONSchema } from './types';
-import _ from 'lodash';
+import _, { Dictionary } from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
-import { getSourceTypes, reverseLink } from './link-traversal';
+import { reverseLink } from './link-traversal';
+import { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
 // so we've manually defined it here.
@@ -270,8 +271,8 @@ export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
 	// This forces a reevaluation of formulas in the referencing card.
 	const linkVerbs = getReferencedLinkVerbs(typeCard as core.TypeContract);
 	triggers.push(
-		...linkVerbs.map((lv) =>
-			createLinkTrigger(reverseLink(lv, typeCard.slug), typeCard),
+		...linkVerbs.flatMap((lv) =>
+			createLinkTrigger(reverseLink(typeCard.slug, lv), typeCard),
 		),
 	);
 
@@ -385,72 +386,77 @@ const createEventsTrigger = (
  * @returns the triggered action
  */
 const createLinkTrigger = (
-	linkVerb: string,
+	linkGroups: Dictionary<LinkConstraint[]>,
 	typeCard: core.ContractDefinition<core.ContractData>,
-): core.ContractDefinition<any> => {
-	// We try to optimize query speed by limiting to valid types or,
-	// if all are allowed, by excluding some high frequency internal cards
-	const sourceTypes = getSourceTypes(linkVerb);
-	const typeFilter =
-		sourceTypes.length > 0 && sourceTypes.indexOf('*') < 0
-			? {
-					enum: sourceTypes.map((t) => `${t}@1.0.0`),
-			  }
-			: {
-					not: {
-						enum: ['create@1.0.0', 'update@1.0.0'],
+): Array<core.ContractDefinition<any>> => {
+	if (Object.keys(linkGroups).length === 0) {
+		return [];
+	}
+	return Object.entries(linkGroups)
+		.filter(([, links]) => links.length)
+		.map(([linkVerb, links]) => {
+			// We try to optimize query speed by limiting to valid types or,
+			// if all are allowed, by excluding some high frequency internal cards
+			const typeFilter =
+				links.filter((l) => l.data.from === '*').length === 0
+					? {
+							enum: links.map((t) => `${t.data.from}@1.0.0`),
+					  }
+					: {
+							not: {
+								enum: ['create@1.0.0', 'update@1.0.0'],
+							},
+					  };
+			return {
+				slug: slugify(
+					`triggered-action-formula-update-${typeCard.slug}-${linkVerb}`,
+				),
+				type: 'triggered-action@1.0.0',
+				version: '1.0.0',
+				active: true,
+				requires: [],
+				capabilities: [],
+				markers: [],
+				tags: [],
+				data: {
+					schedule: 'async',
+					action: 'action-update-card@1.0.0',
+					type: `${typeCard.slug}@${typeCard.version}`,
+					target: {
+						$map: {
+							$eval: `source.links['${linkVerb}']`, // there was a [0:] at the end... :-/
+						},
+						'each(card)': {
+							$eval: 'card.id',
+						},
 					},
-			  };
-
-	return {
-		slug: slugify(
-			`triggered-action-formula-update-${typeCard.slug}-${linkVerb}`,
-		),
-		type: 'triggered-action@1.0.0',
-		version: '1.0.0',
-		active: true,
-		requires: [],
-		capabilities: [],
-		markers: [],
-		tags: [],
-		data: {
-			schedule: 'async',
-			action: 'action-update-card@1.0.0',
-			type: `${typeCard.slug}@${typeCard.version}`,
-			target: {
-				$map: {
-					$eval: `source.links['${linkVerb}']`, // there was a [0:] at the end... :-/
-				},
-				'each(card)': {
-					$eval: 'card.id',
-				},
-			},
-			arguments: {
-				reason: 'formula re-evaluation',
-				patch: [],
-			},
-			filter: {
-				type: 'object',
-				required: ['type', 'data'],
-				$$links: {
-					[linkVerb]: {
+					arguments: {
+						reason: 'formula re-evaluation',
+						patch: [],
+					},
+					filter: {
 						type: 'object',
-						required: ['type'],
+						required: ['type', 'data'],
+						$$links: {
+							[linkVerb]: {
+								type: 'object',
+								required: ['type'],
+								properties: {
+									type: {
+										type: 'string',
+										const: `${typeCard.slug}@${typeCard.version}`,
+									},
+								},
+							},
+						},
 						properties: {
 							type: {
 								type: 'string',
-								const: `${typeCard.slug}@${typeCard.version}`,
+								...typeFilter,
 							},
 						},
 					},
 				},
-				properties: {
-					type: {
-						type: 'string',
-						...typeFilter,
-					},
-				},
-			},
-		},
-	};
+			};
+		});
 };
