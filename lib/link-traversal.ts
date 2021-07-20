@@ -8,15 +8,9 @@ import * as sdk from '@balena/jellyfish-client-sdk';
 import _ from 'lodash';
 
 const linkConstraintsBySlug = _.keyBy(sdk.linkConstraints, (lc) => lc.slug);
-const linkConstraintsByVerb = _.groupBy(sdk.linkConstraints, (lc) => lc.name);
-// "verb__type" => "inverse"
-const inverseLinksPerType = sdk.linkConstraints.reduce(
-	(map, lc) =>
-		map.set(
-			`${lc.name}__${lc.data.to}`,
-			linkConstraintsBySlug[lc.data.inverse].name,
-		),
-	new Map<string, string>(),
+const inverseLinks = _.groupBy(
+	sdk.linkConstraints,
+	(lc) => linkConstraintsBySlug[lc.data.inverse].name,
 );
 
 /**
@@ -24,22 +18,17 @@ const inverseLinksPerType = sdk.linkConstraints.reduce(
  * If the link is not defined in the SDK, we assume it to be named
  * symmetrically.
  *
- * @param linkVerb the link ver to reverse
- * @param targetTypeSlug the type the link is pointing to
- * @returns the reverse link verb, pointing away from the type
+ * @param targetTypeSlug the type the link is starting from
+ * @param linkVerb the link verb to reverse
+ * @returns a reverse link verbs
  */
-export const reverseLink = (
-	linkVerb: string,
-	targetTypeSlug: string,
-): string => {
-	const [toType] = targetTypeSlug.split('@');
-	return (
-		inverseLinksPerType.get(`${linkVerb}__${toType}`) ||
-		inverseLinksPerType.get(`${linkVerb}__*`) ||
-		linkVerb
+export const reverseLink = (versionedSourceType: string, linkVerb: string) => {
+	const [srcType] = versionedSourceType.split('@');
+	if (!inverseLinks[linkVerb]) {
+		return {};
+	}
+	const relevantInverseLinks = inverseLinks[linkVerb].filter(
+		(l) => l.data.to === srcType || l.data.to === '*',
 	);
-};
-
-export const getSourceTypes = (linkVerb: string) => {
-	return _.uniq(linkConstraintsByVerb[linkVerb]?.map((lc) => lc.data.from));
+	return _.groupBy(relevantInverseLinks, (l) => l.name);
 };
