@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-config to ^1.4.6'
+      hash: 147ce3993a5df60b900e1abd9956462e1c6279dd
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.7.1
+  date: 2021-07-21T08:38:21.226Z
+- commits:
     - subject: fix triggered actions for updating linked formulas
       hash: 56f57c78e7443dc0b2260aec9fe9675004b102f9
       body: >
