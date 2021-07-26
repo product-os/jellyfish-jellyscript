@@ -1,4 +1,31 @@
 - commits:
+    - subject: Add LAST and ORDER_BY formulajs functions
+      hash: f99558a0d028d2a164224725291a8df8cbde6c3e
+      body: >
+        These will be useful for getting the last item in an ordered list of
+        linked contracts!
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+    - subject: >-
+        Temp: pin formulajs dependency to 2.6.10 Version 2.7 has a breaking
+        change wrt how undefined/null inputs are handled.
+      hash: 2367f2c132a0e52c68a12a0b1e15d8cb4b03040c
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+  version: 4.8.0
+  date: 2021-07-26T07:28:01.396Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-config to ^1.4.6'
       hash: 147ce3993a5df60b900e1abd9956462e1c6279dd
       body: ''
