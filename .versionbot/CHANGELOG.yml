@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.4.1'
+      hash: 6f55f4cdb62aa5ccdfb8b3bdeb8d388c412fec9b
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.8.1
+  date: 2021-07-26T13:12:18.565Z
+- commits:
     - subject: Add LAST and ORDER_BY formulajs functions
       hash: f99558a0d028d2a164224725291a8df8cbde6c3e
       body: >
