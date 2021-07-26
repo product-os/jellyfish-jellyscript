@@ -37,6 +37,8 @@ formula.SOME = _.some;
 formula.VALUES = _.values;
 formula.FILTER = _.filter;
 formula.REJECT = _.reject;
+formula.ORDER_BY = _.orderBy;
+formula.LAST = _.last;
 
 formula.REGEX_MATCH = (
 	regex: string | RegExp,
