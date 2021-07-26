@@ -38,4 +38,10 @@ declare module '@formulajs/formulajs' {
 		str: string,
 	): RegExpMatchArray | null;
 	function AGGREGATE<T>(list: T[], func: (item: T) => Iterable<T>): T[];
+	function ORDER_BY<T>(
+		collection: List<T> | null | undefined,
+		iteratees?: Many<ListIterator<T, NotVoid>>,
+		orders?: Many<boolean | 'asc' | 'desc'>,
+	): T[];
+	function LAST<T>(array: List<T> | null | undefined): T | undefined;
 }
