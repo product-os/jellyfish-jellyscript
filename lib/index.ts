@@ -18,6 +18,13 @@ import _, { Dictionary } from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
 import { reverseLink } from './link-traversal';
 import { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
+import { getLogger } from '@balena/jellyfish-logger';
+
+const logger = getLogger(__filename);
+
+const context: core.Context = {
+	id: 'JELLYSCRIPT',
+};
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
 // so we've manually defined it here.
@@ -69,7 +76,12 @@ const runAST = (ast: ESTree.Expression, options: Options): any => {
 		ast,
 		Object.assign(
 			{
+				// TODO: (DEPRECATED) Remove this assignment as it causes problems with static-eval
+				// when evaluating function definitions.
 				this: options.context,
+				// TODO: Migrate code to use 'contract' instead of 'this' and then refactor
+				// to merge options.context directly with formula to provide the combined context.
+				contract: options.context,
 				input: options.input,
 			},
 			formula,
@@ -242,7 +254,29 @@ const LINKS_REFERENCE_AST = {
 	},
 };
 
+const CONTRACT_LINKS_REFERENCE_AST = {
+	type: 'MemberExpression',
+	object: {
+		type: 'MemberExpression',
+		object: {
+			type: 'Identifier',
+			name: 'contract',
+		},
+		property: {
+			type: 'Identifier',
+			name: 'links',
+		},
+	},
+	property: {
+		type: 'Literal',
+	},
+};
+
 type LinkRef = typeof LINKS_REFERENCE_AST & {
+	property: { value: string };
+};
+
+type ContractLinkRef = typeof CONTRACT_LINKS_REFERENCE_AST & {
 	property: { value: string };
 };
 
@@ -253,9 +287,19 @@ export const getReferencedLinkVerbs = <
 ): string[] => {
 	const formulas = getFormulasPaths(typeCard.data.schema).map((f) => f.formula);
 	const formulaAst = formulas.map((f) => parse(f));
-	const linkExpressions = formulaAst.flatMap((ast) =>
-		objectDeepSearch.find<LinkRef>(ast, LINKS_REFERENCE_AST),
-	);
+	const linkExpressions = formulaAst.flatMap((ast) => {
+		const linkRefs = objectDeepSearch.find<LinkRef>(ast, LINKS_REFERENCE_AST);
+		const contractLinkRefs = objectDeepSearch.find<ContractLinkRef>(
+			ast,
+			CONTRACT_LINKS_REFERENCE_AST,
+		);
+		if (linkRefs.length) {
+			logger.warn(context, "Found deprecated $$formula references to 'this'", {
+				typeCard,
+			});
+		}
+		return _.concat<ContractLinkRef | LinkRef>(linkRefs, contractLinkRefs);
+	});
 	const linkVerbs = linkExpressions.reduce(
 		(linkSet, l) => linkSet.add(l.property.value),
 		new Set<string>(),
@@ -279,7 +323,7 @@ export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
 	);
 
 	// This is to support $events and can be removed after changing all
-	// call sites to `this.links["xyz"]` AND re-adding a efficient way
+	// call sites to `contract.links["xyz"]` AND re-adding a efficient way
 	// to do aggregations. see https://github.com/product-os/jellyfish-jellyscript/blob/evaluating-links/lib/index.js#L217
 
 	// TS-TODO: remove optional chaining once we use TypeContract

@@ -46,12 +46,13 @@
   "dependencies": {
     "@balena/jellyfish-assert": "^1.1.66",
     "@balena/jellyfish-client-sdk": "^5.4.1",
+    "@balena/jellyfish-logger": "^3.0.54",
     "@formulajs/formulajs": "2.6.10",
     "esprima": "^4.0.1",
     "fast-json-patch": "^3.0.0-1",
     "lodash": "^4.17.21",
-    "object-hash": "^2.2.0",
     "object-deep-search": "0.0.7",
+    "object-hash": "^2.2.0",
     "static-eval": "^2.1.0"
   },
   "devDependencies": {
