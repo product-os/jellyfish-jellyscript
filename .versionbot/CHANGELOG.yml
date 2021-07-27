@@ -1,4 +1,27 @@
 - commits:
+    - subject: Make 'this' context object also available as 'contract'.
+      hash: d0212076e20a98af7fa1e0042ed01b88e1c42bd3
+      body: |
+        This is an intermediate step towards removing 'this' as a context
+        object when evaluating expressions using static-eval (as it causes
+        problems due to being a restricted keyword).
+
+        The next step will involve modifying the evaluate and evaluateObject
+        functions so that evaluate is not opinionated about naming context
+        variables.
+
+        In the meantime, we log a warning if the old 'this' reference is still
+        found in the code.
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+  version: 4.9.0
+  date: 2021-07-27T01:38:11.067Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.4.1'
       hash: 6f55f4cdb62aa5ccdfb8b3bdeb8d388c412fec9b
       body: ''
