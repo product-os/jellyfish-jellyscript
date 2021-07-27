@@ -71,9 +71,46 @@ test('.evaluate(): should access other properties from the card', () => {
 	});
 });
 
-test('.evaluate() should handle combinations of functions', () => {
+test('Deprecated: .evaluate() should handle combinations of functions', () => {
 	const result = jellyscript.evaluate(
 		'EVERY(FILTER(this.links["has attached"], { type: "improvement@1.0.0" }), { data: { status: "completed" } })',
+		{
+			context: {
+				links: {
+					'has attached': [
+						{
+							type: 'improvement@1.0.0',
+							data: {
+								status: 'completed',
+							},
+						},
+						{
+							type: 'improvement@1.0.0',
+							data: {
+								status: 'completed',
+							},
+						},
+						{
+							type: 'pull-request@1.0.0',
+							data: {
+								status: 'open',
+							},
+						},
+					],
+				},
+			},
+			input: 4,
+		},
+	);
+
+	expect(result).toEqual({
+		value: true,
+	});
+});
+
+test('.evaluate() should handle combinations of functions', () => {
+	const result = jellyscript.evaluate(
+		'EVERY(FILTER(contract.links["has attached"], { type: "improvement@1.0.0" }), { data: { status: "completed" } })',
 		{
 			context: {
 				links: {
@@ -661,7 +698,7 @@ test('.getTypeTriggers() should report back watchers when aggregating events wit
 	]);
 });
 
-test('.getTypeTriggers() should properly reverse links', async () => {
+test('Deprecated: .getTypeTriggers() should properly reverse links', async () => {
 	const triggers = jellyscript.getTypeTriggers({
 		id: '3fe919b0-a991-4957-99f0-5f7bb926addb',
 		data: {
@@ -796,7 +833,142 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 	]);
 });
 
-test('getReferencedLinkVerbs() should find all verbs exactly once', async () => {
+test('.getTypeTriggers() should properly reverse links', async () => {
+	const triggers = jellyscript.getTypeTriggers({
+		id: '3fe919b0-a991-4957-99f0-5f7bb926addb',
+		data: {
+			schema: {
+				type: 'object',
+				required: ['data', 'name'],
+				properties: {
+					data: {
+						type: 'object',
+						required: ['org', 'repo', 'head'],
+						properties: {
+							org: { type: 'string' },
+							head: {
+								type: 'object',
+								required: ['sha', 'branch'],
+								properties: {
+									sha: { type: 'string' },
+									branch: { type: 'string' },
+								},
+							},
+							repo: { type: 'string' },
+							$transformer: {
+								type: 'object',
+								properties: {
+									merged: {
+										type: 'boolean',
+										default: false,
+										readOnly: true,
+										$$formula:
+											'contract.links["is attached to PR"].length > 0 && contract.links["is attached to PR"][0].data.merged_at && contract.links["is attached to PR"][0].data.head.sha === this.data.head.sha',
+										description: 'PR is merged',
+									},
+									mergeable: {
+										type: 'boolean',
+										default: false,
+										readOnly: true,
+										$$formula:
+											'contract.links["was built into"].length > 0 && EVERY(contract.links["was built into"], "data.$transformer.mergeable")',
+										description: 'all downstream contracts are mergeable',
+									},
+									artifactReady: { type: 'boolean' },
+								},
+							},
+						},
+					},
+					name: { type: 'string', fullTextSearch: true },
+				},
+			},
+		},
+		name: 'Commit',
+		slug: 'commit',
+		type: 'type@1.0.0',
+		active: true,
+		markers: [],
+		version: '1.0.0',
+		requires: [],
+		capabilities: [],
+	});
+
+	expect(triggers).toEqual([
+		{
+			slug: 'triggered-action-formula-update-commit-has-attached-commit',
+			type: 'triggered-action@1.0.0',
+			version: '1.0.0',
+			active: true,
+			requires: [],
+			capabilities: [],
+			markers: [],
+			tags: [],
+			data: {
+				schedule: 'async',
+				action: 'action-update-card@1.0.0',
+				type: 'commit@1.0.0',
+				target: {
+					$map: { $eval: "source.links['has attached commit']" },
+					'each(card)': { $eval: 'card.id' },
+				},
+				arguments: { reason: 'formula re-evaluation', patch: [] },
+				filter: {
+					type: 'object',
+					required: ['type', 'data'],
+					$$links: {
+						'has attached commit': {
+							type: 'object',
+							required: ['type'],
+							properties: { type: { type: 'string', const: 'commit@1.0.0' } },
+						},
+					},
+					properties: {
+						type: { type: 'string', enum: ['pull-request@1.0.0'] },
+					},
+				},
+			},
+		},
+		{
+			slug: 'triggered-action-formula-update-commit-was-built-from',
+			type: 'triggered-action@1.0.0',
+			version: '1.0.0',
+			active: true,
+			requires: [],
+			capabilities: [],
+			markers: [],
+			tags: [],
+			data: {
+				schedule: 'async',
+				action: 'action-update-card@1.0.0',
+				type: 'commit@1.0.0',
+				target: {
+					$map: { $eval: "source.links['was built from']" },
+					'each(card)': { $eval: 'card.id' },
+				},
+				arguments: { reason: 'formula re-evaluation', patch: [] },
+				filter: {
+					type: 'object',
+					required: ['type', 'data'],
+					$$links: {
+						'was built from': {
+							type: 'object',
+							required: ['type'],
+							properties: { type: { type: 'string', const: 'commit@1.0.0' } },
+						},
+					},
+					properties: {
+						type: {
+							type: 'string',
+							not: { enum: ['create@1.0.0', 'update@1.0.0'] },
+						},
+					},
+				},
+			},
+		},
+	]);
+});
+
+test('Deprecated: getReferencedLinkVerbs() should find all verbs exactly once', async () => {
 	const links = getReferencedLinkVerbs({
 		id: 'fake',
 		slug: 'thread',
@@ -821,6 +993,42 @@ test('getReferencedLinkVerbs() should find all verbs exactly once', async () => 
 								type: 'array',
 								$$formula:
 									'5 + this.links["other link"].reduce((o,sum)=>sum+1,0)',
+							},
+						},
+					},
+				},
+			},
+		},
+	});
+	expect(links).toContain('some link');
+	expect(links).toContain('other link');
+});
+
+test('getReferencedLinkVerbs() should find all verbs exactly once', async () => {
+	const links = getReferencedLinkVerbs({
+		id: 'fake',
+		slug: 'thread',
+		type: 'type@1.0.0',
+		version: '1.0.0',
+		data: {
+			schema: {
+				type: 'object',
+				properties: {
+					data: {
+						type: 'object',
+						properties: {
+							mentions: {
+								type: 'array',
+								$$formula: 'contract.links["some link"]',
+							},
+							mentions2: {
+								type: 'array',
+								$$formula: '[]+contract.links["some link"]',
+							},
+							count: {
+								type: 'array',
+								$$formula:
+									'5 + contract.links["other link"].reduce((o,sum)=>sum+1,0)',
 							},
 						},
 					},

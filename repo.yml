@@ -4,3 +4,5 @@ upstream:
     url: 'https://github.com/product-os/jellyfish-assert'
   - repo: 'jellycheck'
     url: 'https://github.com/product-os/jellycheck'
+  - repo: 'jellyfish-logger'
+    url: 'https://github.com/product-os/jellyfish-logger'
