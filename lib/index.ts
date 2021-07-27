@@ -71,22 +71,8 @@ export interface Options {
 	input: any;
 }
 
-const runAST = (ast: ESTree.Expression, options: Options): any => {
-	return staticEval(
-		ast,
-		Object.assign(
-			{
-				// TODO: (DEPRECATED) Remove this assignment as it causes problems with static-eval
-				// when evaluating function definitions.
-				this: options.context,
-				// TODO: Migrate code to use 'contract' instead of 'this' and then refactor
-				// to merge options.context directly with formula to provide the combined context.
-				contract: options.context,
-				input: options.input,
-			},
-			formula,
-		),
-	);
+const runAST = (ast: ESTree.Expression, evalContext: any = {}): any => {
+	return staticEval(ast, Object.assign({}, evalContext, formula));
 };
 
 export const evaluate = (
@@ -101,7 +87,7 @@ export const evaluate = (
 		.expression;
 
 	const result = runAST(ast, {
-		context: options.context,
+		...options.context,
 		input: options.input,
 	});
 
@@ -165,7 +151,7 @@ export const evaluateObject = <T extends JSONSchema7Object>(
 		const input = _.get(object, path.output, getDefaultValueForType(path.type));
 
 		const result = evaluate(path.formula, {
-			context: object,
+			context: { contract: object },
 			input,
 		});
 
@@ -288,17 +274,24 @@ export const getReferencedLinkVerbs = <
 	const formulas = getFormulasPaths(typeCard.data.schema).map((f) => f.formula);
 	const formulaAst = formulas.map((f) => parse(f));
 	const linkExpressions = formulaAst.flatMap((ast) => {
+		// TODO: Remove the check for LINKS_REFERENCE_AST once we're sure there are no
+		// remaining references to 'this' in $$formulas! (Better to find them and
+		// log an error for now).
 		const linkRefs = objectDeepSearch.find<LinkRef>(ast, LINKS_REFERENCE_AST);
 		const contractLinkRefs = objectDeepSearch.find<ContractLinkRef>(
 			ast,
 			CONTRACT_LINKS_REFERENCE_AST,
 		);
 		if (linkRefs.length) {
-			logger.warn(context, "Found deprecated $$formula references to 'this'", {
-				typeCard,
-			});
+			logger.error(
+				context,
+				"Found unsupported $$formula references to 'this'",
+				{
+					typeCard,
+				},
+			);
 		}
-		return _.concat<ContractLinkRef | LinkRef>(linkRefs, contractLinkRefs);
+		return contractLinkRefs;
 	});
 	const linkVerbs = linkExpressions.reduce(
 		(linkSet, l) => linkSet.add(l.property.value),
@@ -346,7 +339,7 @@ export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
 				? ast.arguments[1]
 				: ast.arguments[0].arguments[1];
 
-		const arg = runAST(literal, { context: {}, input: {} });
+		const arg = runAST(literal);
 		const valueProperty = `source.${arg}`;
 
 		triggers.push(createEventsTrigger(typeCard, path, valueProperty));
