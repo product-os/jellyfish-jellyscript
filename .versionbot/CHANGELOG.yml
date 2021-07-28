@@ -1,4 +1,34 @@
 - commits:
+    - subject: Check for event link contraints when creating link triggers
+      hash: 7935b367f93185d27e3e252dfe5ff9332a6a6d82
+      body: >
+        These link constraints exist between event contracts and any other
+        contract type but are not explicitly defined in link-constraints in
+        jellyfish-client-sdk (as we don't want to expose them on the UI -
+        another area where we need a better solution!).
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+    - subject: Remove 'this' context variable
+      hash: 9f6486f3df6e1d3fce30fe83261db599c10c217e
+      body: >
+        `evaluateObject` now passes a `{ contract }` object to the `evaluate`
+        function, which merged the provided context with formula to provide the
+        overall context for static-eval.
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Graham McCulloch <graham@balena.io>
+        signed-off-by: Graham McCulloch <graham@balena.io>
+      author: Graham McCulloch
+      nested: []
+  version: 4.9.1
+  date: 2021-07-28T03:31:40.947Z
+- commits:
     - subject: Make 'this' context object also available as 'contract'.
       hash: d0212076e20a98af7fa1e0042ed01b88e1c42bd3
       body: |
