@@ -786,6 +786,22 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 						type: 'object',
 						required: ['org', 'repo', 'head'],
 						properties: {
+							last_message: {
+								type: 'object',
+								$$formula: `
+									PROPERTY(contract, [ "links", "has attached element", "length" ])
+									? LAST(
+											ORDER_BY(
+												FILTER(
+													contract.links["has attached element"],
+													function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
+												),
+												"data.timestamp"
+											)
+										)
+									: null
+								`,
+							},
 							org: { type: 'string' },
 							head: {
 								type: 'object',
@@ -835,6 +851,62 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 	});
 
 	expect(triggers).toEqual([
+		{
+			slug: 'triggered-action-formula-update-commit-is-attached-to',
+			type: 'triggered-action@1.0.0',
+			version: '1.0.0',
+			active: true,
+			requires: [],
+			capabilities: [],
+			markers: [],
+			tags: [],
+			data: {
+				schedule: 'async',
+				action: 'action-update-card@1.0.0',
+				type: 'commit@1.0.0',
+				target: {
+					$map: {
+						$eval: "source.links['is attached to']",
+					},
+					'each(card)': {
+						$eval: 'card.id',
+					},
+				},
+				arguments: {
+					reason: 'formula re-evaluation',
+					patch: [],
+				},
+				filter: {
+					type: 'object',
+					required: ['type', 'data'],
+					$$links: {
+						'is attached to': {
+							type: 'object',
+							required: ['type'],
+							properties: {
+								type: {
+									type: 'string',
+									const: 'commit@1.0.0',
+								},
+							},
+						},
+					},
+					properties: {
+						type: {
+							type: 'string',
+							enum: [
+								'message@1.0.0',
+								'whisper@1.0.0',
+								'create@1.0.0',
+								'update@1.0.0',
+								'rating@1.0.0',
+								'summary@1.0.0',
+							],
+						},
+					},
+				},
+			},
+		},
 		{
 			slug: 'triggered-action-formula-update-commit-has-attached-commit',
 			type: 'triggered-action@1.0.0',

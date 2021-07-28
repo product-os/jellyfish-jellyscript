@@ -5,11 +5,58 @@
  */
 
 import * as sdk from '@balena/jellyfish-client-sdk';
+import { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
 import _ from 'lodash';
 
-const linkConstraintsBySlug = _.keyBy(sdk.linkConstraints, (lc) => lc.slug);
-const inverseLinks = _.groupBy(
+// HACK: These link constraints exist between event contracts and any other contract type
+// but are not explicitly defined in link-constraints. We have to add them here so that
+// we can work out the reverse links for these 'event link verbs'.
+
+const eventTypes = [
+	'message',
+	'whisper',
+	'create',
+	'update',
+	'rating',
+	'summary',
+];
+
+const defaultLinkConstraints: LinkConstraint[] = [];
+
+eventTypes.reduce((acc, eventType) => {
+	acc.push(
+		{
+			slug: `link-constraint-${eventType}-is-attached-to-any`,
+			name: 'is attached to',
+			data: {
+				title: 'Attached to element',
+				from: eventType,
+				to: '*',
+				inverse: `link-constraint-any-has-attached-element-${eventType}`,
+			},
+		},
+		{
+			slug: `link-constraint-any-has-attached-element-${eventType}`,
+			name: 'has attached element',
+			data: {
+				title: `Attached ${eventType}`,
+				from: '*',
+				to: eventType,
+				inverse: `link-constraint-${eventType}-is-attached-to-any`,
+			},
+		},
+	);
+	return acc;
+}, defaultLinkConstraints);
+
+const allLinkConstraints = _.concat(
 	sdk.linkConstraints,
+	defaultLinkConstraints,
+);
+
+const linkConstraintsBySlug = _.keyBy(allLinkConstraints, (lc) => lc.slug);
+const inverseLinks = _.groupBy(
+	allLinkConstraints,
 	(lc) => linkConstraintsBySlug[lc.data.inverse].name,
 );
 
