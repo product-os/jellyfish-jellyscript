@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-config to ^1.4.7'
+      hash: 66f0bdf1d29cac4a408b8e9de0e9867b4db0425d
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.9.2
+  date: 2021-07-29T02:21:16.560Z
+- commits:
     - subject: Check for event link contraints when creating link triggers
       hash: 7935b367f93185d27e3e252dfe5ff9332a6a6d82
       body: >
