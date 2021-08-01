@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump lint-staged to v11.1.1
+      hash: 738ef16f8e083dfc94c597fb57a8e9b3aa2b1af2
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.5
+  date: 2021-08-01T23:02:43.572Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-config to ^1.4.8'
       hash: 18d662a902bbb6127b785d436194ca28d3514c7f
       body: ''
