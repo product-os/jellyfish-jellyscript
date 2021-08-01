@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump ts-jest to v27.0.4
+      hash: 84c743464351eb9d7de45003cf5f80f66ea5802f
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.7
+  date: 2021-08-01T23:31:11.615Z
+- commits:
     - subject: Bump typedoc to v0.21.5
       hash: 6e238652fbee822bcdfb1d50c56b77edbf4741c5
       body: ''
