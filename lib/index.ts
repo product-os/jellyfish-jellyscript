@@ -363,7 +363,6 @@ const createEventsTrigger = (
 		markers: [],
 		tags: [],
 		data: {
-			schedule: 'async',
 			action: 'action-set-add@1.0.0',
 			type: `${typeCard.slug}@${typeCard.version}`,
 			target: {
@@ -458,7 +457,6 @@ const createLinkTrigger = (
 				markers: [],
 				tags: [],
 				data: {
-					schedule: 'async',
 					action: 'action-update-card@1.0.0',
 					type: `${typeCard.slug}@${typeCard.version}`,
 					target: {

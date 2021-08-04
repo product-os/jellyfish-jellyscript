@@ -632,7 +632,6 @@ test('.getTypeTriggers() should report back watchers when aggregating events', a
 			tags: [],
 			markers: [],
 			data: {
-				schedule: 'async',
 				type: 'thread@1.0.0',
 				action: 'action-set-add@1.0.0',
 				target: {
@@ -720,7 +719,6 @@ test('.getTypeTriggers() should report back watchers when aggregating events wit
 			tags: [],
 			markers: [],
 			data: {
-				schedule: 'async',
 				type: 'thread@1.0.0',
 				action: 'action-set-add@1.0.0',
 				target: {
@@ -861,7 +859,6 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 			markers: [],
 			tags: [],
 			data: {
-				schedule: 'async',
 				action: 'action-update-card@1.0.0',
 				type: 'commit@1.0.0',
 				target: {
@@ -917,7 +914,6 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 			markers: [],
 			tags: [],
 			data: {
-				schedule: 'async',
 				action: 'action-update-card@1.0.0',
 				type: 'commit@1.0.0',
 				target: {
@@ -951,7 +947,6 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 			markers: [],
 			tags: [],
 			data: {
-				schedule: 'async',
 				action: 'action-update-card@1.0.0',
 				type: 'commit@1.0.0',
 				target: {
