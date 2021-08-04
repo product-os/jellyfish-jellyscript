@@ -1,4 +1,18 @@
 - commits:
+    - subject: use balena convention for npm script names
+      hash: 69d5977230c1f39ac4849cda6baa90c4d434d199
+      body: |
+        i.e. base-cmd:sub-cmd
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+      author: Martin Rauscher
+      nested: []
+  version: 4.9.8
+  date: 2021-08-04T09:46:13.575Z
+- commits:
     - subject: Bump ts-jest to v27.0.4
       hash: 84c743464351eb9d7de45003cf5f80f66ea5802f
       body: ''
