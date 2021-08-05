@@ -1,4 +1,21 @@
 - commits:
+    - subject: Remove unused schedule field from triggered-actions
+      hash: 7075cabd265fa988959ce43887d237ffd2143a8e
+      body: |
+        As of jellyfish-worker v7, action-requests generated from triggered
+        actions are always re-enqueued as new jobs and the `schedule` field is
+        no longer used. This change removes the redundant fields from the
+        triggered actions used for formula evaluation.
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 4.9.10
+  date: 2021-08-05T01:13:57.608Z
+- commits:
     - subject: 'patch: Update internal-patch'
       hash: 7fbf790c19d6200a17a64642da14c0a6bbc2affb
       body: ''
