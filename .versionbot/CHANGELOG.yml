@@ -1,4 +1,16 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.5.0'
+      hash: f7f5d1ced3f96319ab94005ab77e784c576b31cc
+      body: |
+        Update @balena/jellyfish-client-sdk from 5.4.3 to 5.5.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.9.11
+  date: 2021-08-05T10:06:25.556Z
+- commits:
     - subject: Remove unused schedule field from triggered-actions
       hash: 7075cabd265fa988959ce43887d237ffd2143a8e
       body: |
