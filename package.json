@@ -45,7 +45,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@balena/jellyfish-assert": "^1.1.67",
-    "@balena/jellyfish-client-sdk": "^5.4.3",
+    "@balena/jellyfish-client-sdk": "^5.5.0",
     "@balena/jellyfish-logger": "^3.0.54",
     "@formulajs/formulajs": "2.6.10",
     "esprima": "^4.0.1",
