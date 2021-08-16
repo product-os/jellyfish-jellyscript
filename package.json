@@ -60,7 +60,7 @@
     "@balena/jellyfish-config": "^1.4.8",
     "@balena/jellyfish-types": "^0.9.4",
     "@balena/lint": "^6.1.1",
-    "@types/jest": "^26.0.24",
+    "@types/jest": "^27.0.1",
     "@types/json-schema": "^7.0.9",
     "@types/object-hash": "^2.1.1",
     "@types/static-eval": "^0.2.31",
