@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump fast-json-patch to v3.1.0
+      hash: b648a86d5651da26aa1091b49b2da7d55fc90ce1
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.24
+  date: 2021-08-16T22:52:17.142Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to ^5.5.2'
       hash: b7de8281b8960354fe4e4080583d114c12b52106
       body: ''
