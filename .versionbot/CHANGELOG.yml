@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump external dependencies
+      hash: f5c8a40228800a68132b4558ac0b8a03314c11ae
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.28
+  date: 2021-08-18T23:08:45.223Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-types to ^0.9.7'
       hash: 533c924e706c3d468542968caf7e888edd867884
       body: ''
