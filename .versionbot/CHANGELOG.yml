@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump typedoc to v0.21.6
+      hash: 6d02e04fd7c4148489cda309a73bd794f74d0a4d
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.30
+  date: 2021-08-19T08:02:30.866Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-types to ^0.9.8'
       hash: 469938de20d9d49f089022b41c39dd68541808df
       body: ''
