@@ -464,6 +464,66 @@ test('.evaluateObject() should evaluate nested formulas', async () => {
 	});
 });
 
+test('.evaluateObject() should concatenate string with CONCATENATE function', async () => {
+	const result = jellyscript.evaluateObject(
+		{
+			type: 'object',
+			properties: {
+				foo: {
+					type: 'string',
+				},
+				bar: {
+					type: 'string',
+				},
+				greeting: {
+					type: 'string',
+					$$formula: "CONCATENATE(contract.foo, ' ', contract.bar)",
+				},
+			},
+		},
+		{
+			foo: 'hello',
+			bar: 'world',
+		},
+	);
+
+	expect(result).toEqual({
+		foo: 'hello',
+		bar: 'world',
+		greeting: 'hello world',
+	});
+});
+
+test('.evaluateObject() should concatenate string with + operator', async () => {
+	const result = jellyscript.evaluateObject(
+		{
+			type: 'object',
+			properties: {
+				foo: {
+					type: 'string',
+				},
+				bar: {
+					type: 'string',
+				},
+				greeting: {
+					type: 'string',
+					$$formula: "contract.foo + ' ' + contract.bar",
+				},
+			},
+		},
+		{
+			foo: 'hello',
+			bar: 'world',
+		},
+	);
+
+	expect(result).toEqual({
+		foo: 'hello',
+		bar: 'world',
+		greeting: 'hello world',
+	});
+});
+
 test('.evaluateObject() should not do anything if the schema has no formulas', async () => {
 	const result = jellyscript.evaluateObject(
 		{
