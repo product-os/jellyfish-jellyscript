@@ -1,4 +1,15 @@
 - commits:
+    - subject: >-
+        patch: add test for string concatenation with CONCATENATE function and +
+        operator
+      hash: cf4b51535c8dd59d2261c946662fad39f982e721
+      body: ''
+      footer: {}
+      author: Thomas Manning
+      nested: []
+  version: 4.9.34
+  date: 2021-08-23T10:58:20.699Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-logger to ^3.0.64'
       hash: eb471eade4a1cdafe154a489b25c84cf24fc16e7
       body: ''
