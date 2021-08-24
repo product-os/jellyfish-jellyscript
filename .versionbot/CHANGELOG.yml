@@ -1,4 +1,16 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to v6'
+      hash: 968788e3643c2f3f7ae760fdb1fe8e2759300022
+      body: |
+        Update @balena/jellyfish-client-sdk from 5.5.2 to 6.0.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.9.35
+  date: 2021-08-24T17:38:22.228Z
+- commits:
     - subject: >-
         patch: add test for string concatenation with CONCATENATE function and +
         operator
