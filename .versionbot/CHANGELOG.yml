@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump typescript to v4.4.2
+      hash: 74f4e270d8b8100eee33bad8e1fa1dc2e6dd1987
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.36
+  date: 2021-08-27T03:44:17.008Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to v6'
       hash: 968788e3643c2f3f7ae760fdb1fe8e2759300022
       body: |
