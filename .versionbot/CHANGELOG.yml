@@ -1,4 +1,27 @@
 - commits:
+    - subject: Bump typedoc to v0.21.8
+      hash: b4114d499e90f08ca37f9d3423fc24fa21b27ab4
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+    - subject: Add groupName to formulajs Renovate group
+      hash: d100c72be94ee1e7d2435ab1e68fdd589bfbd6b6
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.40
+  date: 2021-08-29T23:30:50.406Z
+- commits:
     - subject: Add formulajs Renovate group
       hash: 6e5a29e2e91d665081806637bd55c6ebf92a97b2
       body: ''
