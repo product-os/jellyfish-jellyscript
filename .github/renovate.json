@@ -4,7 +4,8 @@
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["formulajs"]
+      "matchPackagePatterns": ["formulajs"],
+      "groupName": "formulajs"
     }
   ]
 }
