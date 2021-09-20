@@ -960,6 +960,9 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 								'summary@1.0.0',
 							],
 						},
+						updated_at: {
+							type: 'string',
+						},
 					},
 				},
 			},
@@ -993,6 +996,9 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 					},
 					properties: {
 						type: { type: 'string', enum: ['pull-request@1.0.0'] },
+						updated_at: {
+							type: 'string',
+						},
 					},
 				},
 			},
@@ -1027,7 +1033,10 @@ test('.getTypeTriggers() should properly reverse links', async () => {
 					properties: {
 						type: {
 							type: 'string',
-							not: { enum: ['create@1.0.0', 'update@1.0.0'] },
+							not: { enum: ['create@1.0.0', 'update@1.0.0', 'link@1.0.0'] },
+						},
+						updated_at: {
+							type: 'string',
 						},
 					},
 				},
