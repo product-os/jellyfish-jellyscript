@@ -442,7 +442,7 @@ const createLinkTrigger = (
 					  }
 					: {
 							not: {
-								enum: ['create@1.0.0', 'update@1.0.0'],
+								enum: ['create@1.0.0', 'update@1.0.0', 'link@1.0.0'],
 							},
 					  };
 			return {
@@ -490,6 +490,9 @@ const createLinkTrigger = (
 							type: {
 								type: 'string',
 								...typeFilter,
+							},
+							updated_at: {
+								type: 'string',
 							},
 						},
 					},
