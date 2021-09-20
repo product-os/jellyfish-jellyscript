@@ -1,4 +1,17 @@
 - commits:
+    - subject: ensure triggered actions for formulas run on any change
+      hash: 69d132001b5a7f1cd6b7da7aab7d5970ad1536b1
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+      author: Martin Rauscher
+      nested: []
+  version: 4.9.45
+  date: 2021-09-20T12:32:33.590Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-types to v1'
       hash: 8071fc19980c5bbffc70153ed3fd209f28a0bfb6
       body: |
