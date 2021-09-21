@@ -1,4 +1,17 @@
 - commits:
+    - subject: Bump jellyfish-types to v1.2.0
+      hash: b99cb34e45cc1857972230812a21982009c9a23a
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.47
+  date: 2021-09-21T02:28:30.694Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-logger to ^3.0.71'
       hash: df831677847e5f0bec284ff3ef034cb21913c070
       body: ''
