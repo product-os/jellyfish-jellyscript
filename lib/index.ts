@@ -491,9 +491,7 @@ const createLinkTrigger = (
 								type: 'string',
 								...typeFilter,
 							},
-							updated_at: {
-								type: 'string',
-							},
+							updated_at: true,
 						},
 					},
 				},
