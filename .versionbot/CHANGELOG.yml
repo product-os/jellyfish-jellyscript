@@ -1,4 +1,18 @@
 - commits:
+    - subject: created triggered actions with versions matching the type
+      hash: a1cd5b321dcb7a7ab9602dec80ffb7bc532e9eef
+      body: |
+        this allows triggers for different type versions to co-exist
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Martin Rauscher <martin@balena.io>
+        signed-off-by: Martin Rauscher <martin@balena.io>
+      author: Martin Rauscher
+      nested: []
+  version: 4.9.79
+  date: 2021-11-03T09:15:08.150Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-client-sdk to v7'
       hash: c041aebe1f7e18e55d13869a03ca11f3ab3ecdd5
       body: |
