@@ -356,7 +356,7 @@ const createEventsTrigger = (
 	return {
 		slug: slugify(`triggered-action-${typeCard.slug}-${path.output.join('-')}`),
 		type: 'triggered-action@1.0.0',
-		version: '1.0.0',
+		version: typeCard.version,
 		active: true,
 		requires: [],
 		capabilities: [],
@@ -450,7 +450,7 @@ const createLinkTrigger = (
 					`triggered-action-formula-update-${typeCard.slug}-${linkVerb}`,
 				),
 				type: 'triggered-action@1.0.0',
-				version: '1.0.0',
+				version: typeCard.version,
 				active: true,
 				requires: [],
 				capabilities: [],
