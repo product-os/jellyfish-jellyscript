@@ -6,10 +6,10 @@ Jellyscript is a tiny embeddable language to define computed properties in Jelly
 
 Below is an example how to use this library:
 
-```js
-const jellyscript = require('@balena/jellyfish-jellyscript')
+```typescript
+import * as jellyscript from '@balena/jellyfish-jellyscript';
 
-const triggers = await jellyscript.getTypeTriggers(insertedCard)
+const triggers = await jellyscript.getTypeTriggers(insertedCard);
 ```
 
 # Documentation
