@@ -150,10 +150,24 @@ export const evaluateObject = <T extends JSONSchema7Object>(
 	for (const path of card.getFormulasPaths(schema)) {
 		const input = _.get(object, path.output, getDefaultValueForType(path.type));
 
+		console.log('\n\n### EVALING:', path.formula);
+
 		const result = evaluate(path.formula, {
 			context: { contract: object },
 			input,
 		});
+
+		console.log('OBJECT', object);
+
+		// console.log(
+		// 	'resss',
+		// 	(object.data as any)['$transformer'].filter((b) => {
+		// 		console.log('b', b);
+		// 		return b.type.startsWith('type');
+		// 	}),
+		// );
+
+		console.log('\n\n### RESULT', result);
 
 		if (!_.isNull(result.value)) {
 			// Mutates input object

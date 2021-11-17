@@ -1094,3 +1094,53 @@ test('getReferencedLinkVerbs() should not fail if no formulas are given', async 
 	});
 	expect(links.length).toEqual(0);
 });
+
+test('.evaluateObject() should evaluate to true', async () => {
+	const result = jellyscript.evaluateObject(
+		{
+			type: 'object',
+			required: ['data'],
+			properties: {
+				data: {
+					type: 'object',
+					properties: {
+						$transformer: {
+							type: 'object',
+							properties: {
+								mergeable: {
+									description: 'all platforms have an image',
+									type: 'boolean',
+									$$formula:
+										'EVERY(VALUES(contract.data.platforms), "image") && contract.data.$transformer.backflow.filter(function(b){ return b.type.startsWith("type-product-os-t-test-run")}).length > 0',
+									readOnly: true,
+									default: false,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			type: 'service-source@1.0.0',
+			version: '1.0.0',
+			name: 'test run service',
+			data: {
+				$transformer: {
+					backflow: [
+						{
+							type: 't-product-os-test-run@0.0.2',
+							data: { data: { success: true } },
+						},
+					],
+				},
+				platforms: { 'linux/amd64': {} },
+				fragment: { type: 'service-source@1.0.0' },
+			},
+		},
+	);
+
+	expect(result).toEqual({
+		foo: 9,
+	});
+});
