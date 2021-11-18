@@ -1114,7 +1114,8 @@ test('.evaluateObject() should evaluate to true', async () => {
 										contract.data.$transformer.backflow &&
 										contract.data.$transformer.backflow.filter(
 											function(b){
-												return b.type.startsWith("t-product-os-test-run") &&
+												return b &&
+												       b.type.startsWith("t-product-os-test-run") &&
 															 b.data.data.success
 											}
 											).length > 0`,
@@ -1140,7 +1141,7 @@ test('.evaluateObject() should evaluate to true', async () => {
 						},
 					],
 				},
-				platforms: { 'linux/amd64': {} },
+				platforms: { 'linux/amd64': { image: 'xxx' } },
 				fragment: { type: 'service-source@1.0.0' },
 			},
 		},
