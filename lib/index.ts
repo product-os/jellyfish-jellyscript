@@ -150,36 +150,10 @@ export const evaluateObject = <T extends JSONSchema7Object>(
 	for (const path of card.getFormulasPaths(schema)) {
 		const input = _.get(object, path.output, getDefaultValueForType(path.type));
 
-		console.log('\n\n### EVALING:', path.formula);
-
 		const result = evaluate(path.formula, {
 			context: { contract: object },
 			input,
 		});
-
-		const d: any = object['data'];
-		console.log('OBJECT', d);
-		console.log('TF', d ? d['$transformer'] : 'none');
-
-		if (d && d['$transformer']) {
-			const a =
-				d['$transformer']['backflow'].filter((b) => {
-					console.log('b', b);
-					return (
-						b.type.startsWith('t-product-os-test-run') && b.data.data.success
-					);
-				}).length > 0;
-			console.log('a', a);
-		}
-		console.log('firmula', path.formula, path.output);
-		console.log(
-			'inut',
-			input,
-			_.get(object, path.output),
-			object['data']!['$transformer']['mergeable'],
-		);
-
-		console.log('\n\n### RESULT', result);
 
 		if (!_.isNull(result.value)) {
 			// Mutates input object
