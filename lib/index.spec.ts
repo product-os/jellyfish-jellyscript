@@ -1111,7 +1111,7 @@ test('.evaluateObject() should evaluate to true', async () => {
 									description: 'all platforms have an image',
 									type: 'boolean',
 									$$formula:
-										'EVERY(VALUES(contract.data.platforms), "image") && contract.data.$transformer.backflow.filter(function(b){ return b.type.startsWith("type-product-os-t-test-run")}).length > 0',
+										'EVERY(VALUES(contract.data.platforms), "image") && contract["data"] && contract["data"]["$transformer"] && contract["data"]["$transformer"]["backflow"].filter(function(b){ return b.type.startsWith("t-product-os-test-run") && b.data.data.success}).length > 0',
 									readOnly: true,
 									default: false,
 								},
