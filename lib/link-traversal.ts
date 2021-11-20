@@ -1,9 +1,3 @@
-/*
- * Copyright (C) Balena.io - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- * Proprietary and confidential.
- */
-
 import * as sdk from '@balena/jellyfish-client-sdk';
 import { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
 import _ from 'lodash';
