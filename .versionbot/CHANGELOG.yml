@@ -1,4 +1,25 @@
 - commits:
+    - subject: Remove license headers
+      hash: 6e25712bdce26733eba655eab20e1d76fdb6b6ef
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+    - subject: 'patch: Update internal-patch'
+      hash: eda92f82654c61cccf7b0810b4b31933db3956ee
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.9.113
+  date: 2021-11-20T09:52:25.875Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellycheck to v1'
       hash: 20ad95be4e3ea72e23698d129d3aff33bb7f27de
       body: |
