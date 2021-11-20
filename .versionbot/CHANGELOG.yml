@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-logger to ^3.0.126'
+      hash: 9e3977747d66a0477a512ee6def2ea436cff20ef
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.9.114
+  date: 2021-11-20T09:59:49.441Z
+- commits:
     - subject: Remove license headers
       hash: 6e25712bdce26733eba655eab20e1d76fdb6b6ef
       body: ''
