@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update internal-patch'
+      hash: 24b61e729bb0b2717cbfa2d2a1da5f073a0e6d26
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.9.127
+  date: 2021-11-24T08:01:43.734Z
+- commits:
     - subject: Unpin typescript
       hash: 02d94efe32a35861691043d0371463e4fa764c90
       body: ''
