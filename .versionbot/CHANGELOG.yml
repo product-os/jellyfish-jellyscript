@@ -1,4 +1,30 @@
 - commits:
+    - subject: Update depcheck ignore list
+      hash: 81eb946ae16525a437cd75a8af4c361042d3d0be
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+    - subject: 'Bring back typedoc, pin typescript'
+      hash: e8f16bbb83bbff59118e8f8105122280e0ee058c
+      body: |
+        Handle typedoc/typescript compatibility issue
+        by pinning typescript. Renovate will keep us
+        up to date anyway.
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.123
+  date: 2021-11-24T02:33:39.604Z
+- commits:
     - subject: Move typedoc to docs action
       hash: 20bc8f0de7aff88e11fdfd6b22f855c1ce3d4733
       body: ''
