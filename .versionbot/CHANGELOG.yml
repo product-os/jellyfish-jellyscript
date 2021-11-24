@@ -1,4 +1,17 @@
 - commits:
+    - subject: Move typedoc to docs action
+      hash: 20bc8f0de7aff88e11fdfd6b22f855c1ce3d4733
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 4.9.122
+  date: 2021-11-24T01:54:21.421Z
+- commits:
     - subject: 'patch: Update dependency lint-staged to ^12.1.2'
       hash: fc4f9fa3fcf4fd0530f8bf812f067fe5790a93a5
       body: ''
