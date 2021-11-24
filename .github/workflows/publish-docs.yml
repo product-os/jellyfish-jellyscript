@@ -23,9 +23,6 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install typedoc
-        run: npm i -g typedoc
-
       - name: Install NPM dependencies
         run: npm i
 
