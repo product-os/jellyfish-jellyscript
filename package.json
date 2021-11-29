@@ -45,7 +45,7 @@
   "dependencies": {
     "@balena/jellyfish-assert": "^1.1.99",
     "@balena/jellyfish-client-sdk": "^7.0.21",
-    "@balena/jellyfish-logger": "^3.0.154",
+    "@balena/jellyfish-logger": "^3.0.155",
     "@formulajs/formulajs": "2.6.10",
     "esprima": "^4.0.1",
     "fast-json-patch": "^3.1.0",
