@@ -1,4 +1,32 @@
 - commits:
+    - subject: 'patch: Update external-non-major'
+      hash: d92ff512d10abf8a1c730e6c6fc3046920f7bf22
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+    - subject: 'patch: Update dependency typescript to ^4.5.3'
+      hash: 5531ae431f0d6218971eba607ec00edae5a9fffe
+      body: |
+        Update typescript from 4.5.2 to 4.5.3
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+    - subject: 'patch: Update dependency @balena/jellyfish-logger to ^3.0.163'
+      hash: 65cca43ff6fd863b3ed1ee16c2e53af60c279c19
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 4.9.152
+  date: 2021-12-11T00:39:04.294Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-logger to ^3.0.162'
       hash: d5a70dc6f231f17b50c925e5e0e9b7feb084227f
       body: ''
