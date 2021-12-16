@@ -38,4 +38,6 @@ declare module '@formulajs/formulajs' {
 		orders?: Many<boolean | 'asc' | 'desc'>,
 	): T[];
 	function LAST<T>(array: List<T> | null | undefined): T | undefined;
+	function NEEDS(contract: any, type: string): NEEDS_STATUS;
+	function NEEDS_ALL(...statuses: NEEDS_STATUS[]): NEEDS_STATUS;
 }

@@ -315,8 +315,22 @@ describe('.evaluateObject()', () => {
 		});
 	});
 
+<<<<<<< HEAD
+	test('should evaluate a boolean formula', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'boolean',
+						$$formula: '!contract.bar',
+					},
+					bar: {
+						type: 'boolean',
+					},
+=======
 test('.evaluateObject() should return never for NEEDS formula if an error exists for passed-in type', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -364,7 +378,7 @@ test('.evaluateObject() should return never for NEEDS formula if an error exists
 });
 
 test('.evaluateObject() should return pending for NEEDS formula if an error exists but not for the passed-in type', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -412,7 +426,7 @@ test('.evaluateObject() should return pending for NEEDS formula if an error exis
 });
 
 test('.evaluateObject() should return mergeable for NEEDS formula if backflow mergeable is "mergeable" and has no error', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -464,7 +478,7 @@ test('.evaluateObject() should return mergeable for NEEDS formula if backflow me
 });
 
 test('.evaluateObject() should return mergeable for NEEDS formula if backflow mergeable is true and has no error', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -516,7 +530,7 @@ test('.evaluateObject() should return mergeable for NEEDS formula if backflow me
 });
 
 test('.evaluateObject() should return pending for NEEDS formula if backflow mergeable is false and has no error', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -568,7 +582,7 @@ test('.evaluateObject() should return pending for NEEDS formula if backflow merg
 });
 
 test('.evaluateObject() should return never for NEEDS_ALL formula if at least one parameter is never', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -590,7 +604,7 @@ test('.evaluateObject() should return never for NEEDS_ALL formula if at least on
 });
 
 test('.evaluateObject() should return pending for NEEDS_ALL formula if there is no never parameter and at least one pending', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -612,7 +626,7 @@ test('.evaluateObject() should return pending for NEEDS_ALL formula if there is 
 });
 
 test('.evaluateObject() should return mergeable for NEEDS_ALL formula if all parameters are mergeable', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -634,7 +648,7 @@ test('.evaluateObject() should return mergeable for NEEDS_ALL formula if all par
 });
 
 test('.evaluateObject() should evaluate a boolean formula', async () => {
-	const result = evaluateObject(
+	const result = jellyscript.evaluateObject(
 		{
 			type: 'object',
 			properties: {
@@ -644,32 +658,7 @@ test('.evaluateObject() should evaluate a boolean formula', async () => {
 				},
 				bar: {
 					type: 'boolean',
-				},
-			},
-		},
-		{
-			bar: true,
-		},
-	);
-
-	expect(result).toEqual({
-		bar: true,
-		foo: false,
-	});
-});
-
-	test('should evaluate a boolean formula', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					foo: {
-						type: 'boolean',
-						$$formula: '!contract.bar',
-					},
-					bar: {
-						type: 'boolean',
-					},
+>>>>>>> a5ec8ac (Add needs formula)
 				},
 			},
 			{
