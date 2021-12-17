@@ -43,7 +43,7 @@
   "author": "Balena.io. <hello@balena.io>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@balena/jellyfish-assert": "^1.1.103",
+    "@balena/jellyfish-assert": "^1.2.0",
     "@balena/jellyfish-client-sdk": "^7.0.26",
     "@balena/jellyfish-logger": "^4.0.1",
     "@formulajs/formulajs": "2.6.10",
