@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import type { JsonSchema } from '@balena/jellyfish-types';
 import type { JSONSchema7Object, JSONSchema7Type } from 'json-schema';
-import type { JSONSchema } from './types';
+import _ from 'lodash';
 import { hashObject } from './hash-object';
 
 const FORMULA_PROPERTY = '$$formula';
@@ -60,7 +60,7 @@ const getRealObjectPath = (schemaPath: KeyPath): KeyPath => {
 
 const formulaSchemaCache = new Map();
 
-export const getFormulasPaths = (schema: JSONSchema): FormulaPath[] => {
+export const getFormulasPaths = (schema: JsonSchema): FormulaPath[] => {
 	const hash = hashObject(schema);
 
 	if (formulaSchemaCache.has(hash)) {

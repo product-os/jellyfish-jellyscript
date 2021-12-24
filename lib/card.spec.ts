@@ -1,8 +1,8 @@
-import * as card from './card';
+import { getFormulasPaths } from './card';
 
 describe('getFormulasPaths', () => {
 	test('should return an empty array given no formulas', () => {
-		const paths = card.getFormulasPaths({
+		const paths = getFormulasPaths({
 			type: 'object',
 			properties: {
 				foo: {
@@ -18,7 +18,7 @@ describe('getFormulasPaths', () => {
 	});
 
 	test('should return one property with formulas', () => {
-		const paths = card.getFormulasPaths({
+		const paths = getFormulasPaths({
 			type: 'object',
 			properties: {
 				foo: {
@@ -41,7 +41,7 @@ describe('getFormulasPaths', () => {
 	});
 
 	test('should return nested properties with formulas', () => {
-		const paths = card.getFormulasPaths({
+		const paths = getFormulasPaths({
 			type: 'object',
 			properties: {
 				foo: {
@@ -75,7 +75,7 @@ describe('getFormulasPaths', () => {
 	});
 
 	test('should return properties inside arrays', () => {
-		const paths = card.getFormulasPaths({
+		const paths = getFormulasPaths({
 			type: 'object',
 			anyOf: [
 				{
