@@ -43,9 +43,9 @@
   "author": "Balena.io. <hello@balena.io>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@balena/jellyfish-assert": "^1.2.4",
-    "@balena/jellyfish-client-sdk": "^7.0.31",
-    "@balena/jellyfish-logger": "^4.0.9",
+    "@balena/jellyfish-assert": "^1.2.5",
+    "@balena/jellyfish-client-sdk": "^7.0.32",
+    "@balena/jellyfish-logger": "^4.0.10",
     "@formulajs/formulajs": "2.6.10",
     "esprima": "^4.0.1",
     "fast-json-patch": "^3.1.0",
