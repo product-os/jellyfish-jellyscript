@@ -1,4 +1,20 @@
 - commits:
+    - subject: Clean up types
+      hash: f55d2019f164240ab8d4ec4315af63b0266a1d05
+      body: |
+        Switch from internally defined Context to LogContext.
+        Clean up other types and how they are imported.
+        Stop deep importing lodash.
+      footer:
+        Change-type: major
+        change-type: major
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 5.0.0
+  date: 2022-01-04T01:09:18.660Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-logger to ^4.0.12'
       hash: 22bb22307afffd769f441beb37666f3b52dffc38
       body: ''
