@@ -1,5 +1,5 @@
 import * as sdk from '@balena/jellyfish-client-sdk';
-import { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
+import type { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
 import _ from 'lodash';
 
 // HACK: These link constraints exist between event contracts and any other contract type

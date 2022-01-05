@@ -1,23 +1,28 @@
-import * as ESTree from 'estree';
-import { core } from '@balena/jellyfish-types';
-import { JSONSchema7Object } from 'json-schema';
-import formula from '@formulajs/formulajs';
-import staticEval from 'static-eval';
-import * as esprima from 'esprima';
 import * as assert from '@balena/jellyfish-assert';
-import * as jsonpatch from 'fast-json-patch';
-import * as card from './card';
-import type { JSONSchema } from './types';
-import _, { Dictionary } from 'lodash';
-import * as objectDeepSearch from 'object-deep-search';
-import { reverseLink } from './link-traversal';
-import { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
+import type { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
 import { getLogger } from '@balena/jellyfish-logger';
+import type { LogContext } from '@balena/jellyfish-logger';
+import type { JsonSchema } from '@balena/jellyfish-types';
+import type {
+	ContractData,
+	ContractDefinition,
+	TypeContract,
+} from '@balena/jellyfish-types/build/core';
+import formula from '@formulajs/formulajs';
+import * as esprima from 'esprima';
+import * as ESTree from 'estree';
+import { applyPatch, compare, Operation } from 'fast-json-patch';
+import type { JSONSchema7Object } from 'json-schema';
+import _ from 'lodash';
+import type { Dictionary } from 'lodash';
+import * as objectDeepSearch from 'object-deep-search';
+import staticEval from 'static-eval';
+import { FormulaPath, getFormulasPaths } from './card';
+import { reverseLink } from './link-traversal';
 
 const logger = getLogger(__filename);
-
-const context: core.Context = {
-	id: 'JELLYSCRIPT',
+const logContext: LogContext = {
+	id: 'jellyscript',
 };
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
@@ -110,38 +115,36 @@ const getDefaultValueForType = (type: string): null | [] => {
 	}
 };
 
-export const getFormulasPaths = card.getFormulasPaths;
-
 export const evaluatePatch = (
-	schema: JSONSchema,
+	schema: JsonSchema,
 	object: JSONSchema7Object,
-	patches: jsonpatch.Operation[],
+	patches: Operation[],
 ) => {
 	// The patch may affect other evaluated fields on the card.
 	// Generate a patched object and evaluate it. Then compare it to the original
 	// object to get a final list of patches to apply.
 	const patchedObject = _.cloneDeep(object);
-	const failedPatches: jsonpatch.Operation[] = [];
+	const failedPatches: Operation[] = [];
 	for (const patch of patches) {
 		try {
-			jsonpatch.applyPatch(patchedObject, [patch], false, true);
+			applyPatch(patchedObject, [patch], false, true);
 		} catch (err) {
 			failedPatches.push(patch);
 		}
 	}
 	const evaluatedPatchedObject = evaluateObject(schema, patchedObject);
-	const evaluatedPatches = jsonpatch.compare(object, evaluatedPatchedObject);
+	const evaluatedPatches = compare(object, evaluatedPatchedObject);
 	return evaluatedPatches.concat(failedPatches);
 };
 
 export const evaluateObject = <T extends JSONSchema7Object>(
-	schema: JSONSchema,
+	schema: JsonSchema,
 	object: T,
 ): T => {
 	if (_.isEmpty(object)) {
 		return object;
 	}
-	for (const path of card.getFormulasPaths(schema)) {
+	for (const path of getFormulasPaths(schema)) {
 		const input = _.get(object, path.output, getDefaultValueForType(path.type));
 
 		const result = evaluate(path.formula, {
@@ -260,9 +263,7 @@ type ContractLinkRef = typeof CONTRACT_LINKS_REFERENCE_AST & {
 	property: { value: string };
 };
 
-export const getReferencedLinkVerbs = <
-	T extends Pick<core.TypeContract, 'data'>,
->(
+export const getReferencedLinkVerbs = <T extends Pick<TypeContract, 'data'>>(
 	typeCard: T,
 ): string[] => {
 	const formulas = getFormulasPaths(typeCard.data.schema).map((f) => f.formula);
@@ -278,7 +279,7 @@ export const getReferencedLinkVerbs = <
 		);
 		if (linkRefs.length) {
 			logger.error(
-				context,
+				logContext,
 				"Found unsupported $$formula references to 'this'",
 				{
 					typeCard,
@@ -295,14 +296,14 @@ export const getReferencedLinkVerbs = <
 };
 
 // TS-TODO: use TypeContract interface instead of Contract
-export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
+export const getTypeTriggers = (typeCard: ContractDefinition) => {
 	// TS-TODO: use TriggeredActionDefinition interface instead of ContractDefinition
-	const triggers: core.ContractDefinition[] = [];
+	const triggers: ContractDefinition[] = [];
 
 	// We create empty updates to cards that reference other cards in links
 	// whenever those linked cards change.
 	// This forces a reevaluation of formulas in the referencing card.
-	const linkVerbs = getReferencedLinkVerbs(typeCard as core.TypeContract);
+	const linkVerbs = getReferencedLinkVerbs(typeCard as TypeContract);
 	triggers.push(
 		...linkVerbs.flatMap((lv) =>
 			createLinkTrigger(reverseLink(typeCard.slug, lv), typeCard),
@@ -314,8 +315,7 @@ export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
 	// to do aggregations. see https://github.com/product-os/jellyfish-jellyscript/blob/evaluating-links/lib/index.js#L217
 
 	// TS-TODO: remove optional chaining once we use TypeContract
-	const eventMatches = card
-		.getFormulasPaths(typeCard?.data?.schema as JSONSchema)
+	const eventMatches = getFormulasPaths(typeCard?.data?.schema as JsonSchema)
 		.map((p) => ({
 			path: p,
 			ast: (parse(p.formula).body[0] as ESTree.ExpressionStatement)
@@ -343,10 +343,10 @@ export const getTypeTriggers = (typeCard: core.ContractDefinition) => {
 };
 
 const createEventsTrigger = (
-	typeCard: core.ContractDefinition<core.ContractData>,
-	path: card.FormulaPath,
+	typeCard: ContractDefinition<ContractData>,
+	path: FormulaPath,
 	valueProperty: string,
-): core.ContractDefinition<core.ContractData> => {
+): ContractDefinition<ContractData> => {
 	return {
 		slug: slugify(`triggered-action-${typeCard.slug}-${path.output.join('-')}`),
 		type: 'triggered-action@1.0.0',
@@ -419,8 +419,8 @@ const createEventsTrigger = (
  */
 const createLinkTrigger = (
 	linkGroups: Dictionary<LinkConstraint[]>,
-	typeCard: core.ContractDefinition<core.ContractData>,
-): Array<core.ContractDefinition<any>> => {
+	typeCard: ContractDefinition<ContractData>,
+): Array<ContractDefinition<any>> => {
 	if (Object.keys(linkGroups).length === 0) {
 		return [];
 	}

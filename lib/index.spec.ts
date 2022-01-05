@@ -1,113 +1,119 @@
-import * as jellyscript from './index';
-import { getReferencedLinkVerbs } from './index';
+import {
+	evaluate,
+	evaluateObject,
+	getReferencedLinkVerbs,
+	getTypeTriggers,
+} from './index';
 
-test('.evaluate(): should return null if no input', () => {
-	const result = jellyscript.evaluate('POW(input, 2)', {
-		context: {},
-		input: null,
+describe('.evaluate()', () => {
+	test('should return null if no input', () => {
+		const result = evaluate('POW(input, 2)', {
+			context: {},
+			input: null,
+		});
+
+		expect(result).toEqual({
+			value: null,
+		});
 	});
 
-	expect(result).toEqual({
-		value: null,
-	});
-});
-
-test('.evaluate(): should resolve a number formula', () => {
-	const result = jellyscript.evaluate('POW(input, 2)', {
-		context: {
-			number: 2,
-		},
-		input: 2,
-	});
-
-	expect(result).toEqual({
-		value: 4,
-	});
-});
-
-test('.evaluate(): should resolve a number formula', () => {
-	const result = jellyscript.evaluate('!input', {
-		context: {
-			number: true,
-		},
-		input: true,
-	});
-
-	expect(result).toEqual({
-		value: false,
-	});
-});
-
-test('.evaluate(): should resolve composite formulas', () => {
-	const result = jellyscript.evaluate('MAX(POW(input, 2), POW(input, 3))', {
-		context: {
-			number: 2,
-		},
-		input: 2,
-	});
-
-	expect(result).toEqual({
-		value: 8,
-	});
-});
-
-test('.evaluate(): should access other properties from the card', () => {
-	const result = jellyscript.evaluate('ADD(obj.value1, obj.value2)', {
-		context: {
-			obj: {
-				value1: 2,
-				value2: 3,
-			},
-		},
-		input: 0,
-	});
-
-	expect(result).toEqual({
-		value: 5,
-	});
-});
-
-test('.evaluate() should handle combinations of functions', () => {
-	const result = jellyscript.evaluate(
-		'EVERY(FILTER(contract.links["has attached"], { type: "improvement@1.0.0" }), { data: { status: "completed" } })',
-		{
+	test('should resolve a number formula', () => {
+		const result = evaluate('POW(input, 2)', {
 			context: {
-				contract: {
-					links: {
-						'has attached': [
-							{
-								type: 'improvement@1.0.0',
-								data: {
-									status: 'completed',
-								},
-							},
-							{
-								type: 'improvement@1.0.0',
-								data: {
-									status: 'completed',
-								},
-							},
-							{
-								type: 'pull-request@1.0.0',
-								data: {
-									status: 'open',
-								},
-							},
-						],
-					},
+				number: 2,
+			},
+			input: 2,
+		});
+
+		expect(result).toEqual({
+			value: 4,
+		});
+	});
+
+	test('should resolve a number formula', () => {
+		const result = evaluate('!input', {
+			context: {
+				number: true,
+			},
+			input: true,
+		});
+
+		expect(result).toEqual({
+			value: false,
+		});
+	});
+
+	test('should resolve composite formulas', () => {
+		const result = evaluate('MAX(POW(input, 2), POW(input, 3))', {
+			context: {
+				number: 2,
+			},
+			input: 2,
+		});
+
+		expect(result).toEqual({
+			value: 8,
+		});
+	});
+
+	test('should access other properties from the card', () => {
+		const result = evaluate('ADD(obj.value1, obj.value2)', {
+			context: {
+				obj: {
+					value1: 2,
+					value2: 3,
 				},
 			},
-			input: 4,
-		},
-	);
+			input: 0,
+		});
 
-	expect(result).toEqual({
-		value: true,
+		expect(result).toEqual({
+			value: 5,
+		});
+	});
+
+	test('should handle combinations of functions', () => {
+		const result = evaluate(
+			'EVERY(FILTER(contract.links["has attached"], { type: "improvement@1.0.0" }), { data: { status: "completed" } })',
+			{
+				context: {
+					contract: {
+						links: {
+							'has attached': [
+								{
+									type: 'improvement@1.0.0',
+									data: {
+										status: 'completed',
+									},
+								},
+								{
+									type: 'improvement@1.0.0',
+									data: {
+										status: 'completed',
+									},
+								},
+								{
+									type: 'pull-request@1.0.0',
+									data: {
+										status: 'open',
+									},
+								},
+							],
+						},
+					},
+				},
+				input: 4,
+			},
+		);
+
+		expect(result).toEqual({
+			value: true,
+		});
 	});
 });
 
 test('UNIQUE(FLATMAP()): should aggregate a set of object properties', () => {
-	const result = jellyscript.evaluate('UNIQUE(FLATMAP(input, "mentions"))', {
+	const result = evaluate('UNIQUE(FLATMAP(input, "mentions"))', {
 		context: {},
 		input: [
 			{
@@ -124,967 +130,971 @@ test('UNIQUE(FLATMAP()): should aggregate a set of object properties', () => {
 	});
 });
 
-test('AGGREGATE: should ignore duplicates', () => {
-	const result = jellyscript.evaluate(
-		'AGGREGATE(input, PARTIAL(FLIP(PROPERTY), "mentions"))',
-		{
-			context: {},
-			input: [
-				{
-					mentions: ['foo', 'bar'],
-				},
-				{
-					mentions: ['bar', 'baz'],
-				},
-				{
-					mentions: ['baz', 'qux'],
-				},
-			],
-		},
-	);
+describe('AGGREGATE', () => {
+	test('should ignore duplicates', () => {
+		const result = evaluate(
+			'AGGREGATE(input, PARTIAL(FLIP(PROPERTY), "mentions"))',
+			{
+				context: {},
+				input: [
+					{
+						mentions: ['foo', 'bar'],
+					},
+					{
+						mentions: ['bar', 'baz'],
+					},
+					{
+						mentions: ['baz', 'qux'],
+					},
+				],
+			},
+		);
 
-	expect(result).toEqual({
-		value: ['foo', 'bar', 'baz', 'qux'],
+		expect(result).toEqual({
+			value: ['foo', 'bar', 'baz', 'qux'],
+		});
+	});
+
+	test('should aggregate a set of object properties', () => {
+		const result = evaluate(
+			'AGGREGATE(input, PARTIAL(FLIP(PROPERTY), "mentions"))',
+			{
+				context: {},
+				input: [
+					{
+						mentions: ['foo'],
+					},
+					{
+						mentions: ['bar'],
+					},
+				],
+			},
+		);
+
+		expect(result).toEqual({
+			value: ['foo', 'bar'],
+		});
 	});
 });
 
-test('AGGREGATE: should aggregate a set of object properties', () => {
-	const result = jellyscript.evaluate(
-		'AGGREGATE(input, PARTIAL(FLIP(PROPERTY), "mentions"))',
-		{
-			context: {},
-			input: [
-				{
-					mentions: ['foo'],
-				},
-				{
-					mentions: ['bar'],
-				},
-			],
-		},
-	);
-
-	expect(result).toEqual({
-		value: ['foo', 'bar'],
-	});
-});
-
-test('REGEX_MATCH: should extract a set of mentions', () => {
-	const result = jellyscript.evaluate(
-		'REGEX_MATCH(/(@[a-zA-Z0-9-]+)/g, input)',
-		{
+describe('REGEX_MATCH', () => {
+	test('should extract a set of mentions', () => {
+		const result = evaluate('REGEX_MATCH(/(@[a-zA-Z0-9-]+)/g, input)', {
 			context: {},
 			input: 'Hello @johndoe, and @janedoe',
-		},
-	);
+		});
 
-	expect(result).toEqual({
-		value: ['@johndoe', '@janedoe'],
+		expect(result).toEqual({
+			value: ['@johndoe', '@janedoe'],
+		});
 	});
-});
 
-test('REGEX_MATCH: should consider duplicates', () => {
-	const result = jellyscript.evaluate(
-		'REGEX_MATCH(/(@[a-zA-Z0-9-]+)/g, input)',
-		{
+	test('should consider duplicates', () => {
+		const result = evaluate('REGEX_MATCH(/(@[a-zA-Z0-9-]+)/g, input)', {
 			context: {},
 			input: 'Hello @johndoe, and @janedoe, and @johndoe',
-		},
-	);
+		});
 
-	expect(result).toEqual({
-		value: ['@johndoe', '@janedoe', '@johndoe'],
+		expect(result).toEqual({
+			value: ['@johndoe', '@janedoe', '@johndoe'],
+		});
 	});
 });
 
-test('.evaluateObject() should evaluate a number formula', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				foo: {
-					type: 'number',
-					$$formula: 'POW(input, 2)',
+describe('.evaluateObject()', () => {
+	test('should evaluate a number formula', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'number',
+						$$formula: 'POW(input, 2)',
+					},
 				},
 			},
-		},
-		{
-			foo: 3,
-		},
-	);
+			{
+				foo: 3,
+			},
+		);
 
-	expect(result).toEqual({
-		foo: 9,
+		expect(result).toEqual({
+			foo: 9,
+		});
 	});
-});
 
-test('.evaluateObject() should evaluate a EVERY formula', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				truthy: {
-					type: 'boolean',
-					$$formula: 'EVERY(input, "data.a")',
-				},
-				falsy: {
-					type: 'boolean',
-					$$formula: 'EVERY(input, "data.a")',
-				},
-				empty: {
-					type: 'boolean',
-					$$formula: 'EVERY(input, "data.a")',
+	test('should evaluate a EVERY formula', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					truthy: {
+						type: 'boolean',
+						$$formula: 'EVERY(input, "data.a")',
+					},
+					falsy: {
+						type: 'boolean',
+						$$formula: 'EVERY(input, "data.a")',
+					},
+					empty: {
+						type: 'boolean',
+						$$formula: 'EVERY(input, "data.a")',
+					},
 				},
 			},
-		},
-		{
-			truthy: [{ data: { a: 1 } }, { data: { a: 2 } }],
-			falsy: [{ data: { a: 1 } }, { data: {} }],
-			empty: [],
-		},
-	);
+			{
+				truthy: [{ data: { a: 1 } }, { data: { a: 2 } }],
+				falsy: [{ data: { a: 1 } }, { data: {} }],
+				empty: [],
+			},
+		);
 
-	expect(result).toEqual({
-		truthy: true,
-		falsy: false,
-		empty: true,
+		expect(result).toEqual({
+			truthy: true,
+			falsy: false,
+			empty: true,
+		});
 	});
-});
 
-test('.evaluateObject() should evaluate a SOME formula', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				truthy: {
-					type: 'boolean',
-					$$formula: 'SOME(input, "data.a")',
-				},
-				falsy: {
-					type: 'boolean',
-					$$formula: 'SOME(input, "data.a")',
-				},
-				empty: {
-					type: 'boolean',
-					$$formula: 'SOME(input, "data.a")',
+	test('should evaluate a SOME formula', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					truthy: {
+						type: 'boolean',
+						$$formula: 'SOME(input, "data.a")',
+					},
+					falsy: {
+						type: 'boolean',
+						$$formula: 'SOME(input, "data.a")',
+					},
+					empty: {
+						type: 'boolean',
+						$$formula: 'SOME(input, "data.a")',
+					},
 				},
 			},
-		},
-		{
-			truthy: [{ data: { a: 1 } }, { data: { b: 2 } }],
-			falsy: [{ data: { b: 1 } }, { data: {} }],
-			empty: [],
-		},
-	);
+			{
+				truthy: [{ data: { a: 1 } }, { data: { b: 2 } }],
+				falsy: [{ data: { b: 1 } }, { data: {} }],
+				empty: [],
+			},
+		);
 
-	expect(result).toEqual({
-		truthy: true,
-		falsy: false,
-		empty: false,
+		expect(result).toEqual({
+			truthy: true,
+			falsy: false,
+			empty: false,
+		});
 	});
-});
 
-test('.evaluateObject() should evaluate a VALUES formula', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				obj: {
-					type: 'object',
-				},
-				values: {
-					type: 'array',
-					$$formula: 'VALUES(contract.obj)',
+	test('should evaluate a VALUES formula', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					obj: {
+						type: 'object',
+					},
+					values: {
+						type: 'array',
+						$$formula: 'VALUES(contract.obj)',
+					},
 				},
 			},
-		},
-		{
+			{
+				obj: { a: 1, b: 2 },
+				values: [],
+			},
+		);
+
+		expect(result).toEqual({
 			obj: { a: 1, b: 2 },
-			values: [],
-		},
-	);
-
-	expect(result).toEqual({
-		obj: { a: 1, b: 2 },
-		values: [1, 2],
+			values: [1, 2],
+		});
 	});
-});
 
-test('.evaluateObject() should evaluate a boolean formula', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				foo: {
-					type: 'boolean',
-					$$formula: '!contract.bar',
-				},
-				bar: {
-					type: 'boolean',
+	test('should evaluate a boolean formula', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'boolean',
+						$$formula: '!contract.bar',
+					},
+					bar: {
+						type: 'boolean',
+					},
 				},
 			},
-		},
-		{
+			{
+				bar: true,
+			},
+		);
+
+		expect(result).toEqual({
 			bar: true,
-		},
-	);
-
-	expect(result).toEqual({
-		bar: true,
-		foo: false,
+			foo: false,
+		});
 	});
-});
 
-test('.evaluateObject() should evaluate a formula in a $ prefixed property', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				$foo: {
-					type: 'number',
-					$$formula: 'POW(input, 2)',
+	test('should evaluate a formula in a $ prefixed property', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					$foo: {
+						type: 'number',
+						$$formula: 'POW(input, 2)',
+					},
 				},
 			},
-		},
-		{
-			$foo: 3,
-		},
-	);
+			{
+				$foo: 3,
+			},
+		);
 
-	expect(result).toEqual({
-		$foo: 9,
+		expect(result).toEqual({
+			$foo: 9,
+		});
 	});
-});
 
-test('.evaluateObject() should evaluate a formula in a $$ prefixed property', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				$$foo: {
-					type: 'number',
-					$$formula: 'POW(input, 2)',
+	test('should evaluate a formula in a $$ prefixed property', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					$$foo: {
+						type: 'number',
+						$$formula: 'POW(input, 2)',
+					},
 				},
 			},
-		},
-		{
-			$$foo: 3,
-		},
-	);
+			{
+				$$foo: 3,
+			},
+		);
 
-	expect(result).toEqual({
-		$$foo: 9,
+		expect(result).toEqual({
+			$$foo: 9,
+		});
 	});
-});
 
-test('.evaluateObject() should ignore missing formulas', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				foo: {
-					type: 'number',
-					$$formula: 'POW(input, 2)',
+	test('should ignore missing formulas', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'number',
+						$$formula: 'POW(input, 2)',
+					},
 				},
 			},
-		},
-		{
+			{
+				bar: 3,
+			},
+		);
+
+		expect(result).toEqual({
 			bar: 3,
-		},
-	);
-
-	expect(result).toEqual({
-		bar: 3,
+		});
 	});
-});
 
-test('.evaluateObject() should not ignore the zero number as missing', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				foo: {
-					type: 'number',
-					$$formula: 'MAX(input, 2)',
+	test('should not ignore the zero number as missing', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'number',
+						$$formula: 'MAX(input, 2)',
+					},
 				},
 			},
-		},
-		{
-			foo: 0,
-		},
-	);
+			{
+				foo: 0,
+			},
+		);
 
-	expect(result).toEqual({
-		foo: 2,
+		expect(result).toEqual({
+			foo: 2,
+		});
 	});
-});
 
-test('.evaluateObject() should evaluate nested formulas', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				foo: {
-					type: 'object',
-					properties: {
-						bar: {
-							type: 'object',
-							properties: {
-								baz: {
-									type: 'number',
-									$$formula: 'POW(input, 2)',
+	test('should evaluate nested formulas', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'object',
+						properties: {
+							bar: {
+								type: 'object',
+								properties: {
+									baz: {
+										type: 'number',
+										$$formula: 'POW(input, 2)',
+									},
 								},
 							},
 						},
 					},
 				},
 			},
-		},
-		{
+			{
+				foo: {
+					bar: {
+						baz: 2,
+					},
+				},
+			},
+		);
+
+		expect(result).toEqual({
 			foo: {
 				bar: {
-					baz: 2,
+					baz: 4,
 				},
 			},
-		},
-	);
-
-	expect(result).toEqual({
-		foo: {
-			bar: {
-				baz: 4,
-			},
-		},
+		});
 	});
-});
 
-test('.evaluateObject() should concatenate string with CONCATENATE function', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				foo: {
-					type: 'string',
-				},
-				bar: {
-					type: 'string',
-				},
-				greeting: {
-					type: 'string',
-					$$formula: "CONCATENATE(contract.foo, ' ', contract.bar)",
+	test('should concatenate string with CONCATENATE function', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'string',
+					},
+					bar: {
+						type: 'string',
+					},
+					greeting: {
+						type: 'string',
+						$$formula: "CONCATENATE(contract.foo, ' ', contract.bar)",
+					},
 				},
 			},
-		},
-		{
+			{
+				foo: 'hello',
+				bar: 'world',
+			},
+		);
+
+		expect(result).toEqual({
 			foo: 'hello',
 			bar: 'world',
-		},
-	);
-
-	expect(result).toEqual({
-		foo: 'hello',
-		bar: 'world',
-		greeting: 'hello world',
+			greeting: 'hello world',
+		});
 	});
-});
 
-test('.evaluateObject() should concatenate string with + operator', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				foo: {
-					type: 'string',
-				},
-				bar: {
-					type: 'string',
-				},
-				greeting: {
-					type: 'string',
-					$$formula: "contract.foo + ' ' + contract.bar",
+	test('should concatenate string with + operator', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'string',
+					},
+					bar: {
+						type: 'string',
+					},
+					greeting: {
+						type: 'string',
+						$$formula: "contract.foo + ' ' + contract.bar",
+					},
 				},
 			},
-		},
-		{
+			{
+				foo: 'hello',
+				bar: 'world',
+			},
+		);
+
+		expect(result).toEqual({
 			foo: 'hello',
 			bar: 'world',
-		},
-	);
-
-	expect(result).toEqual({
-		foo: 'hello',
-		bar: 'world',
-		greeting: 'hello world',
+			greeting: 'hello world',
+		});
 	});
-});
 
-test('.evaluateObject() should not do anything if the schema has no formulas', async () => {
-	const result = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				foo: {
-					type: 'string',
-				},
-				bar: {
-					type: 'number',
+	test('should not do anything if the schema has no formulas', async () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					foo: {
+						type: 'string',
+					},
+					bar: {
+						type: 'number',
+					},
 				},
 			},
-		},
-		{
+			{
+				foo: '1',
+				bar: 2,
+			},
+		);
+
+		expect(result).toEqual({
 			foo: '1',
 			bar: 2,
-		},
-	);
-
-	expect(result).toEqual({
-		foo: '1',
-		bar: 2,
+		});
 	});
-});
 
-test('.evaluateObject(): get the last message/whisper from a timeline', () => {
-	const evaluatedContract: any = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				last_message: {
-					type: 'object',
-					$$formula: `
-						PROPERTY(contract, [ "links", "has attached element", "length" ])
-						? LAST(
-								ORDER_BY(
-									FILTER(
-										contract.links["has attached element"],
-										function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
-									),
-									"data.timestamp"
+	test('should get the last message/whisper from a timeline', () => {
+		const evaluatedContract: any = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					last_message: {
+						type: 'object',
+						$$formula: `
+							PROPERTY(contract, [ "links", "has attached element", "length" ])
+							? LAST(
+									ORDER_BY(
+										FILTER(
+											contract.links["has attached element"],
+											function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
+										),
+										"data.timestamp"
+									)
 								)
-							)
-						: null
-				`,
+							: null
+					`,
+					},
 				},
 			},
-		},
-		{
-			links: {
-				'has attached element': [
-					{
-						type: 'message@1.0.0',
-						data: {
-							timestamp: '2020-01-01T00:00:01.000Z',
+			{
+				links: {
+					'has attached element': [
+						{
+							type: 'message@1.0.0',
+							data: {
+								timestamp: '2020-01-01T00:00:01.000Z',
+							},
 						},
-					},
-					{
-						type: 'whisper@1.0.0',
-						data: {
-							timestamp: '2020-01-01T00:00:03.000Z',
+						{
+							type: 'whisper@1.0.0',
+							data: {
+								timestamp: '2020-01-01T00:00:03.000Z',
+							},
 						},
-					},
-					{
-						type: 'message@1.0.0',
-						data: {
-							timestamp: '2020-01-01T00:00:02.000Z',
+						{
+							type: 'message@1.0.0',
+							data: {
+								timestamp: '2020-01-01T00:00:02.000Z',
+							},
 						},
-					},
-					{
-						type: 'update@1.0.0',
-						data: {
-							timestamp: '2020-01-01T00:00:04.000Z',
+						{
+							type: 'update@1.0.0',
+							data: {
+								timestamp: '2020-01-01T00:00:04.000Z',
+							},
 						},
-					},
-				],
+					],
+				},
 			},
-		},
-	);
+		);
 
-	expect(evaluatedContract.last_message).toEqual({
-		type: 'whisper@1.0.0',
-		data: {
-			timestamp: '2020-01-01T00:00:03.000Z',
-		},
+		expect(evaluatedContract.last_message).toEqual({
+			type: 'whisper@1.0.0',
+			data: {
+				timestamp: '2020-01-01T00:00:03.000Z',
+			},
+		});
 	});
-});
 
-test('.evaluateObject(): evaluate to undefined if no messages/whispers in a timeline', () => {
-	const evaluatedContract: any = jellyscript.evaluateObject(
-		{
-			type: 'object',
-			properties: {
-				last_message: {
-					type: 'object',
-					$$formula: `
-						PROPERTY(contract, [ "links", "has attached element", "length" ])
-						? LAST(
-								ORDER_BY(
-									FILTER(
-										contract.links["has attached element"],
-										function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
-									),
-									"data.timestamp"
+	test('should evaluate to undefined if no messages/whispers in a timeline', () => {
+		const evaluatedContract: any = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					last_message: {
+						type: 'object',
+						$$formula: `
+							PROPERTY(contract, [ "links", "has attached element", "length" ])
+							? LAST(
+									ORDER_BY(
+										FILTER(
+											contract.links["has attached element"],
+											function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
+										),
+										"data.timestamp"
+									)
 								)
-							)
-						: null
-				`,
+							: null
+					`,
+					},
 				},
 			},
-		},
-		{
-			links: {
-				'has attached element': [
-					{
-						type: 'create@1.0.0',
-						data: {
-							timestamp: '2020-01-01T00:00:01.000Z',
-						},
-					},
-					{
-						type: 'update@1.0.0',
-						data: {
-							timestamp: '2020-01-01T00:00:04.000Z',
-						},
-					},
-				],
-			},
-		},
-	);
-
-	expect(evaluatedContract.last_message).toBeUndefined();
-});
-
-test('.getTypeTriggers() should report back watchers when aggregating events', async () => {
-	const triggers = jellyscript.getTypeTriggers({
-		slug: 'thread',
-		type: 'type@1.0.0',
-		version: '1.0.0',
-		data: {
-			schema: {
-				type: 'object',
-				properties: {
-					data: {
-						type: 'object',
-						properties: {
-							mentions: {
-								type: 'array',
-								$$formula: 'AGGREGATE($events, "data.mentions")',
+			{
+				links: {
+					'has attached element': [
+						{
+							type: 'create@1.0.0',
+							data: {
+								timestamp: '2020-01-01T00:00:01.000Z',
 							},
 						},
-					},
+						{
+							type: 'update@1.0.0',
+							data: {
+								timestamp: '2020-01-01T00:00:04.000Z',
+							},
+						},
+					],
 				},
 			},
-		},
+		);
+
+		expect(evaluatedContract.last_message).toBeUndefined();
 	});
-
-	expect(triggers).toEqual([
-		{
-			type: 'triggered-action@1.0.0',
-			version: '1.0.0',
-			slug: 'triggered-action-thread-data-mentions',
-			requires: [],
-			capabilities: [],
-			active: true,
-			tags: [],
-			markers: [],
-			data: {
-				type: 'thread@1.0.0',
-				action: 'action-set-add@1.0.0',
-				target: {
-					$eval: "source.links['is attached to'][0].id",
-				},
-				arguments: {
-					property: 'data.mentions',
-					value: {
-						$if: 'source.data.mentions',
-						then: {
-							$eval: 'source.data.mentions',
-						},
-						else: [],
-					},
-				},
-				filter: {
-					type: 'object',
-					$$links: {
-						'is attached to': {
-							type: 'object',
-							required: ['type'],
-							properties: {
-								type: {
-									type: 'string',
-									const: 'thread@1.0.0',
-								},
-							},
-						},
-					},
-					required: ['type', 'data'],
-					properties: {
-						type: {
-							type: 'string',
-							not: {
-								enum: ['create@1.0.0', 'update@1.0.0'],
-							},
-						},
-						data: {
-							type: 'object',
-							required: ['payload'],
-							properties: {
-								payload: {
-									type: 'object',
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	]);
 });
 
-test('.getTypeTriggers() should report back watchers when aggregating events with UNIQUE and FLATMAP', async () => {
-	const triggers = jellyscript.getTypeTriggers({
-		slug: 'thread',
-		type: 'type@1.0.0',
-		version: '1.0.0',
-		data: {
-			schema: {
-				type: 'object',
-				properties: {
-					data: {
-						type: 'object',
-						properties: {
-							mentions: {
-								type: 'array',
-								$$formula: 'UNIQUE(FLATMAP($events, "data.mentions"))',
-							},
-						},
-					},
-				},
-			},
-		},
-	});
-
-	expect(triggers).toEqual([
-		{
-			type: 'triggered-action@1.0.0',
+describe('.getTypeTriggers()', () => {
+	test('should report back watchers when aggregating events', async () => {
+		const triggers = getTypeTriggers({
+			slug: 'thread',
+			type: 'type@1.0.0',
 			version: '1.0.0',
-			slug: 'triggered-action-thread-data-mentions',
-			requires: [],
-			capabilities: [],
-			active: true,
-			tags: [],
-			markers: [],
 			data: {
-				type: 'thread@1.0.0',
-				action: 'action-set-add@1.0.0',
-				target: {
-					$eval: "source.links['is attached to'][0].id",
-				},
-				arguments: {
-					property: 'data.mentions',
-					value: {
-						$if: 'source.data.mentions',
-						then: {
-							$eval: 'source.data.mentions',
-						},
-						else: [],
-					},
-				},
-				filter: {
+				schema: {
 					type: 'object',
-					$$links: {
-						'is attached to': {
-							type: 'object',
-							required: ['type'],
-							properties: {
-								type: {
-									type: 'string',
-									const: 'thread@1.0.0',
-								},
-							},
-						},
-					},
-					required: ['type', 'data'],
 					properties: {
-						type: {
-							type: 'string',
-							not: {
-								enum: ['create@1.0.0', 'update@1.0.0'],
-							},
-						},
 						data: {
 							type: 'object',
-							required: ['payload'],
 							properties: {
-								payload: {
-									type: 'object',
+								mentions: {
+									type: 'array',
+									$$formula: 'AGGREGATE($events, "data.mentions")',
 								},
 							},
 						},
 					},
 				},
 			},
-		},
-	]);
-});
+		});
 
-test('.getTypeTriggers() should properly reverse links', async () => {
-	const triggers = jellyscript.getTypeTriggers({
-		id: '3fe919b0-a991-4957-99f0-5f7bb926addb',
-		data: {
-			schema: {
-				type: 'object',
-				required: ['data', 'name'],
-				properties: {
-					data: {
+		expect(triggers).toEqual([
+			{
+				type: 'triggered-action@1.0.0',
+				version: '1.0.0',
+				slug: 'triggered-action-thread-data-mentions',
+				requires: [],
+				capabilities: [],
+				active: true,
+				tags: [],
+				markers: [],
+				data: {
+					type: 'thread@1.0.0',
+					action: 'action-set-add@1.0.0',
+					target: {
+						$eval: "source.links['is attached to'][0].id",
+					},
+					arguments: {
+						property: 'data.mentions',
+						value: {
+							$if: 'source.data.mentions',
+							then: {
+								$eval: 'source.data.mentions',
+							},
+							else: [],
+						},
+					},
+					filter: {
 						type: 'object',
-						required: ['org', 'repo', 'head'],
-						properties: {
-							last_message: {
+						$$links: {
+							'is attached to': {
 								type: 'object',
-								$$formula: `
-									PROPERTY(contract, [ "links", "has attached element", "length" ])
-									? LAST(
-											ORDER_BY(
-												FILTER(
-													contract.links["has attached element"],
-													function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
-												),
-												"data.timestamp"
+								required: ['type'],
+								properties: {
+									type: {
+										type: 'string',
+										const: 'thread@1.0.0',
+									},
+								},
+							},
+						},
+						required: ['type', 'data'],
+						properties: {
+							type: {
+								type: 'string',
+								not: {
+									enum: ['create@1.0.0', 'update@1.0.0'],
+								},
+							},
+							data: {
+								type: 'object',
+								required: ['payload'],
+								properties: {
+									payload: {
+										type: 'object',
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		]);
+	});
+
+	test('should report back watchers when aggregating events with UNIQUE and FLATMAP', async () => {
+		const triggers = getTypeTriggers({
+			slug: 'thread',
+			type: 'type@1.0.0',
+			version: '1.0.0',
+			data: {
+				schema: {
+					type: 'object',
+					properties: {
+						data: {
+							type: 'object',
+							properties: {
+								mentions: {
+									type: 'array',
+									$$formula: 'UNIQUE(FLATMAP($events, "data.mentions"))',
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		expect(triggers).toEqual([
+			{
+				type: 'triggered-action@1.0.0',
+				version: '1.0.0',
+				slug: 'triggered-action-thread-data-mentions',
+				requires: [],
+				capabilities: [],
+				active: true,
+				tags: [],
+				markers: [],
+				data: {
+					type: 'thread@1.0.0',
+					action: 'action-set-add@1.0.0',
+					target: {
+						$eval: "source.links['is attached to'][0].id",
+					},
+					arguments: {
+						property: 'data.mentions',
+						value: {
+							$if: 'source.data.mentions',
+							then: {
+								$eval: 'source.data.mentions',
+							},
+							else: [],
+						},
+					},
+					filter: {
+						type: 'object',
+						$$links: {
+							'is attached to': {
+								type: 'object',
+								required: ['type'],
+								properties: {
+									type: {
+										type: 'string',
+										const: 'thread@1.0.0',
+									},
+								},
+							},
+						},
+						required: ['type', 'data'],
+						properties: {
+							type: {
+								type: 'string',
+								not: {
+									enum: ['create@1.0.0', 'update@1.0.0'],
+								},
+							},
+							data: {
+								type: 'object',
+								required: ['payload'],
+								properties: {
+									payload: {
+										type: 'object',
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		]);
+	});
+
+	test('should properly reverse links', async () => {
+		const triggers = getTypeTriggers({
+			id: '3fe919b0-a991-4957-99f0-5f7bb926addb',
+			data: {
+				schema: {
+					type: 'object',
+					required: ['data', 'name'],
+					properties: {
+						data: {
+							type: 'object',
+							required: ['org', 'repo', 'head'],
+							properties: {
+								last_message: {
+									type: 'object',
+									$$formula: `
+										PROPERTY(contract, [ "links", "has attached element", "length" ])
+										? LAST(
+												ORDER_BY(
+													FILTER(
+														contract.links["has attached element"],
+														function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
+													),
+													"data.timestamp"
+												)
 											)
-										)
-									: null
-								`,
-							},
-							org: { type: 'string' },
-							head: {
-								type: 'object',
-								required: ['sha', 'branch'],
-								properties: {
-									sha: { type: 'string' },
-									branch: { type: 'string' },
+										: null
+									`,
 								},
-							},
-							repo: { type: 'string' },
-							$transformer: {
-								type: 'object',
-								properties: {
-									merged: {
-										type: 'boolean',
-										default: false,
-										readOnly: true,
-										$$formula:
-											'contract.links["is attached to PR"].length > 0 && contract.links["is attached to PR"][0].data.merged_at && contract.links["is attached to PR"][0].data.head.sha === contract.data.head.sha',
-										description: 'PR is merged',
+								org: { type: 'string' },
+								head: {
+									type: 'object',
+									required: ['sha', 'branch'],
+									properties: {
+										sha: { type: 'string' },
+										branch: { type: 'string' },
 									},
-									mergeable: {
-										type: 'boolean',
-										default: false,
-										readOnly: true,
-										$$formula:
-											'contract.links["was built into"].length > 0 && EVERY(contract.links["was built into"], "data.$transformer.mergeable")',
-										description: 'all downstream contracts are mergeable',
+								},
+								repo: { type: 'string' },
+								$transformer: {
+									type: 'object',
+									properties: {
+										merged: {
+											type: 'boolean',
+											default: false,
+											readOnly: true,
+											$$formula:
+												'contract.links["is attached to PR"].length > 0 && contract.links["is attached to PR"][0].data.merged_at && contract.links["is attached to PR"][0].data.head.sha === contract.data.head.sha',
+											description: 'PR is merged',
+										},
+										mergeable: {
+											type: 'boolean',
+											default: false,
+											readOnly: true,
+											$$formula:
+												'contract.links["was built into"].length > 0 && EVERY(contract.links["was built into"], "data.$transformer.mergeable")',
+											description: 'all downstream contracts are mergeable',
+										},
+										artifactReady: { type: 'boolean' },
 									},
-									artifactReady: { type: 'boolean' },
 								},
 							},
 						},
+						name: { type: 'string', fullTextSearch: true },
 					},
-					name: { type: 'string', fullTextSearch: true },
 				},
 			},
-		},
-		name: 'Commit',
-		slug: 'commit',
-		type: 'type@1.0.0',
-		active: true,
-		markers: [],
-		version: '1.0.0',
-		requires: [],
-		capabilities: [],
-	});
+			name: 'Commit',
+			slug: 'commit',
+			type: 'type@1.0.0',
+			active: true,
+			markers: [],
+			version: '1.0.0',
+			requires: [],
+			capabilities: [],
+		});
 
-	expect(triggers).toEqual([
-		{
-			slug: 'triggered-action-formula-update-commit-is-attached-to',
-			type: 'triggered-action@1.0.0',
-			version: '1.0.0',
-			active: true,
-			requires: [],
-			capabilities: [],
-			markers: [],
-			tags: [],
-			data: {
-				action: 'action-update-card@1.0.0',
-				type: 'commit@1.0.0',
-				target: {
-					$map: {
-						$eval: "source.links['is attached to']",
-					},
-					'each(card)': {
-						$eval: 'card.id',
-					},
-				},
-				arguments: {
-					reason: 'formula re-evaluation',
-					patch: [],
-				},
-				filter: {
-					type: 'object',
-					required: ['type', 'data'],
-					$$links: {
-						'is attached to': {
-							type: 'object',
-							required: ['type'],
-							properties: {
-								type: {
-									type: 'string',
-									const: 'commit@1.0.0',
-								},
-							},
+		expect(triggers).toEqual([
+			{
+				slug: 'triggered-action-formula-update-commit-is-attached-to',
+				type: 'triggered-action@1.0.0',
+				version: '1.0.0',
+				active: true,
+				requires: [],
+				capabilities: [],
+				markers: [],
+				tags: [],
+				data: {
+					action: 'action-update-card@1.0.0',
+					type: 'commit@1.0.0',
+					target: {
+						$map: {
+							$eval: "source.links['is attached to']",
+						},
+						'each(card)': {
+							$eval: 'card.id',
 						},
 					},
-					properties: {
-						type: {
-							type: 'string',
-							enum: [
-								'message@1.0.0',
-								'whisper@1.0.0',
-								'create@1.0.0',
-								'update@1.0.0',
-								'rating@1.0.0',
-								'summary@1.0.0',
-							],
-						},
-						updated_at: true,
+					arguments: {
+						reason: 'formula re-evaluation',
+						patch: [],
 					},
-				},
-			},
-		},
-		{
-			slug: 'triggered-action-formula-update-commit-has-attached-commit',
-			type: 'triggered-action@1.0.0',
-			version: '1.0.0',
-			active: true,
-			requires: [],
-			capabilities: [],
-			markers: [],
-			tags: [],
-			data: {
-				action: 'action-update-card@1.0.0',
-				type: 'commit@1.0.0',
-				target: {
-					$map: { $eval: "source.links['has attached commit']" },
-					'each(card)': { $eval: 'card.id' },
-				},
-				arguments: { reason: 'formula re-evaluation', patch: [] },
-				filter: {
-					type: 'object',
-					required: ['type', 'data'],
-					$$links: {
-						'has attached commit': {
-							type: 'object',
-							required: ['type'],
-							properties: { type: { type: 'string', const: 'commit@1.0.0' } },
-						},
-					},
-					properties: {
-						type: { type: 'string', enum: ['pull-request@1.0.0'] },
-						updated_at: true,
-					},
-				},
-			},
-		},
-		{
-			slug: 'triggered-action-formula-update-commit-was-built-from',
-			type: 'triggered-action@1.0.0',
-			version: '1.0.0',
-			active: true,
-			requires: [],
-			capabilities: [],
-			markers: [],
-			tags: [],
-			data: {
-				action: 'action-update-card@1.0.0',
-				type: 'commit@1.0.0',
-				target: {
-					$map: { $eval: "source.links['was built from']" },
-					'each(card)': { $eval: 'card.id' },
-				},
-				arguments: { reason: 'formula re-evaluation', patch: [] },
-				filter: {
-					type: 'object',
-					required: ['type', 'data'],
-					$$links: {
-						'was built from': {
-							type: 'object',
-							required: ['type'],
-							properties: { type: { type: 'string', const: 'commit@1.0.0' } },
-						},
-					},
-					properties: {
-						type: {
-							type: 'string',
-							not: { enum: ['create@1.0.0', 'update@1.0.0', 'link@1.0.0'] },
-						},
-						updated_at: true,
-					},
-				},
-			},
-		},
-	]);
-});
-
-test('getReferencedLinkVerbs() should find all verbs exactly once', async () => {
-	const links = getReferencedLinkVerbs({
-		id: 'fake',
-		slug: 'thread',
-		type: 'type@1.0.0',
-		version: '1.0.0',
-		data: {
-			schema: {
-				type: 'object',
-				properties: {
-					data: {
+					filter: {
 						type: 'object',
+						required: ['type', 'data'],
+						$$links: {
+							'is attached to': {
+								type: 'object',
+								required: ['type'],
+								properties: {
+									type: {
+										type: 'string',
+										const: 'commit@1.0.0',
+									},
+								},
+							},
+						},
 						properties: {
-							mentions: {
-								type: 'array',
-								$$formula: 'contract.links["some link"]',
+							type: {
+								type: 'string',
+								enum: [
+									'message@1.0.0',
+									'whisper@1.0.0',
+									'create@1.0.0',
+									'update@1.0.0',
+									'rating@1.0.0',
+									'summary@1.0.0',
+								],
 							},
-							mentions2: {
-								type: 'array',
-								$$formula: '[]+contract.links["some link"]',
+							updated_at: true,
+						},
+					},
+				},
+			},
+			{
+				slug: 'triggered-action-formula-update-commit-has-attached-commit',
+				type: 'triggered-action@1.0.0',
+				version: '1.0.0',
+				active: true,
+				requires: [],
+				capabilities: [],
+				markers: [],
+				tags: [],
+				data: {
+					action: 'action-update-card@1.0.0',
+					type: 'commit@1.0.0',
+					target: {
+						$map: { $eval: "source.links['has attached commit']" },
+						'each(card)': { $eval: 'card.id' },
+					},
+					arguments: { reason: 'formula re-evaluation', patch: [] },
+					filter: {
+						type: 'object',
+						required: ['type', 'data'],
+						$$links: {
+							'has attached commit': {
+								type: 'object',
+								required: ['type'],
+								properties: { type: { type: 'string', const: 'commit@1.0.0' } },
 							},
-							count: {
-								type: 'array',
-								$$formula:
-									'5 + contract.links["other link"].reduce((o,sum)=>sum+1,0)',
+						},
+						properties: {
+							type: { type: 'string', enum: ['pull-request@1.0.0'] },
+							updated_at: true,
+						},
+					},
+				},
+			},
+			{
+				slug: 'triggered-action-formula-update-commit-was-built-from',
+				type: 'triggered-action@1.0.0',
+				version: '1.0.0',
+				active: true,
+				requires: [],
+				capabilities: [],
+				markers: [],
+				tags: [],
+				data: {
+					action: 'action-update-card@1.0.0',
+					type: 'commit@1.0.0',
+					target: {
+						$map: { $eval: "source.links['was built from']" },
+						'each(card)': { $eval: 'card.id' },
+					},
+					arguments: { reason: 'formula re-evaluation', patch: [] },
+					filter: {
+						type: 'object',
+						required: ['type', 'data'],
+						$$links: {
+							'was built from': {
+								type: 'object',
+								required: ['type'],
+								properties: { type: { type: 'string', const: 'commit@1.0.0' } },
+							},
+						},
+						properties: {
+							type: {
+								type: 'string',
+								not: { enum: ['create@1.0.0', 'update@1.0.0', 'link@1.0.0'] },
+							},
+							updated_at: true,
+						},
+					},
+				},
+			},
+		]);
+	});
+});
+
+describe('getReferencedLinkVerbs()', () => {
+	test('should find all verbs exactly once', async () => {
+		const links = getReferencedLinkVerbs({
+			id: 'fake',
+			slug: 'thread',
+			type: 'type@1.0.0',
+			version: '1.0.0',
+			data: {
+				schema: {
+					type: 'object',
+					properties: {
+						data: {
+							type: 'object',
+							properties: {
+								mentions: {
+									type: 'array',
+									$$formula: 'contract.links["some link"]',
+								},
+								mentions2: {
+									type: 'array',
+									$$formula: '[]+contract.links["some link"]',
+								},
+								count: {
+									type: 'array',
+									$$formula:
+										'5 + contract.links["other link"].reduce((o,sum)=>sum+1,0)',
+								},
 							},
 						},
 					},
 				},
 			},
-		},
+		});
+		expect(links).toContain('some link');
+		expect(links).toContain('other link');
 	});
-	expect(links).toContain('some link');
-	expect(links).toContain('other link');
-});
 
-test('getReferencedLinkVerbs() should not fail if no formulas are given', async () => {
-	const links = getReferencedLinkVerbs({
-		id: 'fake',
-		slug: 'thread',
-		type: 'type@1.0.0',
-		version: '1.0.0',
-		data: {
-			schema: {
-				type: 'object',
-				properties: {
-					data: {
-						type: 'object',
+	test('should not fail if no formulas are given', async () => {
+		const links = getReferencedLinkVerbs({
+			id: 'fake',
+			slug: 'thread',
+			type: 'type@1.0.0',
+			version: '1.0.0',
+			data: {
+				schema: {
+					type: 'object',
+					properties: {
+						data: {
+							type: 'object',
+						},
 					},
 				},
 			},
-		},
+		});
+		expect(links.length).toEqual(0);
 	});
-	expect(links.length).toEqual(0);
 });

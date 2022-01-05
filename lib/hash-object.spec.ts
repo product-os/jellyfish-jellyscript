@@ -1,11 +1,10 @@
-import isString from 'lodash/isString';
-import cloneDeep from 'lodash/cloneDeep';
+import _ from 'lodash';
 import { hashObject } from './hash-object';
 
 describe('hashObject', () => {
 	test('should return a string', () => {
 		expect(
-			isString(
+			_.isString(
 				hashObject({
 					foo: 'bar',
 				}),
@@ -32,9 +31,9 @@ describe('hashObject', () => {
 			foo: 'bar',
 		};
 
-		const hash1 = hashObject(cloneDeep(object));
-		const hash2 = hashObject(cloneDeep(object));
-		const hash3 = hashObject(cloneDeep(object));
+		const hash1 = hashObject(_.cloneDeep(object));
+		const hash2 = hashObject(_.cloneDeep(object));
+		const hash3 = hashObject(_.cloneDeep(object));
 
 		expect(hash1).toEqual(hash2);
 		expect(hash2).toEqual(hash3);
