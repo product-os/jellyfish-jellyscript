@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update external-non-major'
+      hash: d1fee75bb08a43260c42853acf8c18703ef2ce7c
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 5.0.3
+  date: 2022-01-08T01:00:43.783Z
+- commits:
     - subject: 'patch: Update internal-patch'
       hash: 325da09a6737d4cdd1f8c9f2ab390c48bfc76733
       body: ''
