@@ -1,4 +1,18 @@
 - commits:
+    - subject: Add needs formula
+      hash: f112c5e714cc25c0cf4af480e8ee8ffa63391b00
+      body: |
+        Add NEEDS and NEEDS_ALL formula for evaluating mergeability
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Stathis Moraitidis <stathis@balena.io>
+        signed-off-by: Stathis Moraitidis <stathis@balena.io>
+      author: stathismor
+      nested: []
+  version: 5.1.0
+  date: 2022-01-10T10:44:47.685Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-logger to ^4.0.15'
       hash: 659d4836a4e9550913f550c7102f6b7ac3dbd007
       body: ''
