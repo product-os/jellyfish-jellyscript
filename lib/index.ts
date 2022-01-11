@@ -13,7 +13,7 @@ import formula from '@formulajs/formulajs';
 import type { JSONSchema7Object } from 'json-schema';
 import _, { Dictionary } from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
-import staticEval from 'static-eval';
+import safeEval from 'safe-eval';
 import { FormulaPath, getFormulasPaths } from './card';
 import { reverseLink } from './link-traversal';
 
@@ -125,8 +125,8 @@ export interface Options {
 	input: any;
 }
 
-const runAST = (ast: ESTree.Expression, evalContext: any = {}): any => {
-	return staticEval(ast, Object.assign({}, evalContext, formula));
+const evalExpression = (expression: string, evalContext: any = {}): any => {
+	return safeEval(expression, Object.assign({}, evalContext, formula));
 };
 
 export const evaluate = (
@@ -137,10 +137,7 @@ export const evaluate = (
 } => {
 	assert.INTERNAL(null, expression, Error, 'No expression provided');
 
-	const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
-		.expression;
-
-	const result = runAST(ast, {
+	const result = evalExpression(expression, {
 		...options.context,
 		input: options.input,
 	});
@@ -384,7 +381,7 @@ export const getTypeTriggers = (typeCard: ContractDefinition) => {
 				? ast.arguments[1]
 				: ast.arguments[0].arguments[1];
 
-		const arg = runAST(literal);
+		const arg = evalExpression(literal.raw);
 		const valueProperty = `source.${arg}`;
 
 		triggers.push(createEventsTrigger(typeCard, path, valueProperty));

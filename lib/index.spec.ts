@@ -561,7 +561,7 @@ describe('.evaluateObject()', () => {
 									ORDER_BY(
 										FILTER(
 											contract.links["has attached element"],
-											function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
+											(c) => c.type === "message@1.0.0" || c.type === "whisper@1.0.0"
 										),
 										"data.timestamp"
 									)
@@ -624,7 +624,7 @@ describe('.evaluateObject()', () => {
 									ORDER_BY(
 										FILTER(
 											contract.links["has attached element"],
-											function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
+											(c) => c.type === "message@1.0.0" || c.type === "whisper@1.0.0"
 										),
 										"data.timestamp"
 									)
@@ -995,7 +995,7 @@ describe('NEEDS', () => {
 						type: 'string',
 						enum: ['never', 'pending', 'mergeable'],
 						$$formula:
-							'NEEDS(contract, "transformer-type", function (c) { return c && c.data.foo === "bar" })',
+							'NEEDS(contract, "transformer-type", (c) => c.data.foo === "bar")',
 					},
 				},
 			},
@@ -1050,7 +1050,7 @@ describe('NEEDS', () => {
 						type: 'string',
 						enum: ['never', 'pending', 'mergeable'],
 						$$formula:
-							'NEEDS(contract, "transformer-type", function (c) { return c && c.data.foo === "notbar" })',
+							'NEEDS(contract, "transformer-type", (c) => c.data.foo === "notbar")',
 					},
 				},
 			},
@@ -1105,7 +1105,7 @@ describe('NEEDS', () => {
 						type: 'string',
 						enum: ['never', 'pending', 'mergeable'],
 						$$formula:
-							'NEEDS(contract, "transformer-type", function (c) { return c && c.data.foo === "bar" })',
+							'NEEDS(contract, "transformer-type", (c) => c.data.foo === "bar")',
 					},
 				},
 			},
@@ -1156,7 +1156,7 @@ describe('NEEDS', () => {
 						type: 'string',
 						enum: ['never', 'pending', 'mergeable'],
 						$$formula:
-							'NEEDS(contract, "transformer-type", function (c) { return c && c.data.foo === "notbar" })',
+							'NEEDS(contract, "transformer-type", (c) => c.data.foo === "notbar")',
 					},
 				},
 			},
@@ -1459,7 +1459,7 @@ describe('.getTypeTriggers()', () => {
 												ORDER_BY(
 													FILTER(
 														contract.links["has attached element"],
-														function (c) { return c && (c.type === "message@1.0.0" || c.type === "whisper@1.0.0"); }
+														(c) => c.type === "message@1.0.0" || c.type === "whisper@1.0.0"
 													),
 													"data.timestamp"
 												)
