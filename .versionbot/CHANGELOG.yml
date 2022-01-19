@@ -1,4 +1,24 @@
 - commits:
+    - subject: 'patch: Update internal-non-major'
+      hash: c7aa80772b581989aa64dba18f0c76bd6f4cd626
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+    - subject: 'patch: Update dependency typedoc to ^0.22.11'
+      hash: 9dc0241cab6f8aa65f56a3aa783a75e9224b2c24
+      body: |
+        Update typedoc from 0.22.10 to 0.22.11
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 5.1.8
+  date: 2022-01-19T12:00:23.921Z
+- commits:
     - subject: 'patch: Update dependency @balena/jellyfish-logger to ^4.0.17'
       hash: e7348f9c3a1d28a9a1fae80dc42a395a1717b545
       body: ''
