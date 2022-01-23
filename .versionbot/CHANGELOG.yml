@@ -1,4 +1,15 @@
 - commits:
+    - subject: 'patch: Update dependency @balena/jellyfish-assert to ^1.2.10'
+      hash: 7293a4db874019760bbf7ec8b63790aba8251358
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 5.1.16
+  date: 2022-01-23T12:25:55.427Z
+- commits:
     - subject: 'patch: Update dependency lint-staged to ^12.3.0'
       hash: cff5538174c2d3680ca225a1bc94418b9fa98c93
       body: ''
