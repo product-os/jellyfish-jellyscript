@@ -44,7 +44,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@balena/jellyfish-assert": "^1.2.11",
-    "@balena/jellyfish-client-sdk": "^8.0.3",
+    "@balena/jellyfish-client-sdk": "^8.1.0",
     "@balena/jellyfish-logger": "^4.0.27",
     "@formulajs/formulajs": "2.6.10",
     "esprima": "^4.0.1",
