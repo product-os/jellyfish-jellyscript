@@ -1,5 +1,4 @@
 import * as sdk from '@balena/jellyfish-client-sdk';
-import type { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
 import _ from 'lodash';
 
 // HACK: These link constraints exist between event contracts and any other contract type
@@ -15,7 +14,7 @@ const eventTypes = [
 	'summary',
 ];
 
-const defaultLinkConstraints: LinkConstraint[] = [];
+const defaultLinkConstraints: sdk.LinkConstraint[] = [];
 
 eventTypes.reduce((acc, eventType) => {
 	acc.push(

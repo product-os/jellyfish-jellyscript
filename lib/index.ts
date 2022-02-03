@@ -1,20 +1,18 @@
 import * as assert from '@balena/jellyfish-assert';
-import type { LinkConstraint } from '@balena/jellyfish-client-sdk/build/types';
-import { getLogger } from '@balena/jellyfish-logger';
-import type { LogContext } from '@balena/jellyfish-logger';
+import type { LinkConstraint } from '@balena/jellyfish-client-sdk';
+import { getLogger, LogContext } from '@balena/jellyfish-logger';
 import type { JsonSchema } from '@balena/jellyfish-types';
 import type {
 	ContractData,
 	ContractDefinition,
 	TypeContract,
 } from '@balena/jellyfish-types/build/core';
-import formula from '@formulajs/formulajs';
 import * as esprima from 'esprima';
 import * as ESTree from 'estree';
 import { applyPatch, compare, Operation } from 'fast-json-patch';
+import formula from '@formulajs/formulajs';
 import type { JSONSchema7Object } from 'json-schema';
-import _ from 'lodash';
-import type { Dictionary } from 'lodash';
+import _, { Dictionary } from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
 import staticEval from 'static-eval';
 import { FormulaPath, getFormulasPaths } from './card';
