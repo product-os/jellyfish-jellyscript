@@ -1,4 +1,18 @@
 - commits:
+    - subject: Minor fixes
+      hash: b157956cddd63378a7e5a62f3dbcc370afeab60b
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Carol Schulze <carol@ereski.org>
+        signed-off-by: Carol Schulze <carol@ereski.org>
+      author: Carol Schulze
+      nested: []
+  version: 5.1.27
+  title: "'Minor fixes'"
+  date: 2022-02-03T20:28:04.175Z
+- commits:
     - subject: Update @balena/jellyfish-client-sdk from 8.1.2 to 8.2.0
       hash: a90a4283e4f4009a4d0729dad7c2cb676b3de16f
       body: ""
