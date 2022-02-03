@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update @balena/jellyfish-client-sdk from 8.1.2 to 8.2.0
+      hash: a90a4283e4f4009a4d0729dad7c2cb676b3de16f
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 5.1.26
+  title: "'Update @balena/jellyfish-client-sdk from 8.1.2 to 8.2.0'"
+  date: 2022-02-03T17:57:59.264Z
+- commits:
     - subject: Update internal-patch
       hash: ebc5b93e704edc3b3826b3a502ee8d45575c89cf
       body: ""
