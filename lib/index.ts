@@ -205,7 +205,37 @@ export const evaluateObject = <T extends JSONSchema7Object>(
 	if (_.isEmpty(object)) {
 		return object;
 	}
-	for (const path of getFormulasPaths(schema)) {
+	const formulaPaths = getFormulasPaths(schema);
+	const parsed = formulaPaths.map((p) => ({
+		...p,
+		ast: (parse(p.formula).body[0] as ESTree.ExpressionStatement).expression,
+	}));
+
+	// Apply a topological sort to the formulas to ensure that the formulas are
+	// evaluated in the correct order.
+	parsed.sort((a, b) => {
+		// check if b references a
+		const match = objectDeepSearch.findFirst(b.ast, {
+			type: 'MemberExpression',
+			computed: false,
+			object: {
+				type: 'Identifier',
+				name: 'contract',
+			},
+			property: {
+				type: 'Identifier',
+				name: a.output[0],
+			},
+		});
+		if (match) {
+			return -1;
+		}
+
+		return 0;
+	});
+
+	// Given formulapath.output and a parsed AST, sort formula evaluation based on AST output
+	for (const path of parsed) {
 		const input = _.get(object, path.output, getDefaultValueForType(path.type));
 
 		const result = evaluate(path.formula, {

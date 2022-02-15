@@ -656,6 +656,78 @@ describe('.evaluateObject()', () => {
 
 		expect(evaluatedContract.last_message).toBeUndefined();
 	});
+
+	test('should evaluate computed fields that reference computed fields', () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					number: {
+						type: 'string',
+						$$formula: 'SUM(contract.input, 10)',
+					},
+					message: {
+						type: 'string',
+						$$formula: 'contract.lucky ? "lucky" : "not lucky"',
+					},
+					input: {
+						type: 'number',
+					},
+					lucky: {
+						type: 'boolean',
+						$$formula: 'contract.number === 13 ? true: false',
+					},
+				},
+			},
+			{
+				input: 3,
+			},
+		);
+
+		expect(result).toEqual({
+			message: 'lucky',
+			lucky: true,
+			number: 13,
+			input: 3,
+		});
+	});
+
+	test('should evaluate computed fields that reference nested computed fields', () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					input: {
+						type: 'number',
+					},
+					lucky: {
+						type: 'boolean',
+						$$formula: 'contract.data.number === 13 ? true: false',
+					},
+					data: {
+						type: 'object',
+						properties: {
+							number: {
+								type: 'string',
+								$$formula: 'SUM(contract.input, 10)',
+							},
+						},
+					},
+				},
+			},
+			{
+				input: 3,
+			},
+		);
+
+		expect(result).toEqual({
+			input: 3,
+			lucky: true,
+			data: {
+				number: 13,
+			},
+		});
+	});
 });
 
 describe('NEEDS', () => {
