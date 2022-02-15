@@ -1,4 +1,18 @@
 - commits:
+    - subject: Remove logging for deprecated this.links in expressions
+      hash: ee78005dedacb24bcb4d5d741136de0ec0e40a83
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 5.1.36
+  title: "'Remove logging for deprecated this.links in expressions '"
+  date: 2022-02-15T12:39:40.821Z
+- commits:
     - subject: Improve README with a better example and description
       hash: 90b7ff85995f4eab2bf7e3740bb5fa33e054f783
       body: ""
