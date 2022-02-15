@@ -1,6 +1,5 @@
 import * as assert from '@balena/jellyfish-assert';
 import type { LinkConstraint } from '@balena/jellyfish-client-sdk';
-import { getLogger, LogContext } from '@balena/jellyfish-logger';
 import type { JsonSchema } from '@balena/jellyfish-types';
 import type {
 	ContractData,
@@ -17,11 +16,6 @@ import * as objectDeepSearch from 'object-deep-search';
 import staticEval from 'static-eval';
 import { FormulaPath, getFormulasPaths } from './card';
 import { reverseLink } from './link-traversal';
-
-const logger = getLogger(__filename);
-const logContext: LogContext = {
-	id: 'jellyscript',
-};
 
 enum NEEDS_STATUS {
 	PENDING = 'pending',
@@ -311,23 +305,6 @@ const LINKS_UNIQUE_FLATMAP_BASE_AST = {
 	],
 };
 
-const LINKS_REFERENCE_AST = {
-	type: 'MemberExpression',
-	object: {
-		type: 'MemberExpression',
-		object: {
-			type: 'ThisExpression',
-		},
-		property: {
-			type: 'Identifier',
-			name: 'links',
-		},
-	},
-	property: {
-		type: 'Literal',
-	},
-};
-
 const CONTRACT_LINKS_REFERENCE_AST = {
 	type: 'MemberExpression',
 	object: {
@@ -346,10 +323,6 @@ const CONTRACT_LINKS_REFERENCE_AST = {
 	},
 };
 
-type LinkRef = typeof LINKS_REFERENCE_AST & {
-	property: { value: string };
-};
-
 type ContractLinkRef = typeof CONTRACT_LINKS_REFERENCE_AST & {
 	property: { value: string };
 };
@@ -360,23 +333,10 @@ export const getReferencedLinkVerbs = <T extends Pick<TypeContract, 'data'>>(
 	const formulas = getFormulasPaths(typeCard.data.schema).map((f) => f.formula);
 	const formulaAst = formulas.map((f) => parse(f));
 	const linkExpressions = formulaAst.flatMap((ast) => {
-		// TODO: Remove the check for LINKS_REFERENCE_AST once we're sure there are no
-		// remaining references to 'this' in $$formulas! (Better to find them and
-		// log an error for now).
-		const linkRefs = objectDeepSearch.find<LinkRef>(ast, LINKS_REFERENCE_AST);
 		const contractLinkRefs = objectDeepSearch.find<ContractLinkRef>(
 			ast,
 			CONTRACT_LINKS_REFERENCE_AST,
 		);
-		if (linkRefs.length) {
-			logger.error(
-				logContext,
-				"Found unsupported $$formula references to 'this'",
-				{
-					typeCard,
-				},
-			);
-		}
 		return contractLinkRefs;
 	});
 	const linkVerbs = linkExpressions.reduce(
