@@ -1,4 +1,18 @@
 - commits:
+    - subject: Improve README with a better example and description
+      hash: 90b7ff85995f4eab2bf7e3740bb5fa33e054f783
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 5.1.35
+  title: "'Improve README with a better example and description'"
+  date: 2022-02-15T11:21:28.824Z
+- commits:
     - subject: Correctly order formula evaluation in objects
       hash: 63bb2684bd8831c00b3f77534896a0755f02020c
       body: |
