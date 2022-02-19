@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update dependencies (external major bumps)
+      hash: 1ff9599fc41a4a8076780248fe5527573be4fef8
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 5.1.37
+  title: "'Update dependencies (external major bumps)'"
+  date: 2022-02-19T00:56:02.942Z
+- commits:
     - subject: Remove logging for deprecated this.links in expressions
       hash: ee78005dedacb24bcb4d5d741136de0ec0e40a83
       body: ""
