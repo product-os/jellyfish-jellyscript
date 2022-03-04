@@ -1,4 +1,18 @@
 - commits:
+    - subject: Create codeql-analysis.yml
+      hash: cfdb0b02af88ecfa4535a91f7a8a3b16ccc8dda3
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 5.1.44
+  title: "'Create codeql-analysis.yml'"
+  date: 2022-03-04T13:05:01.384Z
+- commits:
     - subject: Update internal-patch
       hash: 2043eb87eb29d25fcb30c8ee2841c099b37cd73b
       body: ""
