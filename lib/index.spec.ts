@@ -1,3 +1,4 @@
+import type { JsonSchema } from '@balena/jellyfish-types';
 import { Jellyscript, getReferencedLinkVerbs, getTypeTriggers } from './index';
 
 describe('.evaluate()', () => {
@@ -1884,5 +1885,73 @@ describe('getReferencedLinkVerbs()', () => {
 			},
 		});
 		expect(links.length).toEqual(0);
+	});
+});
+
+describe('custom formulas', () => {
+	it('should allow a custom formula to be used', () => {
+		const schema: JsonSchema = {
+			type: 'object',
+			properties: {
+				value: {
+					type: 'string',
+				},
+				message: {
+					type: 'string',
+					$$formula: 'GREET(contract.value)',
+				},
+			},
+		};
+
+		const formulaFn = (value: string): string => {
+			return `Hello ${value}`;
+		};
+
+		const parser = new Jellyscript({
+			formulas: {
+				GREET: formulaFn,
+			},
+		});
+
+		const result = parser.evaluateObject(schema, {
+			value: 'world',
+			message: '',
+		});
+
+		expect(result.message).toEqual('Hello world');
+	});
+
+	it('custom formulas should not be overwritten by different instances', () => {
+		const NAME = 'SPEAK';
+
+		const parser1 = new Jellyscript({
+			formulas: {
+				[NAME]: () => 'woof',
+			},
+		});
+
+		const result1 = parser1.evaluate(`${NAME}()`, {
+			context: {},
+			input: '',
+		});
+
+		expect(result1).toEqual({
+			value: 'woof',
+		});
+
+		const parser2 = new Jellyscript({
+			formulas: {
+				[NAME]: () => 'meow',
+			},
+		});
+
+		const result = parser2.evaluate(`${NAME}()`, {
+			context: {},
+			input: '',
+		});
+
+		expect(result).toEqual({
+			value: 'meow',
+		});
 	});
 });

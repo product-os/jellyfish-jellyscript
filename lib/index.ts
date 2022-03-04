@@ -9,7 +9,7 @@ import type {
 import * as esprima from 'esprima';
 import * as ESTree from 'estree';
 import { applyPatch, compare, Operation } from 'fast-json-patch';
-import formula from '@formulajs/formulajs';
+import baseFormulas from '@formulajs/formulajs';
 import type { JSONSchema7Object } from 'json-schema';
 import _, { Dictionary } from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
@@ -31,27 +31,27 @@ interface WithParse {
 }
 const parse = (esprima as unknown as WithParse).parse;
 
-formula.PARTIAL = _.partial;
-formula.FLIP = _.flip;
-formula.PROPERTY = _.get;
-formula.FLATMAP = _.flatMap;
-formula.UNIQUE = _.uniq;
-formula.EVERY = _.every;
-formula.SOME = _.some;
-formula.VALUES = _.values;
-formula.FILTER = _.filter;
-formula.REJECT = _.reject;
-formula.ORDER_BY = _.orderBy;
-formula.LAST = _.last;
+baseFormulas.PARTIAL = _.partial;
+baseFormulas.FLIP = _.flip;
+baseFormulas.PROPERTY = _.get;
+baseFormulas.FLATMAP = _.flatMap;
+baseFormulas.UNIQUE = _.uniq;
+baseFormulas.EVERY = _.every;
+baseFormulas.SOME = _.some;
+baseFormulas.VALUES = _.values;
+baseFormulas.FILTER = _.filter;
+baseFormulas.REJECT = _.reject;
+baseFormulas.ORDER_BY = _.orderBy;
+baseFormulas.LAST = _.last;
 
-formula.REGEX_MATCH = (
+baseFormulas.REGEX_MATCH = (
 	regex: string | RegExp,
 	str: string,
 ): RegExpMatchArray | null => {
 	return str.match(regex);
 };
 
-formula.AGGREGATE = <T>(list: any[], path: string, initial: any): T[] => {
+baseFormulas.AGGREGATE = <T>(list: any[], path: string, initial: any): T[] => {
 	if (!path) {
 		throw new Error('Cannot run AGGREGATE without a path');
 	}
@@ -69,7 +69,7 @@ formula.AGGREGATE = <T>(list: any[], path: string, initial: any): T[] => {
 	return result;
 };
 
-formula.NEEDS_ALL = (...statuses: NEEDS_STATUS[]) => {
+baseFormulas.NEEDS_ALL = (...statuses: NEEDS_STATUS[]) => {
 	let result = NEEDS_STATUS.MERGEABLE;
 
 	for (const status of statuses) {
@@ -97,7 +97,7 @@ formula.NEEDS_ALL = (...statuses: NEEDS_STATUS[]) => {
  * @param func A filter function to match the backflow contract
  * @returns NEEDS_STATUS status
  */
-formula.NEEDS = (
+baseFormulas.NEEDS = (
 	contract: any,
 	type: string,
 	func: (contract: any) => boolean = () => true,
@@ -130,122 +130,6 @@ export interface Options {
 	context: any;
 	input: any;
 }
-
-export const evaluate = (
-	expression: string,
-	options: Options,
-): {
-	value: any;
-} => {
-	assert.INTERNAL(null, expression, Error, 'No expression provided');
-
-	try {
-		const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
-			.expression;
-
-		const result = runAST(ast, {
-			...options.context,
-			input: options.input,
-		});
-
-		if (_.isError(result)) {
-			return {
-				value: null,
-			};
-		}
-		if (result === undefined) {
-			return {
-				value: null,
-			};
-		}
-
-		return {
-			value: result,
-		};
-	} catch (error: any) {
-		// If we hit an error parsing or running the expression
-		// throw a more useful error message
-		throw new Error(
-			`Encountered error whilst evaluating formula expression: ${expression}\n${error.message}`,
-		);
-	}
-};
-
-export const evaluatePatch = (
-	schema: JsonSchema,
-	object: JSONSchema7Object,
-	patches: Operation[],
-) => {
-	// The patch may affect other evaluated fields on the card.
-	// Generate a patched object and evaluate it. Then compare it to the original
-	// object to get a final list of patches to apply.
-	const patchedObject = _.cloneDeep(object);
-	const failedPatches: Operation[] = [];
-	for (const patch of patches) {
-		try {
-			applyPatch(patchedObject, [patch], false, true);
-		} catch (err) {
-			failedPatches.push(patch);
-		}
-	}
-	const evaluatedPatchedObject = evaluateObject(schema, patchedObject);
-	const evaluatedPatches = compare(object, evaluatedPatchedObject);
-	return evaluatedPatches.concat(failedPatches);
-};
-
-export const evaluateObject = <T extends JSONSchema7Object>(
-	schema: JsonSchema,
-	object: T,
-): T => {
-	if (_.isEmpty(object)) {
-		return object;
-	}
-	const formulaPaths = getFormulasPaths(schema);
-	const parsed = formulaPaths.map((p) => ({
-		...p,
-		ast: (parse(p.formula).body[0] as ESTree.ExpressionStatement).expression,
-	}));
-
-	// Apply a topological sort to the formulas to ensure that the formulas are
-	// evaluated in the correct order.
-	parsed.sort((a, b) => {
-		// check if b references a
-		const match = objectDeepSearch.findFirst(b.ast, {
-			type: 'MemberExpression',
-			computed: false,
-			object: {
-				type: 'Identifier',
-				name: 'contract',
-			},
-			property: {
-				type: 'Identifier',
-				name: a.output[0],
-			},
-		});
-		if (match) {
-			return -1;
-		}
-
-		return 0;
-	});
-
-	// Given formulapath.output and a parsed AST, sort formula evaluation based on AST output
-	for (const path of parsed) {
-		const input = _.get(object, path.output, getDefaultValueForType(path.type));
-
-		const result = evaluate(path.formula, {
-			context: { contract: object },
-			input,
-		});
-
-		if (!_.isNull(result.value)) {
-			// Mutates input object
-			_.set(object, path.output, result.value);
-		}
-	}
-
-	return object;
-};
 
 const slugify = (str: string): string => {
 	return str
@@ -327,8 +211,12 @@ type ContractLinkRef = typeof CONTRACT_LINKS_REFERENCE_AST & {
 	property: { value: string };
 };
 
-const runAST = (ast: ESTree.Expression, evalContext: any = {}): any => {
-	return staticEval(ast, Object.assign({}, evalContext, formula));
+const runAST = (
+	ast: ESTree.Expression,
+	evalContext: any = {},
+	formulas: { [key: string]: FormulaFn },
+): any => {
+	return staticEval(ast, Object.assign({}, evalContext, formulas));
 };
 
 const getDefaultValueForType = (type: string): null | [] => {
@@ -340,7 +228,33 @@ const getDefaultValueForType = (type: string): null | [] => {
 	}
 };
 
+type FormulaReturnValue =
+	| string
+	| number
+	| boolean
+	| null
+	| undefined
+	| { [key: string]: FormulaReturnValue }
+	| FormulaReturnValue[];
+
+type FormulaFn = (...args: any[]) => FormulaReturnValue;
+
+interface JellyscriptOptions {
+	formulas?: {
+		[key: string]: FormulaFn;
+	};
+}
+
 export class Jellyscript {
+	formulas: { [key: string]: FormulaFn };
+
+	constructor(options: JellyscriptOptions = {}) {
+		this.formulas = {
+			...baseFormulas,
+			...(options.formulas || {}),
+		};
+	}
+
 	evaluate = (
 		expression: string,
 		options: Options,
@@ -349,28 +263,40 @@ export class Jellyscript {
 	} => {
 		assert.INTERNAL(null, expression, Error, 'No expression provided');
 
-		const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
-			.expression;
+		try {
+			const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
+				.expression;
 
-		const result = runAST(ast, {
-			...options.context,
-			input: options.input,
-		});
+			const result = runAST(
+				ast,
+				{
+					...options.context,
+					input: options.input,
+				},
+				this.formulas,
+			);
 
-		if (_.isError(result)) {
+			if (_.isError(result)) {
+				return {
+					value: null,
+				};
+			}
+			if (result === undefined) {
+				return {
+					value: null,
+				};
+			}
+
 			return {
-				value: null,
+				value: result,
 			};
+		} catch (error: any) {
+			// If we hit an error parsing or running the expression
+			// throw a more useful error message
+			throw new Error(
+				`Encountered error whilst evaluating formula expression: ${expression}\n${error.message}`,
+			);
 		}
-		if (result === undefined) {
-			return {
-				value: null,
-			};
-		}
-
-		return {
-			value: result,
-		};
 	};
 
 	evaluatePatch = (
@@ -511,7 +437,7 @@ export const getTypeTriggers = (typeCard: ContractDefinition) => {
 				? ast.arguments[1]
 				: ast.arguments[0].arguments[1];
 
-		const arg = runAST(literal);
+		const arg = runAST(literal, {}, baseFormulas);
 		const valueProperty = `source.${arg}`;
 
 		triggers.push(createEventsTrigger(typeCard, path, valueProperty));
