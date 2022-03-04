@@ -131,10 +131,6 @@ export interface Options {
 	input: any;
 }
 
-const runAST = (ast: ESTree.Expression, evalContext: any = {}): any => {
-	return staticEval(ast, Object.assign({}, evalContext, formula));
-};
-
 export const evaluate = (
 	expression: string,
 	options: Options,
@@ -172,15 +168,6 @@ export const evaluate = (
 		throw new Error(
 			`Encountered error whilst evaluating formula expression: ${expression}\n${error.message}`,
 		);
-	}
-};
-
-const getDefaultValueForType = (type: string): null | [] => {
-	switch (type) {
-		case 'array':
-			return [];
-		default:
-			return null;
 	}
 };
 
@@ -271,7 +258,6 @@ const slugify = (str: string): string => {
 // Aggregating links is a special case. This is the expected base AST structure.
 // Note: this translates to a $$formula in the following format:
 // $$formula: 'UNIQUE(FLATMAP($events, "<SOURCE_PATH>"))'
-
 const LINKS_AGGREGATE_BASE_AST = {
 	type: 'CallExpression',
 	callee: {
@@ -340,6 +326,133 @@ const CONTRACT_LINKS_REFERENCE_AST = {
 type ContractLinkRef = typeof CONTRACT_LINKS_REFERENCE_AST & {
 	property: { value: string };
 };
+
+const runAST = (ast: ESTree.Expression, evalContext: any = {}): any => {
+	return staticEval(ast, Object.assign({}, evalContext, formula));
+};
+
+const getDefaultValueForType = (type: string): null | [] => {
+	switch (type) {
+		case 'array':
+			return [];
+		default:
+			return null;
+	}
+};
+
+export class Jellyscript {
+	evaluate = (
+		expression: string,
+		options: Options,
+	): {
+		value: any;
+	} => {
+		assert.INTERNAL(null, expression, Error, 'No expression provided');
+
+		const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
+			.expression;
+
+		const result = runAST(ast, {
+			...options.context,
+			input: options.input,
+		});
+
+		if (_.isError(result)) {
+			return {
+				value: null,
+			};
+		}
+		if (result === undefined) {
+			return {
+				value: null,
+			};
+		}
+
+		return {
+			value: result,
+		};
+	};
+
+	evaluatePatch = (
+		schema: JsonSchema,
+		object: JSONSchema7Object,
+		patches: Operation[],
+	) => {
+		// The patch may affect other evaluated fields on the card.
+		// Generate a patched object and evaluate it. Then compare it to the original
+		// object to get a final list of patches to apply.
+		const patchedObject = _.cloneDeep(object);
+		const failedPatches: Operation[] = [];
+		for (const patch of patches) {
+			try {
+				applyPatch(patchedObject, [patch], false, true);
+			} catch (err) {
+				failedPatches.push(patch);
+			}
+		}
+		const evaluatedPatchedObject = this.evaluateObject(schema, patchedObject);
+		const evaluatedPatches = compare(object, evaluatedPatchedObject);
+		return evaluatedPatches.concat(failedPatches);
+	};
+
+	evaluateObject = <T extends JSONSchema7Object>(
+		schema: JsonSchema,
+		object: T,
+	): T => {
+		if (_.isEmpty(object)) {
+			return object;
+		}
+		const formulaPaths = getFormulasPaths(schema);
+		const parsed = formulaPaths.map((p) => ({
+			...p,
+			ast: (parse(p.formula).body[0] as ESTree.ExpressionStatement).expression,
+		}));
+
+		// Apply a topological sort to the formulas to ensure that the formulas are
+		// evaluated in the correct order.
+		parsed.sort((a, b) => {
+			// check if b references a
+			const match = objectDeepSearch.findFirst(b.ast, {
+				type: 'MemberExpression',
+				computed: false,
+				object: {
+					type: 'Identifier',
+					name: 'contract',
+				},
+				property: {
+					type: 'Identifier',
+					name: a.output[0],
+				},
+			});
+			if (match) {
+				return -1;
+			}
+
+			return 0;
+		});
+
+		// Given formulapath.output and a parsed AST, sort formula evaluation based on AST output
+		for (const path of parsed) {
+			const input = _.get(
+				object,
+				path.output,
+				getDefaultValueForType(path.type),
+			);
+
+			const result = this.evaluate(path.formula, {
+				context: { contract: object },
+				input,
+			});
+
+			if (!_.isNull(result.value)) {
+				// Mutates input object
+				_.set(object, path.output, result.value);
+			}
+		}
+
+		return object;
+	};
+}
 
 export const getReferencedLinkVerbs = <T extends Pick<TypeContract, 'data'>>(
 	typeCard: T,
