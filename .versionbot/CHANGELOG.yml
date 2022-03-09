@@ -1,4 +1,20 @@
 - commits:
+    - subject: Improve the error message thrown by evaluate()
+      hash: 21068b3c53814e7155cce8e3a8a20b56fb462895
+      body: |
+        The error message now includes the reason the evaluation failed and the
+        formula expression that was being evaluated.
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 5.2.0
+  title: "'Improve the error message thrown by evaluate()'"
+  date: 2022-03-09T13:11:06.746Z
+- commits:
     - subject: Ensure AGGREGATE removes undefined values
       hash: 9c6f0e9365dcfda237b9c1d2ece27733e7374a15
       body: ""
