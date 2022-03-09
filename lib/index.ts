@@ -51,16 +51,8 @@ formula.REGEX_MATCH = (
 	return str.match(regex);
 };
 
-formula.AGGREGATE = <T>(list: T[], func: (item: T) => Iterable<T>): T[] => {
-	return Array.from(
-		list.reduce((accumulator, element) => {
-			for (const value of func(element)) {
-				accumulator.add(value);
-			}
-
-			return accumulator;
-		}, new Set<T>()),
-	);
+formula.AGGREGATE = <T>(list: any[], path: string): T[] => {
+	return _.uniq(_.flatMap(list, path));
 };
 
 formula.NEEDS_ALL = (...statuses: NEEDS_STATUS[]) => {

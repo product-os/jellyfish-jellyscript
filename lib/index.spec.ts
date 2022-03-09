@@ -132,23 +132,20 @@ test('UNIQUE(FLATMAP()): should aggregate a set of object properties', () => {
 
 describe('AGGREGATE', () => {
 	test('should ignore duplicates', () => {
-		const result = evaluate(
-			'AGGREGATE(input, PARTIAL(FLIP(PROPERTY), "mentions"))',
-			{
-				context: {},
-				input: [
-					{
-						mentions: ['foo', 'bar'],
-					},
-					{
-						mentions: ['bar', 'baz'],
-					},
-					{
-						mentions: ['baz', 'qux'],
-					},
-				],
-			},
-		);
+		const result = evaluate('AGGREGATE(input, "mentions")', {
+			context: {},
+			input: [
+				{
+					mentions: ['foo', 'bar'],
+				},
+				{
+					mentions: ['bar', 'baz'],
+				},
+				{
+					mentions: ['baz', 'qux'],
+				},
+			],
+		});
 
 		expect(result).toEqual({
 			value: ['foo', 'bar', 'baz', 'qux'],
@@ -156,20 +153,17 @@ describe('AGGREGATE', () => {
 	});
 
 	test('should aggregate a set of object properties', () => {
-		const result = evaluate(
-			'AGGREGATE(input, PARTIAL(FLIP(PROPERTY), "mentions"))',
-			{
-				context: {},
-				input: [
-					{
-						mentions: ['foo'],
-					},
-					{
-						mentions: ['bar'],
-					},
-				],
-			},
-		);
+		const result = evaluate('AGGREGATE(input, "mentions")', {
+			context: {},
+			input: [
+				{
+					mentions: ['foo'],
+				},
+				{
+					mentions: ['bar'],
+				},
+			],
+		});
 
 		expect(result).toEqual({
 			value: ['foo', 'bar'],
