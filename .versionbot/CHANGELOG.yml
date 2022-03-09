@@ -1,4 +1,22 @@
 - commits:
+    - subject: Make AGGREGATE behave consistently
+      hash: cf889b09487eddfe7fbb2ef7878fe0e6aa0d2a59
+      body: |
+        Previously, the behaviour of AGGREGATE would be different when called
+        using the $events special value, or when it was called in another
+        formula. This change makes the default AGGREGATE behaviour the same as
+        when it is handled as a special case with $events.
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 5.1.50
+  title: "'Make AGGREGATE behave consistently'"
+  date: 2022-03-09T10:13:44.847Z
+- commits:
     - subject: Update typescript from 4.5.5 to 4.6.2
       hash: 306fd184c2faa5ef158e6a35936d4a411710bd9e
       body: ""
