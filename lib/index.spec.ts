@@ -152,6 +152,45 @@ describe('AGGREGATE', () => {
 		});
 	});
 
+	test('should ignore missing values', () => {
+		const result = evaluate('AGGREGATE(input, "mentions")', {
+			context: {},
+			input: [
+				{
+					tags: ['foo', 'bar'],
+				},
+				{
+					mentions: ['bar', 'baz'],
+				},
+				{
+					mentions: ['baz', 'qux'],
+				},
+			],
+		});
+
+		expect(result).toEqual({
+			value: ['bar', 'baz', 'qux'],
+		});
+	});
+
+	test('should keep null, 0, and empty string values', () => {
+		const result = evaluate('AGGREGATE(input, "mentions")', {
+			context: {},
+			input: [
+				{
+					mentions: ['bar', 0],
+				},
+				{
+					mentions: ['', null],
+				},
+			],
+		});
+
+		expect(result).toEqual({
+			value: ['bar', 0, '', null],
+		});
+	});
+
 	test('should aggregate a set of object properties', () => {
 		const result = evaluate('AGGREGATE(input, "mentions")', {
 			context: {},

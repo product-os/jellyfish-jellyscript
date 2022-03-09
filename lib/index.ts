@@ -52,7 +52,7 @@ formula.REGEX_MATCH = (
 };
 
 formula.AGGREGATE = <T>(list: any[], path: string): T[] => {
-	return _.uniq(_.flatMap(list, path));
+	return _.uniq(_.without(_.flatMap(list, path), undefined));
 };
 
 formula.NEEDS_ALL = (...statuses: NEEDS_STATUS[]) => {
