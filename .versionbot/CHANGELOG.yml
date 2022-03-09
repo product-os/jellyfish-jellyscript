@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update dependencies (external non-major bumps)
+      hash: a2048878df979712e1294cf1ed6cf37ad990541e
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 5.2.1
+  title: "'Update dependencies (external non-major bumps)'"
+  date: 2022-03-09T13:33:09.783Z
+- commits:
     - subject: Improve the error message thrown by evaluate()
       hash: 21068b3c53814e7155cce8e3a8a20b56fb462895
       body: |
