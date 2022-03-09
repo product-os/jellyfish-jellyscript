@@ -129,28 +129,31 @@ export const evaluate = (
 } => {
 	assert.INTERNAL(null, expression, Error, 'No expression provided');
 
-	const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
-		.expression;
+	try {
+		const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
+			.expression;
 
-	const result = runAST(ast, {
-		...options.context,
-		input: options.input,
-	});
+		const result = runAST(ast, {
+			...options.context,
+			input: options.input,
+		});
 
-	if (_.isError(result)) {
+		if (result === undefined) {
+			return {
+				value: null,
+			};
+		}
+
 		return {
-			value: null,
+			value: result,
 		};
+	} catch (error: any) {
+		// If we hit an error parsing or running the expression
+		// throw a more useful error message
+		throw new Error(
+			`Encountered error whilst evaluating formula expression: ${expression}\n${error.message}`,
+		);
 	}
-	if (result === undefined) {
-		return {
-			value: null,
-		};
-	}
-
-	return {
-		value: result,
-	};
 };
 
 const getDefaultValueForType = (type: string): null | [] => {

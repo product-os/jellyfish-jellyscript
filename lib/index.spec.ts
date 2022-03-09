@@ -30,6 +30,15 @@ describe('.evaluate()', () => {
 		});
 	});
 
+	test.only('should throw an error if the formula is bugged', () => {
+		expect(() =>
+			evaluate('FOOBAR(input, 2', {
+				context: {},
+				input: 1,
+			}),
+		).toThrow();
+	});
+
 	test('should resolve a number formula', () => {
 		const result = evaluate('!input', {
 			context: {
