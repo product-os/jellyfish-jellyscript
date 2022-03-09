@@ -1,4 +1,18 @@
 - commits:
+    - subject: Ensure AGGREGATE removes undefined values
+      hash: 9c6f0e9365dcfda237b9c1d2ece27733e7374a15
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 5.1.51
+  title: "'Ensure AGGREGATE removes undefined values'"
+  date: 2022-03-09T10:33:32.569Z
+- commits:
     - subject: Make AGGREGATE behave consistently
       hash: cf889b09487eddfe7fbb2ef7878fe0e6aa0d2a59
       body: |
