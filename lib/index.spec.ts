@@ -770,6 +770,37 @@ describe('.evaluateObject()', () => {
 			},
 		});
 	});
+
+	test('should ignore empty array results', () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					tags: {
+						type: 'array',
+						items: {
+							type: 'string',
+						},
+						$$formula:
+							'AGGREGATE(FILTER(contract.links["has attached element"], function (c) { return c && c.type && c.type !== "create@1.0.0" && c.type !== "update@1.0.0" }), "tags")',
+					},
+					links: {},
+				},
+			},
+			{
+				tags: ['foo', 'bar'],
+				links: {
+					'has attached element': [
+						{
+							tags: [],
+						},
+					],
+				},
+			},
+		);
+
+		expect(result.tags).toEqual(['foo', 'bar']);
+	});
 });
 
 describe('NEEDS', () => {

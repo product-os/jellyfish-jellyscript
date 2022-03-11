@@ -237,7 +237,12 @@ export const evaluateObject = <T extends JSONSchema7Object>(
 			input,
 		});
 
-		if (!_.isNull(result.value)) {
+		// Ignore empty/null results
+		if (
+			!_.isNull(result.value) &&
+			_.isArray(result.value) &&
+			!_.isEmpty(result.value)
+		) {
 			// Mutates input object
 			_.set(object, path.output, result.value);
 		}
