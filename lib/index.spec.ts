@@ -217,6 +217,72 @@ describe('AGGREGATE', () => {
 			value: ['foo', 'bar'],
 		});
 	});
+
+	test('should accept an initial value', () => {
+		const result = evaluate('AGGREGATE(input, "mentions", source)', {
+			context: {
+				source: ['baz'],
+			},
+			input: [
+				{
+					mentions: ['foo'],
+				},
+				{
+					mentions: ['bar'],
+				},
+			],
+		});
+
+		expect(result).toEqual({
+			value: ['baz', 'foo', 'bar'],
+		});
+	});
+
+	test("should accept an initial value that isn't an array", () => {
+		const result = evaluate('AGGREGATE(input, "mentions", source)', {
+			context: {
+				source: 'baz',
+			},
+			input: [
+				{
+					mentions: ['foo'],
+				},
+				{
+					mentions: ['bar'],
+				},
+			],
+		});
+
+		expect(result).toEqual({
+			value: ['baz', 'foo', 'bar'],
+		});
+	});
+
+	test('should just return the initial value as an array if input is empty', () => {
+		const result = evaluate('AGGREGATE(input, "mentions", source)', {
+			context: {
+				source: 'baz',
+			},
+			input: [],
+		});
+
+		expect(result).toEqual({
+			value: ['baz'],
+		});
+	});
+
+	test('should just return the initial value if input is missing', () => {
+		const result = evaluate('AGGREGATE(input, "mentions", source)', {
+			context: {
+				source: 'baz',
+			},
+			input: null,
+		});
+
+		expect(result).toEqual({
+			value: ['baz'],
+		});
+	});
 });
 
 describe('REGEX_MATCH', () => {
@@ -769,6 +835,37 @@ describe('.evaluateObject()', () => {
 				number: 13,
 			},
 		});
+	});
+
+	test('should merge arrays when using AGGREGATE', () => {
+		const result = evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					tags: {
+						type: 'array',
+						items: {
+							type: 'string',
+						},
+						$$formula:
+							'AGGREGATE(contract.links["has attached element"], "tags", input)',
+					},
+					links: {},
+				},
+			},
+			{
+				tags: ['foo', 'bar'],
+				links: {
+					'has attached element': [
+						{
+							tags: ['baz'],
+						},
+					],
+				},
+			},
+		);
+
+		expect(result.tags).toEqual(['foo', 'bar', 'baz']);
 	});
 });
 

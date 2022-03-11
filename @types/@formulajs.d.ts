@@ -31,7 +31,7 @@ declare module '@formulajs/formulajs' {
 		regex: string | RegExp,
 		str: string,
 	): RegExpMatchArray | null;
-	function AGGREGATE<T>(list: T[], path: string): T[];
+	function AGGREGATE<T>(list: T[], path: string, initial: any): T[];
 	function ORDER_BY<T>(
 		collection: List<T> | null | undefined,
 		iteratees?: Many<ListIterator<T, NotVoid>>,

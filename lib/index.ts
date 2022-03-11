@@ -51,8 +51,22 @@ formula.REGEX_MATCH = (
 	return str.match(regex);
 };
 
-formula.AGGREGATE = <T>(list: any[], path: string): T[] => {
-	return _.uniq(_.without(_.flatMap(list, path), undefined));
+formula.AGGREGATE = <T>(list: any[], path: string, initial: any): T[] => {
+	if (!path) {
+		throw new Error('Cannot run AGGREGATE without a path');
+	}
+	// 1. get the current value and default to an empty array
+	const current: T[] = _.castArray(initial || []);
+	// 2. get the list of values to aggregate
+	const values = current.concat(_.flatMap(list || [], path));
+	// 3. If there aren't any values, leave the input unchanged
+	if (values.length === 0) {
+		return initial;
+	}
+	// 4. Create a unique list of values, excluding any that are undefined
+	const result: any = _.uniq(_.without(values, undefined));
+
+	return result;
 };
 
 formula.NEEDS_ALL = (...statuses: NEEDS_STATUS[]) => {
