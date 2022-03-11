@@ -30,7 +30,7 @@ describe('.evaluate()', () => {
 		});
 	});
 
-	test.only('should throw an error if the formula is bugged', () => {
+	test('should throw an error if the formula is bugged', () => {
 		expect(() =>
 			evaluate('FOOBAR(input, 2', {
 				context: {},
@@ -431,7 +431,7 @@ describe('.evaluateObject()', () => {
 				properties: {
 					foo: {
 						type: 'number',
-						$$formula: 'POW(input, 2)',
+						$$formula: 'FOOBARBUZ(input, 2)',
 					},
 				},
 			},

@@ -138,6 +138,11 @@ export const evaluate = (
 			input: options.input,
 		});
 
+		if (_.isError(result)) {
+			return {
+				value: null,
+			};
+		}
 		if (result === undefined) {
 			return {
 				value: null,
