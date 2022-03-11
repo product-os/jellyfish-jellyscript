@@ -1,4 +1,38 @@
 - commits:
+    - subject: "evaluate: Return null on missing input"
+      hash: 8bf1b0ca8a63bddbb9963174b3dcbe10c578153f
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+    - subject: Downgrade formulajs
+      hash: d8d58c15e6d51d800d7521c7db636adeff78802a
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+    - subject: Stop skipping most tests
+      hash: f6dffa1f264839fbfc3b71671c94da378e2ea5fd
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 5.2.2
+  title: "'Stop skipping most tests'"
+  date: 2022-03-11T08:06:27.394Z
+- commits:
     - subject: Update dependencies (external non-major bumps)
       hash: a2048878df979712e1294cf1ed6cf37ad990541e
       body: ""
