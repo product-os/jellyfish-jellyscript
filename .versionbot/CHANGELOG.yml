@@ -1,4 +1,22 @@
 - commits:
+    - subject: Allow AGGREGATE to accept an initial value
+      hash: 94d4304d2bb4abc4e04511cfad96ca61e199beda
+      body: >
+        With this change, can now to provide an initial value to the AGGREGATE
+        function.
+
+        This change allows us to transition from using the special case handling of AGGREGATE, via a `triggered-action` and `action-set-add`, to an entirely formula based solution.
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 5.3.0
+  title: "'Allow AGGREGATE to accept an initial value'"
+  date: 2022-03-11T10:46:17.107Z
+- commits:
     - subject: "evaluate: Return null on missing input"
       hash: 8bf1b0ca8a63bddbb9963174b3dcbe10c578153f
       body: ""
