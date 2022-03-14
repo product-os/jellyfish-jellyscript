@@ -14,7 +14,7 @@ import type { JSONSchema7Object } from 'json-schema';
 import _, { Dictionary } from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
 import staticEval from 'static-eval';
-import { FormulaPath, getFormulasPaths } from './card';
+import { getFormulasPaths } from './card';
 import { reverseLink } from './link-traversal';
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
@@ -74,56 +74,6 @@ const slugify = (str: string): string => {
 		.toLowerCase()
 		.replace(/[^a-z0-9-]/g, '-')
 		.replace(/-{1,}/g, '-');
-};
-
-// Aggregating links is a special case. This is the expected base AST structure.
-// Note: this translates to a $$formula in the following format:
-// $$formula: 'UNIQUE(FLATMAP($events, "<SOURCE_PATH>"))'
-const LINKS_AGGREGATE_BASE_AST = {
-	type: 'CallExpression',
-	callee: {
-		type: 'Identifier',
-		name: 'AGGREGATE',
-	},
-	arguments: [
-		{
-			type: 'Identifier',
-			name: '$events',
-		},
-		{
-			// "value": "<SOURCE_PATH>",
-			// "raw": "'<SOURCE_PATH>'",
-			type: 'Literal',
-		},
-	],
-};
-
-const LINKS_UNIQUE_FLATMAP_BASE_AST = {
-	type: 'CallExpression',
-	callee: {
-		type: 'Identifier',
-		name: 'UNIQUE',
-	},
-	arguments: [
-		{
-			type: 'CallExpression',
-			callee: {
-				type: 'Identifier',
-				name: 'FLATMAP',
-			},
-			arguments: [
-				{
-					type: 'Identifier',
-					name: '$events',
-				},
-				{
-					// "value": "<SOURCE_PATH>",
-					// "raw": "'<SOURCE_PATH>'",
-					type: 'Literal',
-				},
-			],
-		},
-	],
 };
 
 const CONTRACT_LINKS_REFERENCE_AST = {
@@ -351,103 +301,7 @@ export const getTypeTriggers = (typeCard: ContractDefinition) => {
 		),
 	);
 
-	// This is to support $events and can be removed after changing all
-	// call sites to `contract.links["xyz"]` AND re-adding a efficient way
-	// to do aggregations. see https://github.com/product-os/jellyfish-jellyscript/blob/evaluating-links/lib/index.js#L217
-
-	// TS-TODO: remove optional chaining once we use TypeContract
-	const eventMatches = getFormulasPaths(typeCard?.data?.schema as JsonSchema)
-		.map((p) => ({
-			path: p,
-			ast: (parse(p.formula).body[0] as ESTree.ExpressionStatement)
-				.expression as any,
-		}))
-		.filter(
-			(p) =>
-				_.isMatch(p.ast, LINKS_AGGREGATE_BASE_AST) ||
-				_.isMatch(p.ast, LINKS_UNIQUE_FLATMAP_BASE_AST),
-		);
-
-	for (const { path, ast } of eventMatches) {
-		const literal =
-			ast.callee.name === 'AGGREGATE'
-				? ast.arguments[1]
-				: ast.arguments[0].arguments[1];
-
-		const arg = runAST(literal, {}, baseFormulas);
-		const valueProperty = `source.${arg}`;
-
-		triggers.push(createEventsTrigger(typeCard, path, valueProperty));
-	}
-
 	return triggers;
-};
-
-const createEventsTrigger = (
-	typeCard: ContractDefinition<ContractData>,
-	path: FormulaPath,
-	valueProperty: string,
-): ContractDefinition<ContractData> => {
-	return {
-		slug: slugify(`triggered-action-${typeCard.slug}-${path.output.join('-')}`),
-		type: 'triggered-action@1.0.0',
-		version: typeCard.version,
-		active: true,
-		requires: [],
-		capabilities: [],
-		markers: [],
-		tags: [],
-		data: {
-			action: 'action-set-add@1.0.0',
-			type: `${typeCard.slug}@${typeCard.version}`,
-			target: {
-				$eval: "source.links['is attached to'][0].id",
-			},
-			arguments: {
-				property: path.output.join('.'),
-				value: {
-					$if: valueProperty,
-					then: {
-						$eval: valueProperty,
-					},
-					else: [],
-				},
-			},
-			filter: {
-				type: 'object',
-				required: ['type', 'data'],
-				$$links: {
-					'is attached to': {
-						type: 'object',
-						required: ['type'],
-						properties: {
-							type: {
-								type: 'string',
-								const: `${typeCard.slug}@${typeCard.version}`,
-							},
-						},
-					},
-				},
-				properties: {
-					type: {
-						type: 'string',
-						not: {
-							enum: ['create@1.0.0', 'update@1.0.0'],
-						},
-					},
-					data: {
-						type: 'object',
-						required: ['payload'],
-						properties: {
-							payload: {
-								type: 'object',
-							},
-						},
-					},
-				},
-			},
-		},
-	};
 };
 
 /**
