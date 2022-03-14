@@ -1,4 +1,56 @@
 - commits:
+    - subject: Drop support for $events syntactic sugar
+      hash: 3a209917033ab2500a523c78b9fb2513c4c4058e
+      body: >
+        The value `$events` is no longer supported, all call sites should be
+        adapted to use `contract.links['has attached element']` instead.
+      footer:
+        Change-type: major
+        change-type: major
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+    - subject: Drop transformers specific formulas
+      hash: 71ae0c88e9b2a5b3cac8fa080aa52841f63066cb
+      body: >
+        These formulas should be added at the implementation layer, in the
+        jellyfish-worker package.
+      footer:
+        Change-type: major
+        change-type: major
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+    - subject: Add ability to provide custom formulas to parser instance
+      hash: 2f5cf6f237614a4c8d70a5eab250c78e0d2b9e4a
+      body: ""
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+    - subject: Use a parser class instead of pure functions
+      hash: 0d7f8f5c27118d50f7e5c45c4a964c7d78213e44
+      body: >
+        This is a breaking change that makes `evaluatePatch`, `evaluate` and
+        `evaluateObject` methods of a new `Jellyscript` class.
+
+        Making this change allows us to add functionality for per-instance customization and options in the future.
+      footer:
+        Change-type: major
+        change-type: major
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 6.0.0
+  title: "'Add ability to provide custom formulas'"
+  date: 2022-03-14T13:01:57.472Z
+- commits:
     - subject: Allow AGGREGATE to accept an initial value
       hash: 94d4304d2bb4abc4e04511cfad96ca61e199beda
       body: >
