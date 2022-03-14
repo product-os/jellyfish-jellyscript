@@ -1,13 +1,10 @@
-import {
-	evaluate,
-	evaluateObject,
-	getReferencedLinkVerbs,
-	getTypeTriggers,
-} from './index';
+import type { JsonSchema } from '@balena/jellyfish-types';
+import { Jellyscript, getReferencedLinkVerbs, getTypeTriggers } from './index';
 
 describe('.evaluate()', () => {
 	test('should return null if no input', () => {
-		const result = evaluate('POW(input, 2)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('POW(input, 2)', {
 			context: {},
 			input: null,
 		});
@@ -18,7 +15,8 @@ describe('.evaluate()', () => {
 	});
 
 	test('should resolve a number formula', () => {
-		const result = evaluate('POW(input, 2)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('POW(input, 2)', {
 			context: {
 				number: 2,
 			},
@@ -31,8 +29,9 @@ describe('.evaluate()', () => {
 	});
 
 	test('should throw an error if the formula is bugged', () => {
+		const parser = new Jellyscript();
 		expect(() =>
-			evaluate('FOOBAR(input, 2', {
+			parser.evaluate('FOOBAR(input, 2', {
 				context: {},
 				input: 1,
 			}),
@@ -40,7 +39,8 @@ describe('.evaluate()', () => {
 	});
 
 	test('should resolve a number formula', () => {
-		const result = evaluate('!input', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('!input', {
 			context: {
 				number: true,
 			},
@@ -53,7 +53,8 @@ describe('.evaluate()', () => {
 	});
 
 	test('should resolve composite formulas', () => {
-		const result = evaluate('MAX(POW(input, 2), POW(input, 3))', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('MAX(POW(input, 2), POW(input, 3))', {
 			context: {
 				number: 2,
 			},
@@ -66,7 +67,8 @@ describe('.evaluate()', () => {
 	});
 
 	test('should access other properties from the card', () => {
-		const result = evaluate('ADD(obj.value1, obj.value2)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('ADD(obj.value1, obj.value2)', {
 			context: {
 				obj: {
 					value1: 2,
@@ -82,7 +84,8 @@ describe('.evaluate()', () => {
 	});
 
 	test('should handle combinations of functions', () => {
-		const result = evaluate(
+		const parser = new Jellyscript();
+		const result = parser.evaluate(
 			'EVERY(FILTER(contract.links["has attached"], { type: "improvement@1.0.0" }), { data: { status: "completed" } })',
 			{
 				context: {
@@ -122,7 +125,8 @@ describe('.evaluate()', () => {
 });
 
 test('UNIQUE(FLATMAP()): should aggregate a set of object properties', () => {
-	const result = evaluate('UNIQUE(FLATMAP(input, "mentions"))', {
+	const parser = new Jellyscript();
+	const result = parser.evaluate('UNIQUE(FLATMAP(input, "mentions"))', {
 		context: {},
 		input: [
 			{
@@ -141,7 +145,8 @@ test('UNIQUE(FLATMAP()): should aggregate a set of object properties', () => {
 
 describe('AGGREGATE', () => {
 	test('should ignore duplicates', () => {
-		const result = evaluate('AGGREGATE(input, "mentions")', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('AGGREGATE(input, "mentions")', {
 			context: {},
 			input: [
 				{
@@ -162,7 +167,8 @@ describe('AGGREGATE', () => {
 	});
 
 	test('should ignore missing values', () => {
-		const result = evaluate('AGGREGATE(input, "mentions")', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('AGGREGATE(input, "mentions")', {
 			context: {},
 			input: [
 				{
@@ -183,7 +189,8 @@ describe('AGGREGATE', () => {
 	});
 
 	test('should keep null, 0, and empty string values', () => {
-		const result = evaluate('AGGREGATE(input, "mentions")', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('AGGREGATE(input, "mentions")', {
 			context: {},
 			input: [
 				{
@@ -201,7 +208,8 @@ describe('AGGREGATE', () => {
 	});
 
 	test('should aggregate a set of object properties', () => {
-		const result = evaluate('AGGREGATE(input, "mentions")', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('AGGREGATE(input, "mentions")', {
 			context: {},
 			input: [
 				{
@@ -219,7 +227,8 @@ describe('AGGREGATE', () => {
 	});
 
 	test('should accept an initial value', () => {
-		const result = evaluate('AGGREGATE(input, "mentions", source)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('AGGREGATE(input, "mentions", source)', {
 			context: {
 				source: ['baz'],
 			},
@@ -239,7 +248,8 @@ describe('AGGREGATE', () => {
 	});
 
 	test("should accept an initial value that isn't an array", () => {
-		const result = evaluate('AGGREGATE(input, "mentions", source)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('AGGREGATE(input, "mentions", source)', {
 			context: {
 				source: 'baz',
 			},
@@ -259,7 +269,8 @@ describe('AGGREGATE', () => {
 	});
 
 	test('should just return the initial value as an array if input is empty', () => {
-		const result = evaluate('AGGREGATE(input, "mentions", source)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('AGGREGATE(input, "mentions", source)', {
 			context: {
 				source: 'baz',
 			},
@@ -272,7 +283,8 @@ describe('AGGREGATE', () => {
 	});
 
 	test('should just return the initial value if input is missing', () => {
-		const result = evaluate('AGGREGATE(input, "mentions", source)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('AGGREGATE(input, "mentions", source)', {
 			context: {
 				source: 'baz',
 			},
@@ -287,7 +299,8 @@ describe('AGGREGATE', () => {
 
 describe('REGEX_MATCH', () => {
 	test('should extract a set of mentions', () => {
-		const result = evaluate('REGEX_MATCH(/(@[a-zA-Z0-9-]+)/g, input)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('REGEX_MATCH(/(@[a-zA-Z0-9-]+)/g, input)', {
 			context: {},
 			input: 'Hello @johndoe, and @janedoe',
 		});
@@ -298,7 +311,8 @@ describe('REGEX_MATCH', () => {
 	});
 
 	test('should consider duplicates', () => {
-		const result = evaluate('REGEX_MATCH(/(@[a-zA-Z0-9-]+)/g, input)', {
+		const parser = new Jellyscript();
+		const result = parser.evaluate('REGEX_MATCH(/(@[a-zA-Z0-9-]+)/g, input)', {
 			context: {},
 			input: 'Hello @johndoe, and @janedoe, and @johndoe',
 		});
@@ -311,7 +325,8 @@ describe('REGEX_MATCH', () => {
 
 describe('.evaluateObject()', () => {
 	test('should evaluate a number formula', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -332,7 +347,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate a EVERY formula', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -365,7 +381,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate a SOME formula', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -398,7 +415,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate a VALUES formula', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -424,7 +442,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate a boolean formula', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -449,7 +468,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate a formula in a $ prefixed property', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -470,7 +490,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate a formula in a $$ prefixed property', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -491,7 +512,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should ignore missing formulas', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -512,7 +534,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should not ignore the zero number as missing', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -533,7 +556,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate nested formulas', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -572,7 +596,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should concatenate string with CONCATENATE function', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -602,7 +627,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should concatenate string with + operator', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -632,7 +658,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should not do anything if the schema has no formulas', async () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -657,7 +684,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should get the last message/whisper from a timeline', () => {
-		const evaluatedContract: any = evaluateObject(
+		const parser = new Jellyscript();
+		const evaluatedContract: any = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -720,7 +748,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate to undefined if no messages/whispers in a timeline', () => {
-		const evaluatedContract: any = evaluateObject(
+		const parser = new Jellyscript();
+		const evaluatedContract: any = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -766,7 +795,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate computed fields that reference computed fields', () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -801,7 +831,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should evaluate computed fields that reference nested computed fields', () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -838,7 +869,8 @@ describe('.evaluateObject()', () => {
 	});
 
 	test('should merge arrays when using AGGREGATE', () => {
-		const result = evaluateObject(
+		const parser = new Jellyscript();
+		const result = parser.evaluateObject(
 			{
 				type: 'object',
 				properties: {
@@ -869,715 +901,7 @@ describe('.evaluateObject()', () => {
 	});
 });
 
-describe('NEEDS', () => {
-	test('.evaluateObject() should return never if an error exists for passed-in type', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula: 'NEEDS(contract, "transformer-type")',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								data: {
-									expectedOutputTypes: ['transformer-type'],
-								},
-								type: 'error@1.0.0',
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							data: {
-								expectedOutputTypes: ['transformer-type'],
-							},
-							type: 'error@1.0.0',
-						},
-					],
-				},
-			},
-			mergeable: 'never',
-		});
-	});
-
-	test('.evaluateObject() should return pending if an error exists but not for the passed-in type', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula: 'NEEDS(contract, "transformer-type")',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								data: {
-									expectedOutputTypes: ['random-type'],
-								},
-								type: 'error@1.0.0',
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							data: {
-								expectedOutputTypes: ['random-type'],
-							},
-							type: 'error@1.0.0',
-						},
-					],
-				},
-			},
-			mergeable: 'pending',
-		});
-	});
-
-	test('.evaluateObject() should return mergeable if backflow mergeable is "mergeable" and has no error', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula: 'NEEDS(contract, "transformer-type")',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								type: 'transformer-type@1.0.0',
-								data: {
-									$transformer: {
-										mergeable: 'mergeable',
-									},
-								},
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							type: 'transformer-type@1.0.0',
-							data: {
-								$transformer: {
-									mergeable: 'mergeable',
-								},
-							},
-						},
-					],
-				},
-			},
-			mergeable: 'mergeable',
-		});
-	});
-
-	test('.evaluateObject() should return mergeable if backflow mergeable is true and has no error', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula: 'NEEDS(contract, "transformer-type")',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								type: 'transformer-type@1.0.0',
-								data: {
-									$transformer: {
-										mergeable: true,
-									},
-								},
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							type: 'transformer-type@1.0.0',
-							data: {
-								$transformer: {
-									mergeable: true,
-								},
-							},
-						},
-					],
-				},
-			},
-			mergeable: 'mergeable',
-		});
-	});
-
-	test('.evaluateObject() should return pending if backflow mergeable is false and has no error', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula: 'NEEDS(contract, "transformer-type")',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								type: 'transformer-type@1.0.0',
-								data: {
-									$transformer: {
-										mergeable: false,
-									},
-								},
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							type: 'transformer-type@1.0.0',
-							data: {
-								$transformer: {
-									mergeable: false,
-								},
-							},
-						},
-					],
-				},
-			},
-			mergeable: 'pending',
-		});
-	});
-
-	test('.evaluateObject() should return mergeable if backflow mergeable is "mergeable", it has no error and callback succeeds', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula:
-							'NEEDS(contract, "transformer-type", function (c) { return c && c.data.foo === "bar" })',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								type: 'transformer-type@1.0.0',
-								data: {
-									$transformer: {
-										mergeable: 'mergeable',
-									},
-									foo: 'bar',
-								},
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							type: 'transformer-type@1.0.0',
-							data: {
-								$transformer: {
-									mergeable: 'mergeable',
-								},
-								foo: 'bar',
-							},
-						},
-					],
-				},
-			},
-			mergeable: 'mergeable',
-		});
-	});
-
-	test('.evaluateObject() should return mergeable if backflow mergeable is "mergeable", it has no error and callback fails', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula:
-							'NEEDS(contract, "transformer-type", function (c) { return c && c.data.foo === "notbar" })',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								type: 'transformer-type@1.0.0',
-								data: {
-									$transformer: {
-										mergeable: 'mergeable',
-									},
-									foo: 'bar',
-								},
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							type: 'transformer-type@1.0.0',
-							data: {
-								$transformer: {
-									mergeable: 'mergeable',
-								},
-								foo: 'bar',
-							},
-						},
-					],
-				},
-			},
-			mergeable: 'pending',
-		});
-	});
-
-	test('.evaluateObject() should return never if an error exists for passed-in type and callback succeeds', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula:
-							'NEEDS(contract, "transformer-type", function (c) { return c && c.data.foo === "bar" })',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								data: {
-									expectedOutputTypes: ['transformer-type'],
-									foo: 'bar',
-								},
-								type: 'error@1.0.0',
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							data: {
-								expectedOutputTypes: ['transformer-type'],
-								foo: 'bar',
-							},
-							type: 'error@1.0.0',
-						},
-					],
-				},
-			},
-			mergeable: 'never',
-		});
-	});
-
-	test('.evaluateObject() should return never if an error exists for passed-in type and callback fails', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					backflow: {
-						type: 'array',
-					},
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula:
-							'NEEDS(contract, "transformer-type", function (c) { return c && c.data.foo === "notbar" })',
-					},
-				},
-			},
-			{
-				data: {
-					$transformer: {
-						backflow: [
-							{
-								data: {
-									expectedOutputTypes: ['transformer-type'],
-									foo: 'bar',
-								},
-								type: 'error@1.0.0',
-							},
-						],
-					},
-				},
-			},
-		);
-
-		expect(result).toEqual({
-			data: {
-				$transformer: {
-					backflow: [
-						{
-							data: {
-								expectedOutputTypes: ['transformer-type'],
-								foo: 'bar',
-							},
-							type: 'error@1.0.0',
-						},
-					],
-				},
-			},
-			mergeable: 'pending',
-		});
-	});
-});
-
-describe('NEEDS_ALL', () => {
-	test('.evaluateObject() should return never if at least one parameter is never', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					mergeable: {
-						type: 'string',
-						enum: ['never', 'pending', 'mergeable'],
-						$$formula: 'NEEDS_ALL("mergeable", "pending", "never")',
-					},
-				},
-			},
-			{
-				mergeable: 'random-value',
-			},
-		);
-
-		expect(result).toEqual({
-			mergeable: 'never',
-		});
-	});
-
-	test('.evaluateObject() should return pending if there is no never parameter and at least one pending', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					mergeable: {
-						type: 'string',
-						enum: ['pending', 'never', 'mergeable'],
-						$$formula: 'NEEDS_ALL("pending", "mergeable")',
-					},
-				},
-			},
-			{
-				mergeable: 'random-value',
-			},
-		);
-
-		expect(result).toEqual({
-			mergeable: 'pending',
-		});
-	});
-
-	test('.evaluateObject() should return mergeable if all parameters are mergeable', async () => {
-		const result = evaluateObject(
-			{
-				type: 'object',
-				properties: {
-					mergeable: {
-						type: 'string',
-						enum: ['pending', 'never', 'mergeable'],
-						$$formula: 'NEEDS_ALL("mergeable", "mergeable")',
-					},
-				},
-			},
-			{
-				mergeable: 'random-value',
-			},
-		);
-
-		expect(result).toEqual({
-			mergeable: 'mergeable',
-		});
-	});
-});
-
 describe('.getTypeTriggers()', () => {
-	test('should report back watchers when aggregating events', async () => {
-		const triggers = getTypeTriggers({
-			slug: 'thread',
-			type: 'type@1.0.0',
-			version: '1.0.0',
-			data: {
-				schema: {
-					type: 'object',
-					properties: {
-						data: {
-							type: 'object',
-							properties: {
-								mentions: {
-									type: 'array',
-									$$formula: 'AGGREGATE($events, "data.mentions")',
-								},
-							},
-						},
-					},
-				},
-			},
-		});
-
-		expect(triggers).toEqual([
-			{
-				type: 'triggered-action@1.0.0',
-				version: '1.0.0',
-				slug: 'triggered-action-thread-data-mentions',
-				requires: [],
-				capabilities: [],
-				active: true,
-				tags: [],
-				markers: [],
-				data: {
-					type: 'thread@1.0.0',
-					action: 'action-set-add@1.0.0',
-					target: {
-						$eval: "source.links['is attached to'][0].id",
-					},
-					arguments: {
-						property: 'data.mentions',
-						value: {
-							$if: 'source.data.mentions',
-							then: {
-								$eval: 'source.data.mentions',
-							},
-							else: [],
-						},
-					},
-					filter: {
-						type: 'object',
-						$$links: {
-							'is attached to': {
-								type: 'object',
-								required: ['type'],
-								properties: {
-									type: {
-										type: 'string',
-										const: 'thread@1.0.0',
-									},
-								},
-							},
-						},
-						required: ['type', 'data'],
-						properties: {
-							type: {
-								type: 'string',
-								not: {
-									enum: ['create@1.0.0', 'update@1.0.0'],
-								},
-							},
-							data: {
-								type: 'object',
-								required: ['payload'],
-								properties: {
-									payload: {
-										type: 'object',
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		]);
-	});
-
-	test('should report back watchers when aggregating events with UNIQUE and FLATMAP', async () => {
-		const triggers = getTypeTriggers({
-			slug: 'thread',
-			type: 'type@1.0.0',
-			version: '1.0.0',
-			data: {
-				schema: {
-					type: 'object',
-					properties: {
-						data: {
-							type: 'object',
-							properties: {
-								mentions: {
-									type: 'array',
-									$$formula: 'UNIQUE(FLATMAP($events, "data.mentions"))',
-								},
-							},
-						},
-					},
-				},
-			},
-		});
-
-		expect(triggers).toEqual([
-			{
-				type: 'triggered-action@1.0.0',
-				version: '1.0.0',
-				slug: 'triggered-action-thread-data-mentions',
-				requires: [],
-				capabilities: [],
-				active: true,
-				tags: [],
-				markers: [],
-				data: {
-					type: 'thread@1.0.0',
-					action: 'action-set-add@1.0.0',
-					target: {
-						$eval: "source.links['is attached to'][0].id",
-					},
-					arguments: {
-						property: 'data.mentions',
-						value: {
-							$if: 'source.data.mentions',
-							then: {
-								$eval: 'source.data.mentions',
-							},
-							else: [],
-						},
-					},
-					filter: {
-						type: 'object',
-						$$links: {
-							'is attached to': {
-								type: 'object',
-								required: ['type'],
-								properties: {
-									type: {
-										type: 'string',
-										const: 'thread@1.0.0',
-									},
-								},
-							},
-						},
-						required: ['type', 'data'],
-						properties: {
-							type: {
-								type: 'string',
-								not: {
-									enum: ['create@1.0.0', 'update@1.0.0'],
-								},
-							},
-							data: {
-								type: 'object',
-								required: ['payload'],
-								properties: {
-									payload: {
-										type: 'object',
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		]);
-	});
-
 	test('should properly reverse links', async () => {
 		const triggers = getTypeTriggers({
 			id: '3fe919b0-a991-4957-99f0-5f7bb926addb',
@@ -1841,5 +1165,73 @@ describe('getReferencedLinkVerbs()', () => {
 			},
 		});
 		expect(links.length).toEqual(0);
+	});
+});
+
+describe('custom formulas', () => {
+	it('should allow a custom formula to be used', () => {
+		const schema: JsonSchema = {
+			type: 'object',
+			properties: {
+				value: {
+					type: 'string',
+				},
+				message: {
+					type: 'string',
+					$$formula: 'GREET(contract.value)',
+				},
+			},
+		};
+
+		const formulaFn = (value: string): string => {
+			return `Hello ${value}`;
+		};
+
+		const parser = new Jellyscript({
+			formulas: {
+				GREET: formulaFn,
+			},
+		});
+
+		const result = parser.evaluateObject(schema, {
+			value: 'world',
+			message: '',
+		});
+
+		expect(result.message).toEqual('Hello world');
+	});
+
+	it('custom formulas should not be overwritten by different instances', () => {
+		const NAME = 'SPEAK';
+
+		const parser1 = new Jellyscript({
+			formulas: {
+				[NAME]: () => 'woof',
+			},
+		});
+
+		const result1 = parser1.evaluate(`${NAME}()`, {
+			context: {},
+			input: '',
+		});
+
+		expect(result1).toEqual({
+			value: 'woof',
+		});
+
+		const parser2 = new Jellyscript({
+			formulas: {
+				[NAME]: () => 'meow',
+			},
+		});
+
+		const result = parser2.evaluate(`${NAME}()`, {
+			context: {},
+			input: '',
+		});
+
+		expect(result).toEqual({
+			value: 'meow',
+		});
 	});
 });

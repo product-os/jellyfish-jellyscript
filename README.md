@@ -8,7 +8,7 @@
   <h1>Jellyscript</h1>
 
   <p>
-    A tiny embeddable language for using computed properties in JSON Schema.
+    Write computed properties in JSON Schema using javascript expressions.
     <br>
     https://product-os.github.io/jellyfish-jellyscript
   </p>
@@ -34,21 +34,23 @@ Jellyscript supports all the functions provided by [FormulaJS](https://formulajs
 Below is an example how to use this library:
 
 ```typescript
-import * as jellyscript from "@balena/jellyfish-jellyscript";
+import { Jellyscript } from '@balena/jellyfish-jellyscript';
+
+const parser = new Jellyscript();
 
 const schema = {
-	type: "object",
+	type: 'object',
 	properties: {
 		number: {
-			type: "string",
-			$$formula: "SUM(contract.input, 10)",
+			type: 'string',
+			$$formula: 'SUM(contract.input, 10)',
 		},
 		lucky: {
-			type: "boolean",
-			$$formula: "contract.number === 13 ? true: false",
+			type: 'boolean',
+			$$formula: 'contract.number === 13 ? true: false',
 		},
 		input: {
-			type: "number",
+			type: 'number',
 		},
 	},
 };
@@ -57,7 +59,7 @@ const data = {
 	input: 3,
 };
 
-const result = jellyscript.evaluateObject(schema, data);
+const result = parser.evaluateObject(schema, data);
 
 console.log(result); // --> { lucky: true, number: 13, input: 3, }
 ```
