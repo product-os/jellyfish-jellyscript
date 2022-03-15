@@ -901,6 +901,56 @@ describe('.evaluateObject()', () => {
 	});
 });
 
+describe('.getObjectMemberExpressions()', () => {
+	test('should find all values exactly once', async () => {
+		const links = Jellyscript.getObjectMemberExpressions(
+			{
+				type: 'object',
+				properties: {
+					data: {
+						type: 'object',
+						properties: {
+							mentions: {
+								type: 'array',
+								$$formula: 'contract.links()["some other link"]',
+							},
+							mentions2: {
+								type: 'array',
+								$$formula: '[]+contract.links["some link"]',
+							},
+							count: {
+								type: 'array',
+								$$formula:
+									'5 + contract.links["other link"].reduce((o,sum)=>sum+1,0)',
+							},
+						},
+					},
+				},
+			},
+			'contract',
+			'links',
+		);
+		expect(links).toContain('some link');
+		expect(links).toContain('other link');
+	});
+
+	test('should not fail if no formulas are given', async () => {
+		const links = Jellyscript.getObjectMemberExpressions(
+			{
+				type: 'object',
+				properties: {
+					data: {
+						type: 'object',
+					},
+				},
+			},
+			'contract',
+			'links',
+		);
+		expect(links.length).toEqual(0);
+	});
+});
+
 describe('.getTypeTriggers()', () => {
 	test('should properly reverse links', async () => {
 		const triggers = getTypeTriggers({
