@@ -76,28 +76,6 @@ const slugify = (str: string): string => {
 		.replace(/-{1,}/g, '-');
 };
 
-const CONTRACT_LINKS_REFERENCE_AST = {
-	type: 'MemberExpression',
-	object: {
-		type: 'MemberExpression',
-		object: {
-			type: 'Identifier',
-			name: 'contract',
-		},
-		property: {
-			type: 'Identifier',
-			name: 'links',
-		},
-	},
-	property: {
-		type: 'Literal',
-	},
-};
-
-type ContractLinkRef = typeof CONTRACT_LINKS_REFERENCE_AST & {
-	property: { value: string };
-};
-
 const runAST = (
 	ast: ESTree.Expression,
 	evalContext: any = {},
@@ -265,25 +243,56 @@ export class Jellyscript {
 
 		return object;
 	};
+
+	// Introspect a schema for formulas that access given `property` on `object`, returning any found values as an array
+	static getObjectMemberExpressions(
+		schema: JsonSchema,
+		object: string,
+		property: string,
+	): string[] {
+		const referenceAst = {
+			type: 'MemberExpression',
+			object: {
+				type: 'MemberExpression',
+				object: {
+					type: 'Identifier',
+					name: object,
+				},
+				property: {
+					type: 'Identifier',
+					name: property,
+				},
+			},
+			property: {
+				type: 'Literal',
+			},
+		};
+		const formulas = getFormulasPaths(schema).map((f) => f.formula);
+		const formulaAst = formulas.map((f) => parse(f));
+		const expressions = formulaAst.flatMap((ast) => {
+			const refs = objectDeepSearch.find<{ property: { value: string } }>(
+				ast,
+				referenceAst,
+			);
+			return refs;
+		});
+		const results = expressions.reduce(
+			(linkSet, l) => linkSet.add(l.property.value),
+			new Set<string>(),
+		);
+		return [...results];
+	}
 }
 
 export const getReferencedLinkVerbs = <T extends Pick<TypeContract, 'data'>>(
 	typeCard: T,
 ): string[] => {
-	const formulas = getFormulasPaths(typeCard.data.schema).map((f) => f.formula);
-	const formulaAst = formulas.map((f) => parse(f));
-	const linkExpressions = formulaAst.flatMap((ast) => {
-		const contractLinkRefs = objectDeepSearch.find<ContractLinkRef>(
-			ast,
-			CONTRACT_LINKS_REFERENCE_AST,
-		);
-		return contractLinkRefs;
-	});
-	const linkVerbs = linkExpressions.reduce(
-		(linkSet, l) => linkSet.add(l.property.value),
-		new Set<string>(),
+	const linkVerbs = Jellyscript.getObjectMemberExpressions(
+		typeCard.data.schema,
+		'contract',
+		'links',
 	);
-	return [...linkVerbs];
+	return linkVerbs;
 };
 
 // TS-TODO: use TypeContract interface instead of Contract
