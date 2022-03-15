@@ -1,4 +1,26 @@
 - commits:
+    - subject: Add generic functionality for introspecting schemas for object references
+      hash: 4e91a4da636e01d1282fb1d97c066e86425c73ed
+      body: >
+        Fixes #836
+
+
+        This change takes the `getReferencedLinkVerbs` and makes it a generic
+
+        object property search function, accessible as `Jellyscript.getObjectMemberExpressions()`.
+
+        In a follow up a PR, the link verb specific function will be removed.
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 6.1.0
+  title: "'Add generic functionality for introspecting schemas for object references'"
+  date: 2022-03-15T11:40:59.628Z
+- commits:
     - subject: Drop support for $events syntactic sugar
       hash: 3a209917033ab2500a523c78b9fb2513c4c4058e
       body: >
