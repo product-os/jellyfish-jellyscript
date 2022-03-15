@@ -1,4 +1,37 @@
 - commits:
+    - subject: Remove dependency on jellyfish-assert
+      hash: 21ce4a6b8eae542a5c586c6a9335f2b518259939
+      body: >
+        Fixes https://github.com/product-os/jellyfish-jellyscript/issues/839
+
+
+        This assert call is not necessary as the function call is strictly typed.
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+    - subject: Remove code for generating triggered actions
+      hash: 4a4333835f34bb57a856fe357e47371a76008679
+      body: >
+        Functions for generating triggered actions based on specific formulas
+        has been hoisted into the jellyfish worker: see
+        https://github.com/product-os/jellyfish-worker/pull/1428/files
+
+        This helps to draw clear boundaries around desired functionality. Jellyscript should not have knowledge of the workings of Jellyfish or of contracts.
+      footer:
+        Change-type: major
+        change-type: major
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 7.0.0
+  title: "'Remove code for generating triggered actions'"
+  date: 2022-03-15T15:18:41.271Z
+- commits:
     - subject: Add generic functionality for introspecting schemas for object references
       hash: 4e91a4da636e01d1282fb1d97c066e86425c73ed
       body: >
