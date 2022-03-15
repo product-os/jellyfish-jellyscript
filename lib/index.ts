@@ -1,21 +1,13 @@
-import * as assert from '@balena/jellyfish-assert';
-import type { LinkConstraint } from '@balena/jellyfish-client-sdk';
 import type { JsonSchema } from '@balena/jellyfish-types';
-import type {
-	ContractData,
-	ContractDefinition,
-	TypeContract,
-} from '@balena/jellyfish-types/build/core';
 import * as esprima from 'esprima';
 import * as ESTree from 'estree';
 import { applyPatch, compare, Operation } from 'fast-json-patch';
 import baseFormulas from '@formulajs/formulajs';
 import type { JSONSchema7Object } from 'json-schema';
-import _, { Dictionary } from 'lodash';
+import _ from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';
 import staticEval from 'static-eval';
 import { getFormulasPaths } from './card';
-import { reverseLink } from './link-traversal';
 
 // TS-TODO: The esprima @types package doesn't include a definition for 'parse',
 // so we've manually defined it here.
@@ -68,14 +60,6 @@ export interface Options {
 	input: any;
 }
 
-const slugify = (str: string): string => {
-	return str
-		.trim()
-		.toLowerCase()
-		.replace(/[^a-z0-9-]/g, '-')
-		.replace(/-{1,}/g, '-');
-};
-
 const runAST = (
 	ast: ESTree.Expression,
 	evalContext: any = {},
@@ -126,8 +110,6 @@ export class Jellyscript {
 	): {
 		value: any;
 	} => {
-		assert.INTERNAL(null, expression, Error, 'No expression provided');
-
 		try {
 			const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
 				.expression;
@@ -283,116 +265,3 @@ export class Jellyscript {
 		return [...results];
 	}
 }
-
-export const getReferencedLinkVerbs = <T extends Pick<TypeContract, 'data'>>(
-	typeCard: T,
-): string[] => {
-	const linkVerbs = Jellyscript.getObjectMemberExpressions(
-		typeCard.data.schema,
-		'contract',
-		'links',
-	);
-	return linkVerbs;
-};
-
-// TS-TODO: use TypeContract interface instead of Contract
-export const getTypeTriggers = (typeCard: ContractDefinition) => {
-	// TS-TODO: use TriggeredActionDefinition interface instead of ContractDefinition
-	const triggers: ContractDefinition[] = [];
-
-	// We create empty updates to cards that reference other cards in links
-	// whenever those linked cards change.
-	// This forces a reevaluation of formulas in the referencing card.
-	const linkVerbs = getReferencedLinkVerbs(typeCard as TypeContract);
-	triggers.push(
-		...linkVerbs.flatMap((lv) =>
-			createLinkTrigger(reverseLink(typeCard.slug, lv), typeCard),
-		),
-	);
-
-	return triggers;
-};
-
-/**
- * Creates a triggered action that fires when a card gets changed that is linked
- * with the given link verb to a card of the given type
- *
- * @param linkVerb the verb that should trigger
- * @param typeCard the type containing the formula that needs the trigger
- * @returns the triggered action
- */
-const createLinkTrigger = (
-	linkGroups: Dictionary<LinkConstraint[]>,
-	typeCard: ContractDefinition<ContractData>,
-): Array<ContractDefinition<any>> => {
-	if (Object.keys(linkGroups).length === 0) {
-		return [];
-	}
-	return Object.entries(linkGroups)
-		.filter(([, links]) => links.length)
-		.map(([linkVerb, links]) => {
-			// We try to optimize query speed by limiting to valid types or,
-			// if all are allowed, by excluding some high frequency internal cards
-			const typeFilter =
-				links.filter((l) => l.data.from === '*').length === 0
-					? {
-							enum: links.map((t) => `${t.data.from}@1.0.0`),
-					  }
-					: {
-							not: {
-								enum: ['create@1.0.0', 'update@1.0.0', 'link@1.0.0'],
-							},
-					  };
-			return {
-				slug: slugify(
-					`triggered-action-formula-update-${typeCard.slug}-${linkVerb}`,
-				),
-				type: 'triggered-action@1.0.0',
-				version: typeCard.version,
-				active: true,
-				requires: [],
-				capabilities: [],
-				markers: [],
-				tags: [],
-				data: {
-					action: 'action-update-card@1.0.0',
-					type: `${typeCard.slug}@${typeCard.version}`,
-					target: {
-						$map: {
-							$eval: `source.links['${linkVerb}']`, // there was a [0:] at the end... :-/
-						},
-						'each(card)': {
-							$eval: 'card.id',
-						},
-					},
-					arguments: {
-						reason: 'formula re-evaluation',
-						patch: [],
-					},
-					filter: {
-						type: 'object',
-						required: ['type', 'data'],
-						$$links: {
-							[linkVerb]: {
-								type: 'object',
-								required: ['type'],
-								properties: {
-									type: {
-										type: 'string',
-										const: `${typeCard.slug}@${typeCard.version}`,
-									},
-								},
-							},
-						},
-						properties: {
-							type: {
-								type: 'string',
-								...typeFilter,
-							},
-							updated_at: true,
-						},
-					},
-				},
-			};
-		});
-};
