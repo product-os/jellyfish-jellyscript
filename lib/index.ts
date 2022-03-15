@@ -1,4 +1,3 @@
-import * as assert from '@balena/jellyfish-assert';
 import type { JsonSchema } from '@balena/jellyfish-types';
 import * as esprima from 'esprima';
 import * as ESTree from 'estree';
@@ -111,8 +110,6 @@ export class Jellyscript {
 	): {
 		value: any;
 	} => {
-		assert.INTERNAL(null, expression, Error, 'No expression provided');
-
 		try {
 			const ast = (parse(expression).body[0] as ESTree.ExpressionStatement)
 				.expression;
