@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update external-non-major
+      hash: a05c7c07e4c86e42bf01607206572c99f4a9b5b5
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 7.0.1
+  title: "'Update external-non-major'"
+  date: 2022-03-19T02:25:32.822Z
+- commits:
     - subject: Remove dependency on jellyfish-assert
       hash: 21ce4a6b8eae542a5c586c6a9335f2b518259939
       body: >
