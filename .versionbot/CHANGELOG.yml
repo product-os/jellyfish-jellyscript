@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update external-non-major
+      hash: a262754d5fbc5a0ca6435644468e6fb70ab44044
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 7.0.4
+  title: "'Update external-non-major'"
+  date: 2022-03-26T13:05:06.756Z
+- commits:
     - subject: Update typescript from 4.6.2 to 4.6.3
       hash: 7de57f67e89ddfc21fbfbb617b7f950b12c12917
       body: ""
