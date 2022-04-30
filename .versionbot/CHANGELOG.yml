@@ -1,4 +1,18 @@
 - commits:
+    - subject: Update node engine version
+      hash: 26696dea746a7683a98e933905dc16cae29ba532
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 7.0.10
+  title: "'Update node engine version'"
+  date: 2022-04-30T10:37:48.659Z
+- commits:
     - subject: Update typescript from 4.6.3 to 4.6.4
       hash: 1006933b93b0988f00450e4aa8aa90a497272011
       body: ""
