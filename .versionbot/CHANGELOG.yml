@@ -1,4 +1,18 @@
 - commits:
+    - subject: Bump jest dependencies
+      hash: a8584b8c982a10676100f338ccbe3783baa5f381
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 7.0.10
+  title: "'Bump jest dependencies'"
+  date: 2022-05-04T03:37:40.823Z
+- commits:
     - subject: Update typescript from 4.6.3 to 4.6.4
       hash: 1006933b93b0988f00450e4aa8aa90a497272011
       body: ""
