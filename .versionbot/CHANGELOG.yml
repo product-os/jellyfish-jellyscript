@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update external-non-major
+      hash: b5ae0acbb1e54a8046e7faa408306fdcbfdf4cc1
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 7.0.11
+  title: "'Update external-non-major'"
+  date: 2022-05-07T01:59:27.457Z
+- commits:
     - subject: Bump jest dependencies
       hash: a8584b8c982a10676100f338ccbe3783baa5f381
       body: ""
