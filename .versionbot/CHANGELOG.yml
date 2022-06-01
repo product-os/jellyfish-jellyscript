@@ -1,4 +1,32 @@
 - commits:
+    - subject: Update typedoc from 0.22.16 to 0.22.17
+      hash: 898dd79365b1a7754b195249472f68c69427e12e
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+    - subject: Update typescript from 4.6.4 to 4.7.2
+      hash: 8a5855e2e04f384cc3620cb21b6583708bed8545
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+    - subject: Update typedoc from 0.22.15 to 0.22.16
+      hash: 14376a7f66213ab3a786020be2b1722a8ee58689
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 7.0.14
+  title: "'Update typedoc from 0.22.16 to 0.22.17'"
+  date: 2022-06-01T03:59:19.329Z
+- commits:
     - subject: Update external-non-major (external non-major bumps)
       hash: 27fefb1abb1eb3779fbca7842a790c68a74e77b3
       body: ""
