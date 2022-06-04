@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update typescript from 4.7.2 to 4.7.3
+      hash: 4e2a4ec1d85e60470808c8d39ea7ad67e7fd7d8a
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 7.0.15
+  title: "'Update typescript from 4.7.2 to 4.7.3'"
+  date: 2022-06-03T21:23:48.239Z
+- commits:
     - subject: Update typedoc from 0.22.16 to 0.22.17
       hash: 898dd79365b1a7754b195249472f68c69427e12e
       body: ""
