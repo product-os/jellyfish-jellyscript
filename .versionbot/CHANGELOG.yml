@@ -1,4 +1,18 @@
 - commits:
+    - subject: Update @types/jest from 27.5.1 to 28.1.0
+      hash: eea39c26936d4516b6c253e1b2bc61e477abd352
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 7.0.17
+  title: "'Update @types/jest from 27.5.1 to 28.1.0'"
+  date: 2022-06-05T07:57:44.091Z
+- commits:
     - subject: Update lint-staged from 12.4.2 to 13.0.0
       hash: 9b5f7e830cd969dbb0ebedff11c019fe5bee42db
       body: ""
