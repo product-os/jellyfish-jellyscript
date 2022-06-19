@@ -1,4 +1,18 @@
 - commits:
+    - subject: Drop @balena/jellyfish-config
+      hash: ec61b667eeee8a1ffb432f8158ef7dec2a4cc05d
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 7.0.19
+  title: "'Drop @balena/jellyfish-config'"
+  date: 2022-06-19T08:16:34.638Z
+- commits:
     - subject: Update typescript from 4.7.3 to 4.7.4
       hash: 701715b5d85a142bbc71ccb306c8a6d7cc783357
       body: ""
