@@ -52,7 +52,6 @@
     "static-eval": "^2.1.0"
   },
   "devDependencies": {
-    "@balena/jellyfish-config": "^2.0.6",
     "@balena/jellyfish-types": "^2.0.5",
     "@balena/lint": "^6.2.0",
     "@types/jest": "^28.1.0",
