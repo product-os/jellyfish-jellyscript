@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update typescript from 4.7.3 to 4.7.4
+      hash: 701715b5d85a142bbc71ccb306c8a6d7cc783357
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.0.18
+  title: "'Update typescript from 4.7.3 to 4.7.4'"
+  date: 2022-06-17T19:26:30.740Z
+- commits:
     - subject: Update @types/jest from 27.5.1 to 28.1.0
       hash: eea39c26936d4516b6c253e1b2bc61e477abd352
       body: ""
