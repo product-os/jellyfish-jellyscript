@@ -1,4 +1,4 @@
-import type { JsonSchema } from '@balena/jellyfish-types';
+import type { JsonSchema } from 'autumndb';
 import type { JSONSchema7Object, JSONSchema7Type } from 'json-schema';
 import _ from 'lodash';
 import { hashObject } from './hash-object';

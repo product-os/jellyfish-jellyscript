@@ -1,8 +1,8 @@
-import type { JsonSchema } from '@balena/jellyfish-types';
+import baseFormulas from '@formulajs/formulajs';
+import type { JsonSchema } from 'autumndb';
 import * as esprima from 'esprima';
 import * as ESTree from 'estree';
 import { applyPatch, compare, Operation } from 'fast-json-patch';
-import baseFormulas from '@formulajs/formulajs';
 import type { JSONSchema7Object } from 'json-schema';
 import _ from 'lodash';
 import * as objectDeepSearch from 'object-deep-search';

@@ -1,4 +1,4 @@
-import type { JsonSchema } from '@balena/jellyfish-types';
+import type { JsonSchema } from 'autumndb';
 import { Jellyscript } from './index';
 
 describe('.evaluate()', () => {
