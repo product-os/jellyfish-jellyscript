@@ -29,6 +29,7 @@ baseFormulas.FILTER = _.filter;
 baseFormulas.REJECT = _.reject;
 baseFormulas.ORDER_BY = _.orderBy;
 baseFormulas.LAST = _.last;
+baseFormulas.COUNT_BY = _.countBy;
 
 baseFormulas.REGEX_MATCH = (
 	regex: string | RegExp,
