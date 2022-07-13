@@ -1,4 +1,31 @@
 - commits:
+    - subject: Run codeQL on PR only once
+      hash: 6353e0fba0b14af137e68b395e7ba66894b49ada
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+    - subject: Add countBy method from lodash
+      hash: 529f51b777b95b56003e8c6d1272d19ece0d4c11
+      body: |
+        This method is aliased as `COUNT_BY`.
+
+        See https://lodash.com/docs/4.17.15#countBy
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+        signed-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>
+      author: Lucian Buzzo
+      nested: []
+  version: 7.1.0
+  title: "'Add countBy method from lodash'"
+  date: 2022-07-12T21:51:11.574Z
+- commits:
     - subject: Update typedoc from 0.23.6 to 0.23.7
       hash: c56121db16314d1cbc71302ed75c054f4580fb2e
       body: ""
