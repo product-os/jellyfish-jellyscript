@@ -441,6 +441,55 @@ describe('.evaluateObject()', () => {
 		});
 	});
 
+	test('should evaluate a COUNT_BY formula', async () => {
+		const parser = new Jellyscript();
+		const collection = [
+			{
+				topic: 'cats',
+			},
+			{
+				topic: 'dogs',
+			},
+			{
+				topic: 'dogs',
+			},
+		];
+		const result = parser.evaluateObject(
+			{
+				type: 'object',
+				properties: {
+					collection: {
+						type: 'array',
+						items: {
+							type: 'object',
+							properties: {
+								topic: {
+									type: 'string',
+								},
+							},
+						},
+					},
+					values: {
+						type: 'array',
+						$$formula: "COUNT_BY(contract.collection, 'topic')",
+					},
+				},
+			},
+			{
+				collection,
+				values: [],
+			},
+		);
+
+		expect(result).toEqual({
+			collection,
+			values: {
+				cats: 1,
+				dogs: 2,
+			},
+		});
+	});
+
 	test('should evaluate a boolean formula', async () => {
 		const parser = new Jellyscript();
 		const result = parser.evaluateObject(
