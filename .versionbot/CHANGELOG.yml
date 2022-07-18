@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update typedoc from 0.23.7 to 0.23.8
+      hash: 1c42444772a92359d5c19d90dfd02166f941c8ba
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.1.1
+  title: "'Update typedoc from 0.23.7 to 0.23.8'"
+  date: 2022-07-18T00:54:56.838Z
+- commits:
     - subject: Run codeQL on PR only once
       hash: 6353e0fba0b14af137e68b395e7ba66894b49ada
       body: ""
