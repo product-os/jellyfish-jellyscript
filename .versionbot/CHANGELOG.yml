@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update lint-staged from 13.0.2 to 13.0.3
+      hash: a6b98d65eaa009278702a165633265535570b209
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.1.7
+  title: "'Update lint-staged from 13.0.2 to 13.0.3'"
+  date: 2022-07-31T09:56:45.821Z
+- commits:
     - subject: Update jest monorepo
       hash: 45cf48167450915b0fea765b546ebc88c23c4cd9
       body: ""
