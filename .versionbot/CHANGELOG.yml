@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update @formulajs/formulajs from 2.6.10 to 2.9.3
+      hash: f1efe6f09b3bd849eaf0dabc5a93e58a1ec480f1
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.1.9
+  title: "'Update @formulajs/formulajs from 2.6.10 to 2.9.3'"
+  date: 2022-07-31T10:16:29.856Z
+- commits:
     - subject: Update ts-jest from 28.0.5 to 28.0.7
       hash: 7ed962a18d632f5c0264f8c8545d146f3ab8c285
       body: ""
