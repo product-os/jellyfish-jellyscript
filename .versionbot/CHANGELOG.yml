@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update autumndb from 21.3.1 to 21.3.14
+      hash: 6454857a61f829c83e26123a29f8017fba7f9d48
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.1.11
+  title: "'Update autumndb from 21.3.1 to 21.3.14'"
+  date: 2022-08-02T05:00:37.432Z
+- commits:
     - subject: "Renovate: Increase concurrency to 2"
       hash: 7f5a8b397c5f05e6acb08a3351e798b0953a296a
       body: ""
