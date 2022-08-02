@@ -2,6 +2,8 @@
   "extends": [
     "github>product-os/renovate-config"
   ],
+  "branchConcurrentLimit": 2,
+  "prConcurrentLimit": 2,
   "packageRules": [
     {
       "matchPackagePatterns": ["formulajs"],
