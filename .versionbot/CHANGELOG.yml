@@ -1,4 +1,18 @@
 - commits:
+    - subject: "Renovate: Increase concurrency to 2"
+      hash: 7f5a8b397c5f05e6acb08a3351e798b0953a296a
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@monarci.com>
+        signed-off-by: Josh Bowling <josh@monarci.com>
+      author: Josh Bowling
+      nested: []
+  version: 7.1.10
+  title: "'Renovate: Increase concurrency to 2'"
+  date: 2022-08-02T00:09:51.095Z
+- commits:
     - subject: Update autumndb from 21.2.0 to 21.3.1
       hash: 1826ed7796221258e0ca9224493eab2bf115e2d5
       body: ""
