@@ -1,6 +1,6 @@
 {
   "name": "@balena/jellyfish-jellyscript",
-  "version": "7.1.13",
+  "version": "7.1.14",
   "repository": {
     "type": "git",
     "url": "https://github.com/product-os/jellyfish-jellyscript.git"
@@ -70,6 +70,6 @@
     "pre-commit": "npx lint-staged"
   },
   "versionist": {
-    "publishedAt": "2022-08-04T23:35:28.662Z"
+    "publishedAt": "2022-08-04T23:45:18.090Z"
   }
 }
