@@ -1,4 +1,18 @@
 - commits:
+    - subject: Update typescript to 4.8.3
+      hash: 09bd9fe22e22f678fe81a2ea023a57103dbd246f
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@monarci.com>
+        signed-off-by: Josh Bowling <josh@monarci.com>
+      author: Josh Bowling
+      nested: []
+  version: 7.1.36
+  title: "'Update typescript to 4.8.3'"
+  date: 2022-09-10T01:41:42.444Z
+- commits:
     - subject: Update typedoc from 0.23.10 to 0.23.14
       hash: 2d2f629f43a65e0af2bb0698581b31d0a5b179d1
       body: ""
