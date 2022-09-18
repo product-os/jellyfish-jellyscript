@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update autumndb from 22.2.52 to 22.2.53
+      hash: c045025fac63ce955ab425cbf2fc6b040c75623f
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.1.64
+  title: ""
+  date: 2022-09-18T17:44:21.908Z
+- commits:
     - subject: Update autumndb from 22.2.49 to 22.2.52
       hash: 71f7f43b498b554d5dd6bb38e342054afd7a7323
       body: ""
