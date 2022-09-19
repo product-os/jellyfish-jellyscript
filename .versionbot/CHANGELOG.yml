@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update autumndb from 22.2.62 to 22.2.65
+      hash: 5934e743c2e462ba0e37846318868b019aef9d5d
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.1.73
+  title: ""
+  date: 2022-09-19T08:15:36.451Z
+- commits:
     - subject: Move CodeQL workflow config
       hash: a74cb11805dcec9bdb249b69cf7058bd89a1c7ca
       body: ""
