@@ -1,4 +1,18 @@
 - commits:
+    - subject: "Dev: Add .nvmrc"
+      hash: b3765299686e93881663ae8d4f6dcde41aa3028e
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@monarci.com>
+        signed-off-by: Josh Bowling <josh@monarci.com>
+      author: Josh Bowling
+      nested: []
+  version: 7.1.68
+  title: ""
+  date: 2022-09-19T04:17:06.025Z
+- commits:
     - subject: Update autumndb from 22.2.55 to 22.2.57
       hash: 5c9bfcdb38fd0ba64af1c08bca4af406af760863
       body: ""
