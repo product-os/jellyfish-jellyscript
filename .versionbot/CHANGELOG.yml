@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update autumndb from 22.2.57 to 22.2.59
+      hash: 24b7773988a4ba47e169430c84602b28ecf38292
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.1.69
+  title: ""
+  date: 2022-09-19T04:22:21.872Z
+- commits:
     - subject: "Dev: Add .nvmrc"
       hash: b3765299686e93881663ae8d4f6dcde41aa3028e
       body: ""
