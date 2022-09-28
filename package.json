@@ -6,7 +6,7 @@
     "url": "https://github.com/product-os/jellyfish-jellyscript.git"
   },
   "engines": {
-    "node": "^16.0.0"
+    "node": ">=16.0.0"
   },
   "description": "Jellyscript library for Jellyfish",
   "main": "build/index.js",
