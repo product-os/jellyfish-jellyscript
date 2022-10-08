@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "github>product-os/renovate-config"
-  ],
+  "extends": ["github>product-os/renovate-config"],
   "branchConcurrentLimit": 2,
   "prConcurrentLimit": 2,
   "packageRules": [
