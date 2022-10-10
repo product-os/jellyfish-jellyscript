@@ -1,4 +1,4 @@
-import { getFormulasPaths } from './card';
+import { getFormulasPaths } from '../../lib/card';
 
 describe('getFormulasPaths', () => {
 	test('should return an empty array given no formulas', () => {

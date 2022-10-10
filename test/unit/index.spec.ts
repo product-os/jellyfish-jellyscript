@@ -1,5 +1,5 @@
 import type { JsonSchema } from 'autumndb';
-import { Jellyscript } from './index';
+import { Jellyscript } from '../../lib';
 
 describe('.evaluate()', () => {
 	test('should return null if no input', () => {

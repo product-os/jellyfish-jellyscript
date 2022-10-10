@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { hashObject } from './hash-object';
+import { hashObject } from '../../lib/hash-object';
 
 describe('hashObject', () => {
 	test('should return a string', () => {
