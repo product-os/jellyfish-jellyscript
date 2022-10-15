@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update jest from 29.1.2 to 29.2.0
+      hash: 892e4ee90bab6d9d7bb6391b51e847d793c55963
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: renovate[bot]
+      nested: []
+  version: 7.1.125
+  title: ""
+  date: 2022-10-15T02:02:50.520Z
+- commits:
     - subject: Update autumndb from 22.2.145 to 22.2.146
       hash: 6313379a5813bccd4c3c48b12346ea55d5ecbfad
       body: ""
@@ -1911,8 +1923,8 @@
     - subject: Remove code for generating triggered actions
       hash: 4a4333835f34bb57a856fe357e47371a76008679
       body: >
-        Functions for generating triggered actions based on specific formulas
-        has been hoisted into the jellyfish worker: see
+        Functions for generating triggered actions based on specific formulas has
+        been hoisted into the jellyfish worker: see
         https://github.com/product-os/jellyfish-worker/pull/1428/files
 
         This helps to draw clear boundaries around desired functionality. Jellyscript should not have knowledge of the workings of Jellyfish or of contracts.
@@ -4944,8 +4956,8 @@
     - subject: fix triggered actions for updating linked formulas
       hash: 56f57c78e7443dc0b2260aec9fe9675004b102f9
       body: >
-        previously we mixed up source and target types when reversing link
-        verbs. Therefore the code only worked in the special ANY/* case
+        previously we mixed up source and target types when reversing link verbs.
+        Therefore the code only worked in the special ANY/* case
       footer:
         Change-type: minor
         change-type: minor
@@ -5117,8 +5129,8 @@
     - subject: Add support for a REJECT formulajs method
       hash: 1b52bc0caca02b9adcb0545e629f819a2daa9619
       body: >
-        This will also be useful for filtering links (excluding contracts based
-        on status, for example).
+        This will also be useful for filtering links (excluding contracts based on
+        status, for example).
       footer:
         Change-type: minor
         change-type: minor
@@ -6589,8 +6601,8 @@
     - subject: "build(deps): bump hosted-git-info from 2.8.8 to 2.8.9"
       hash: fab0f9c1106d3e7ea24f9e523586689ce03db699
       body: >
-        Bumps [hosted-git-info](https://github.com/npm/hosted-git-info) from
-        2.8.8 to 2.8.9.
+        Bumps [hosted-git-info](https://github.com/npm/hosted-git-info) from 2.8.8
+        to 2.8.9.
 
         - [Release notes](https://github.com/npm/hosted-git-info/releases)
 
