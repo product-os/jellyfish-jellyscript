@@ -1,4 +1,18 @@
 - commits:
+    - subject: "Docs: Remove badge from readme"
+      hash: 13111fd1a45ccf880c77e1c219eae3b25f72187a
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@monarci.com>
+        signed-off-by: Josh Bowling <josh@monarci.com>
+      author: Josh Bowling
+      nested: []
+  version: 7.1.135
+  title: ""
+  date: 2022-10-24T02:30:27.403Z
+- commits:
     - subject: Update autumndb from 22.2.158 to 22.2.160
       hash: 0aa4b1ac71c960fc78bf47fc1a0c0abbfd2d076c
       body: ""
