@@ -66,6 +66,4 @@ console.log(result); // --> { lucky: true, number: 13, input: 3, }
 
 # Documentation
 
-[![Publish Documentation](https://github.com/product-os/jellyfish-jellyscript/actions/workflows/publish-docs.yml/badge.svg)](https://github.com/product-os/jellyfish-jellyscript/actions/workflows/publish-docs.yml)
-
 Visit the website for complete documentation: https://product-os.github.io/jellyfish-jellyscript
