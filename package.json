@@ -55,7 +55,7 @@
     "static-eval": "^2.1.0"
   },
   "devDependencies": {
-    "@balena/lint": "^6.2.0",
+    "@balena/lint": "^6.2.1",
     "@types/jest": "^29.2.2",
     "@types/json-schema": "^7.0.11",
     "@types/object-hash": "^2.2.1",
