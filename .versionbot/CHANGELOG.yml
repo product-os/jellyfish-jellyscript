@@ -1,4 +1,18 @@
 - commits:
+    - subject: "CI: Stop extending renovate config"
+      hash: 707cb14b741d25028829f0427ed00def2877d7ae
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Josh Bowling <josh@monarci.com>
+        signed-off-by: Josh Bowling <josh@monarci.com>
+      author: Josh Bowling
+      nested: []
+  version: 7.1.144
+  title: ""
+  date: 2022-12-13T00:31:24.007Z
+- commits:
     - subject: Update @types/jest from 29.2.0 to 29.2.2
       hash: 58baa7e3903d6222d071bac8bb01d32cd3ecf631
       body: ""
