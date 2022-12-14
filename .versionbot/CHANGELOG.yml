@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update @balena/lint from 6.2.0 to 6.2.1
+      hash: 82ee7f7cd32f0fb1c5e47abcb617bf1a90cc3cf2
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 7.2.1
+  title: ""
+  date: 2022-12-14T00:32:50.528Z
+- commits:
     - subject: Update Node.js to 16.18.1
       hash: 51177fc59f7c0d1414624468c81650d280b2f3d4
       body: |
