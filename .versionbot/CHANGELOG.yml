@@ -1,4 +1,19 @@
 - commits:
+    - subject: Pin dependencies
+      hash: 6ea5e3fc0c283db5d1ed535f6fe960d8c3138266
+      body: |
+        Update actions/checkout to
+
+        Update actions/checkout from 3 to
+      footer:
+        Change-type: minor
+        change-type: minor
+      author: Renovate Bot
+      nested: []
+  version: 7.3.0
+  title: ""
+  date: 2022-12-21T00:23:47.227Z
+- commits:
     - subject: Update @balena/lint from 6.2.0 to 6.2.1
       hash: 82ee7f7cd32f0fb1c5e47abcb617bf1a90cc3cf2
       body: ""
