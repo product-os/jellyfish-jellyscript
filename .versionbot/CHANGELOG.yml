@@ -1,4 +1,19 @@
 - commits:
+    - subject: Update dependency @types/object-hash to 3.0.2
+      hash: 5b754530e736325cc1550909c8c9a9d09259edd3
+      body: |
+        Update @types/object-hash to 3.0.2
+
+        Update @types/object-hash from 2.2.1 to 3.0.2
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Renovate Bot
+      nested: []
+  version: 7.5.1
+  title: ""
+  date: 2022-12-22T02:52:58.149Z
+- commits:
     - subject: Update Node.js to 18.12.1
       hash: f45278b804c05172886fb0e33c58e37f9a121515
       body: |
