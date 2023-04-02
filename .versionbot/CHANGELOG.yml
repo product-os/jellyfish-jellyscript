@@ -1,4 +1,16 @@
 - commits:
+    - subject: Bump deps
+      hash: f9e0838851633de8d15dec7ee3a7366e2c630f43
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 7.11.1
+  title: ""
+  date: 2023-04-02T05:34:56.679Z
+- commits:
     - subject: Update Node.js to 18.14.0
       hash: b276892c8526a43e7c6b9b93ae1046b0c254009e
       body: |
