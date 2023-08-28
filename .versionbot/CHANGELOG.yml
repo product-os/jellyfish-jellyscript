@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update external types
+      hash: 1460a283dc7ba20f00829d7fa2cd2c81bec62125
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 7.11.5
+  title: ""
+  date: 2023-08-28T08:54:54.425Z
+- commits:
     - subject: Add missing @types/lodash dependency
       hash: 7dc8b515dfd8683e5894e6d0ab287b789b245a48
       body: ""
