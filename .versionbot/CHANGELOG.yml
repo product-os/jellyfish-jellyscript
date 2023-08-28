@@ -1,4 +1,16 @@
 - commits:
+    - subject: Add missing @types/lodash dependency
+      hash: 7dc8b515dfd8683e5894e6d0ab287b789b245a48
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 7.11.4
+  title: ""
+  date: 2023-08-28T08:43:10.779Z
+- commits:
     - subject: Update typescript to 5.2.2
       hash: 5b1f87a665a58a9f933c29f17eadee6f7f23b586
       body: ""
