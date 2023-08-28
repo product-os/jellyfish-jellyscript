@@ -63,7 +63,3 @@ const result = parser.evaluateObject(schema, data);
 
 console.log(result); // --> { lucky: true, number: 13, input: 3, }
 ```
-
-# Documentation
-
-Visit the website for complete documentation: https://product-os.github.io/jellyfish-jellyscript
