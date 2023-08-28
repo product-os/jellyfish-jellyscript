@@ -56,9 +56,9 @@
   "devDependencies": {
     "@balena/lint": "^7.0.2",
     "@types/jest": "^29.5.4",
-    "@types/json-schema": "^7.0.11",
+    "@types/json-schema": "^7.0.12",
     "@types/lodash": "^4.14.197",
-    "@types/object-hash": "^3.0.0",
+    "@types/object-hash": "^3.0.3",
     "@types/static-eval": "^0.2.31",
     "autumndb": "^26.0.2",
     "deplint": "^1.1.3",
