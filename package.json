@@ -57,6 +57,7 @@
     "@balena/lint": "^7.0.2",
     "@types/jest": "^29.5.4",
     "@types/json-schema": "^7.0.11",
+    "@types/lodash": "^4.14.197",
     "@types/object-hash": "^3.0.0",
     "@types/static-eval": "^0.2.31",
     "autumndb": "^26.0.2",
